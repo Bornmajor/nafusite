@@ -1,5 +1,5 @@
 import React from 'react';
-import coverImg from '../assets/images/jewelry-display-window-with-natural-light-showing-off-pieces-created-with-generative-ai_419341-6716.jpg'
+import coverImg from '../assets/images/hero-cover-img.png'
 
 const HeroSection = () => {
     return (

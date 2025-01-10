@@ -37,10 +37,10 @@ return (
 
 <p className='header'>Important Links</p>
 
-<p className='links'>Link 1</p>
-<p className='links'>Link 1</p>
-<p className='links'>Link 1</p>
-
+<p className='links'>Necklace</p>
+<p className='links'>Rings</p>
+<p className='links'>Bracelets</p>
+<p className='links'>Earrings</p>
 </div>
 
 

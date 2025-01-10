@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Root from './pages/Root';
 import ErrorPage from './pages/ErrorPage';
 import { MyContextProvider } from './context/context';
+import ProductPage from './pages/ProductPage';
 
 
 
@@ -20,6 +21,10 @@ function App() {
          index:true,
          element:<Home/>
         },
+        {
+          path:"/product/:prodId",
+          element:<ProductPage />
+        }
   
       ],
       errorElement:<ErrorPage />

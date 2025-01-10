@@ -10,25 +10,31 @@ const ProductCard = ({title,id,price,img_url,isLiked}) => {
     const toggleLikedBtn = () =>{
         setIsProductLiked(!productLiked)
     }
+
+    
     return (
         <div className='product-card' key={id}>
 
+             <Link to={`/product/${id}`}>
              <img src={img_url} className='product-img'  />
+             </Link>
+             
 
             <div className='inner-container mt-2'>
 
-            <div className='text-content'>
+ 
+            <Link className='text-content' to={`/product/${id}`}>
            
             <p className='title text-truncate '>{title}</p>
             <p className='price'>Ksh {price}</p>    
 
-            </div>
+            </Link>
 
             <div className='action-content'  onClick={toggleLikedBtn}>
                 {!productLiked ? 
-             <FaRegHeart size={22} />
+             <FaRegHeart size={22} color='#f29632' />
                   :    
-             <FaHeart size={22} color='black' className=''/>  
+             <FaHeart size={22} color='#f29632' className=''/>  
                 }
             
             </div>
@@ -38,7 +44,7 @@ const ProductCard = ({title,id,price,img_url,isLiked}) => {
          
 
            
-            <button className='add-cart-btn btn-primary'>Add to cart</button>
+            {/* <button className='add-cart-btn btn-primary'>Add to cart</button> */}
 
             
         </div>

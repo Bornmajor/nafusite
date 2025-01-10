@@ -18,12 +18,12 @@ const Home = () => {
        <MainCategories />
 
        <Catalogue title="For You">
-        <ProductCard  img_url={product_1} title="Product 1" price="500"/>
-        <ProductCard  img_url={product_2} title="Product 2" price="500"/>
-        <ProductCard  img_url={product_3} title="Product 1" price="500"/>
-        <ProductCard  img_url={product_1} title="Product 1" price="500"/>
-        <ProductCard  img_url={product_2} title="Product 2" price="500"/>
-        <ProductCard  img_url={product_3} title="Product 1" price="500"/>
+        <ProductCard id="1" img_url={product_1} title="Product 1" price="500"/>
+        <ProductCard id="2" img_url={product_2} title="Product 2" price="500"/>
+        <ProductCard id="3" img_url={product_3} title="Product 1" price="500"/>
+        <ProductCard id="4" img_url={product_1} title="Product 1" price="500"/>
+        <ProductCard id="5" img_url={product_2} title="Product 2" price="500"/>
+        <ProductCard id="6" img_url={product_3} title="Product 1" price="500"/>
        </Catalogue>
 
 
@@ -48,7 +48,7 @@ const Home = () => {
 
        <TestimonialSection />
        
-       <Footer />
+   
        
        </>
     );

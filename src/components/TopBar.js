@@ -92,15 +92,15 @@ const TopBar = () => {
               
 
               {/* <Nav.Link to="/" id="nav-home-link" className={getNavLinkClass('/')} as={Link}>Home</Nav.Link> */}
-                <Nav.Link to="/#features-section" className={getNavLinkClass('/home')} as={Link}>Our Services</Nav.Link>
-                <Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Our Success</Nav.Link>
-                <Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Pricing plans</Nav.Link>
-                <Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Contact Us</Nav.Link>
+                <Nav.Link to="/#features-section" className={getNavLinkClass('/home')} as={Link}>Necklace</Nav.Link>
+                <Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Bracelets</Nav.Link>
+                <Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Earrings</Nav.Link>
+                <Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Rings</Nav.Link>
                
           
              
               </Nav>
-              <Nav className='justify-content-end flex-grow-1 pe-3'>
+              <Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
               <a type="button" class="position-relative mx-2">
               <FaHeart size={25} color='black'/>
               <span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
