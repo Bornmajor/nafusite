@@ -9,12 +9,15 @@ export const MyContextProvider  = (props) =>{
     const [messageApi, contextHolder] = message.useMessage();
     const [navBarIsOpen,setNavBarIsOpen] = useState(false);
     const [isAppLoading,setIsAppLoading] = useState(true)
-    const [modeTheme,setModeTheme] = useState('light')
+    const [modeTheme,setModeTheme] = useState('light');
+    const [modalType,setModalType]= useState('')
 
-    const [show, setShow] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const toggleModal = () =>{
-      setShow(!show)
+
+      setShowModal(!showModal);
+      
     }
 
 
@@ -50,7 +53,8 @@ export const MyContextProvider  = (props) =>{
         warningFeedback,
         navBarIsOpen,setNavBarIsOpen,
         toggleNavbar,isAppLoading,setIsAppLoading,
-        show, setShow,toggleModal
+        showModal, setShowModal,toggleModal,
+        modalType,setModalType
   
        
       }}>

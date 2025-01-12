@@ -13,7 +13,7 @@ import { FaHeart } from "react-icons/fa";
 
 
 const TopBar = () => {
-  const { toggleNavbar, navBarIsOpen,toggleModal } = useContext(MyContext);
+  const { toggleNavbar, navBarIsOpen,toggleModal,setModalType } = useContext(MyContext);
   const location = useLocation();
 
   // Update active navigation when you are on the current page
@@ -96,19 +96,35 @@ const TopBar = () => {
                 <Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Bracelets</Nav.Link>
                 <Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Earrings</Nav.Link>
                 <Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Rings</Nav.Link>
+                
+                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}> <FaHeart  color='black'  /> Wishlist (1)</Nav.Link>
+                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}><FaCartShopping color='black'/> Cart (1)</Nav.Link>
+                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}><FaUserAlt color='black' /> Login</Nav.Link> 
+
+
                
           
              
               </Nav>
               <Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
-              <a type="button" class="position-relative mx-2">
-              <FaHeart size={25} color='black'/>
-              <span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+              <a type="button" className="position-relative mx-2" 
+              onClick={() => {
+               setModalType('wishlist')
+              toggleModal()  
+              }}
+              >
+              <FaHeart size={25} color='black'  />
+              <span className="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
               2
               <span class="visually-hidden">unread messages</span>
               </span>
               </a>
-              <a type="button" class="position-relative mx-2">
+              <a type="button" class="position-relative mx-2"
+               onClick={() => {
+                setModalType('cart')
+               toggleModal()  
+               }}
+              >
               <FaCartShopping size={25} color='black'/>
               <span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
               2
@@ -116,7 +132,12 @@ const TopBar = () => {
               </span>
               </a>
 
-              <Link className='mx-2'>
+              <Link className='mx-2'
+                onClick={() => {
+                setModalType('account')
+                toggleModal()  
+                }}
+              >
               <FaUserAlt size={25} color='black' />
               </Link>
                {/* <Link className='btn btn-secondary btn-nav-call-action' onClick={toggleModal}>Get started</Link> */}
