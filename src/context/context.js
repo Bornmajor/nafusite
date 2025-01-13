@@ -54,7 +54,7 @@ export const MyContextProvider  = (props) =>{
         navBarIsOpen,setNavBarIsOpen,
         toggleNavbar,isAppLoading,setIsAppLoading,
         showModal, setShowModal,toggleModal,
-        modalType,setModalType
+        modalType,setModalType,
   
        
       }}>

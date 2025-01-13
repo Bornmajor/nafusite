@@ -105,7 +105,9 @@ p{
     -ms-overflow-style: none;
   }
   .product-card{
-    margin-right: 35px;
+    display: inline-block;
+    margin: 10px 35px 10px 0;
+    max-width: 180px;
   }
    .product-card .inner-container{
     display: flex;
@@ -162,6 +164,7 @@ p{
     text-decoration: none;
     text-align: center;
     margin-right: 25px;
+   
   }
 
   .category-card:hover{
@@ -385,6 +388,85 @@ p{
     background-color: #f29632;
   }
 
+  /*category-pager*/
+  .category-page-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 20px;
+  }
+
+
+  .category-page-container .filter-menu{
+    width: 40%;
+    padding: 20px;
+    background-color: #f295320e;
+    border-radius: 5px;
+
+  }
+
+  .category-page-container .action-group{
+    display: flex;
+
+  }
+
+  .category-page-container .action-group .apply-btn{
+    width: 70%;
+  }
+
+  .filter-bottom-tab .content-body{
+    padding: 20px;
+  }
+  .filter-menu-btn{
+    display: none;
+  }
+
+  /*account form*/
+  .form-check-input:checked{
+  background-color: #f29632;
+  border: none;
+  }
+
+
+  .account-setup-container  .submit-btn{
+    width: 150px;
+    margin: 5px 0;
+    border-radius: 10px;
+    color:white;
+    padding: 18px 25px;
+    /* padding: 15px; */
+  }
+
+  .account-setup-container  .submit-btn:hover{
+     background-color: #f58d1e !important;
+     color: white !important;
+     border-color:#ff8c10 !important ;
+    /* padding: 15px; */
+  }
+
+  .account-setup-container .input-form{
+    padding: 8px 20px;
+  }
+
+  .account-setup-container .alternative-link-container{
+    display: flex;
+  }
+  .account-setup-container .alternative-link{
+    text-decoration: none;
+    color:#f29632;
+  }
+
+  .account-setup-container .alternative-link:hover{
+    font-weight: 600;
+  }
+
+  .account-setup-container .header{
+    font-weight: 600;
+    font-size: 18px;
+
+  }
+
 
 
   /*footer*/
@@ -462,5 +544,24 @@ p{
       display: block;
     }
 }
+
+@media screen and (max-width:950px) {
+  .category-page-container .filter-menu{
+   display: none;
+  }
+  .filter-menu-btn{
+    display: block;
+    }
+  
+}
+
+
+
+
+
+
+
+
+
 
 

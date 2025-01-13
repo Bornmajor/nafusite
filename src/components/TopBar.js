@@ -13,141 +13,167 @@ import { FaHeart } from "react-icons/fa";
 
 
 const TopBar = () => {
-  const { toggleNavbar, navBarIsOpen,toggleModal,setModalType } = useContext(MyContext);
-  const location = useLocation();
+const { toggleNavbar, navBarIsOpen,toggleModal,setModalType } = useContext(MyContext);
+const location = useLocation();
 
-  // Update active navigation when you are on the current page
-  const getNavLinkClass = (path) => {
-    return location.pathname === path ? 'navlink active-nav-link' : 'navlink';
-  };
+// Update active navigation when you are on the current page
+const getNavLinkClass = (path) => {
+return location.pathname === path ? 'navlink active-nav-link' : 'navlink';
+};
 
-  const [isScrolled, setIsScrolled] = useState(false);
+const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Change state based on scroll position
-      setIsScrolled(window.scrollY > 0);
-    };
+useEffect(() => {
+const handleScroll = () => {
+// Change state based on scroll position
+setIsScrolled(window.scrollY > 0);
+};
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-
-  const [isHidden, setIsHidden] = useState(false); // Tracks whether the navbar is hidden
-  const [lastScrollY, setLastScrollY] = useState(0); // Tracks the last scroll position
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 10) {
-        // Hide navbar when scrolling down
-        setIsHidden(true);
-        console.log('Scrolling down');
-      } else {
-        // Show navbar when scrolling up
-        setIsHidden(false);
-        console.log('Scrolling up');
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
- 
-
-  return (
-    <>
-      <Navbar expand="lg" 
-      className={`bg-body-tertiary `}
-       id='navbar'
-       sticky={isHidden ? "":"top"}
-       >
-        <Container fluid>
-          <Navbar.Brand to='/' as={Link} className='navlink'>
-            <img src={appLogo} alt='App logo' width={80} />
-            {/* <span className='navbar-app-title'>Local connect</span> */}
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} />
-          <Navbar.Offcanvas
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            className="offcanvas-fullwidth"
-            placement="end"
-            show={navBarIsOpen}
-            onHide={toggleNavbar}
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body >
-
-              <Nav className='justify-content-end flex-grow-1 pe-3'>
-
-               
-              
-
-              {/* <Nav.Link to="/" id="nav-home-link" className={getNavLinkClass('/')} as={Link}>Home</Nav.Link> */}
-                <Nav.Link to="/#features-section" className={getNavLinkClass('/home')} as={Link}>Necklace</Nav.Link>
-                <Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Bracelets</Nav.Link>
-                <Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Earrings</Nav.Link>
-                <Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Rings</Nav.Link>
-                
-                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}> <FaHeart  color='black'  /> Wishlist (1)</Nav.Link>
-                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}><FaCartShopping color='black'/> Cart (1)</Nav.Link>
-                <Nav.Link to="/#pricing-section" className={`${getNavLinkClass('/staff')} link-sm-device`} as={Link}><FaUserAlt color='black' /> Login</Nav.Link> 
+window.addEventListener('scroll', handleScroll);
+return () => window.removeEventListener('scroll', handleScroll);
+}, []);
 
 
-               
-          
-             
-              </Nav>
-              <Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
-              <a type="button" className="position-relative mx-2" 
-              onClick={() => {
-               setModalType('wishlist')
-              toggleModal()  
-              }}
-              >
-              <FaHeart size={25} color='black'  />
-              <span className="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-              2
-              <span class="visually-hidden">unread messages</span>
-              </span>
-              </a>
-              <a type="button" class="position-relative mx-2"
-               onClick={() => {
-                setModalType('cart')
-               toggleModal()  
-               }}
-              >
-              <FaCartShopping size={25} color='black'/>
-              <span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-              2
-              <span class="visually-hidden">unread messages</span>
-              </span>
-              </a>
+const [isHidden, setIsHidden] = useState(false); // Tracks whether the navbar is hidden
+const [lastScrollY, setLastScrollY] = useState(0); // Tracks the last scroll position
 
-              <Link className='mx-2'
-                onClick={() => {
-                setModalType('account')
-                toggleModal()  
-                }}
-              >
-              <FaUserAlt size={25} color='black' />
-              </Link>
-               {/* <Link className='btn btn-secondary btn-nav-call-action' onClick={toggleModal}>Get started</Link> */}
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas> 
-        </Container>
-      </Navbar>
-    </>
-  );
+useEffect(() => {
+const handleScroll = () => {
+const currentScrollY = window.scrollY;
+
+if (currentScrollY > lastScrollY && currentScrollY > 10) {
+// Hide navbar when scrolling down
+setIsHidden(true);
+console.log('Scrolling down');
+} else {
+// Show navbar when scrolling up
+setIsHidden(false);
+console.log('Scrolling up');
+}
+
+setLastScrollY(currentScrollY);
+};
+
+window.addEventListener('scroll', handleScroll);
+return () => window.removeEventListener('scroll', handleScroll);
+}, [lastScrollY]);
+
+
+
+return (
+<>
+<Navbar expand="lg" 
+className={`bg-body-tertiary `}
+id='navbar'
+sticky={isHidden ? "":"top"}
+>
+<Container fluid>
+<Navbar.Brand to='/' as={Link} className='navlink'>
+<img src={appLogo} alt='App logo' width={80} />
+{/* <span className='navbar-app-title'>Local connect</span> */}
+</Navbar.Brand>
+<Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} />
+<Navbar.Offcanvas
+id="offcanvasNavbar"
+aria-labelledby="offcanvasNavbarLabel"
+className="offcanvas-fullwidth"
+placement="end"
+show={navBarIsOpen}
+onHide={toggleNavbar}
+>
+<Offcanvas.Header closeButton>
+<Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
+</Offcanvas.Header>
+<Offcanvas.Body >
+
+<Nav className='justify-content-end flex-grow-1 pe-3'>
+
+
+
+
+{/* <Nav.Link to="/" id="nav-home-link" className={getNavLinkClass('/')} as={Link}>Home</Nav.Link> */}
+<Nav.Link to="/#features-section" className={getNavLinkClass('/home')} as={Link}>Necklace</Nav.Link>
+<Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Bracelets</Nav.Link>
+<Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Earrings</Nav.Link>
+<Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Rings</Nav.Link>
+
+<Nav.Link to="/#pricing-section"
+className={`${getNavLinkClass('/staff')} link-sm-device`}  
+onClick={() => {
+setModalType('wishlist')
+toggleModal()  
+}} as={Link}> 
+<FaHeart  color='black'  /> Wishlist (1)
+</Nav.Link>
+<Nav.Link to="/#pricing-section"
+ className={`${getNavLinkClass('/staff')} link-sm-device`} 
+ onClick={() => {
+  setModalType('cart')
+  toggleModal()  
+  }}
+ as={Link}>
+  <FaCartShopping color='black'/> Cart (1)
+ </Nav.Link>
+<Nav.Link
+to="/#pricing-section"
+className={`${getNavLinkClass('/staff')} link-sm-device`}
+onClick={() => {
+  setModalType('account')
+  toggleModal()  
+  }}
+as={Link}><FaUserAlt color='black' />
+Login
+</Nav.Link> 
+
+
+
+
+
+</Nav>
+<Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
+<a type="button" className="position-relative mx-2" 
+onClick={() => {
+setModalType('wishlist')
+toggleModal()  
+}}
+>
+<FaHeart size={25} color='black'  />
+<span className="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+2
+<span class="visually-hidden">unread messages</span>
+</span>
+</a>
+
+<a type="button" class="position-relative mx-2"
+onClick={() => {
+setModalType('cart')
+toggleModal()  
+}}
+>
+
+<FaCartShopping size={25} color='black'/>
+<span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+2
+<span class="visually-hidden">unread messages</span>
+</span>
+</a>
+
+<Link className='mx-2'
+onClick={() => {
+setModalType('account')
+toggleModal()  
+}}
+>
+<FaUserAlt size={25} color='black' />
+</Link>
+{/* <Link className='btn btn-secondary btn-nav-call-action' onClick={toggleModal}>Get started</Link> */}
+</Nav>
+</Offcanvas.Body>
+</Navbar.Offcanvas> 
+</Container>
+</Navbar>
+</>
+);
 }
 
 export default TopBar;
