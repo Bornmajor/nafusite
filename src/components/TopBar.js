@@ -10,11 +10,14 @@ import { useLocation } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
 import LoginLetterAvatar from './LoginLetterAvatar';
 
 
+
 const TopBar = () => {
-const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail } = useContext(MyContext);
+const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail,logOut } = useContext(MyContext);
 const location = useLocation();
 
 // Update active navigation when you are on the current page
@@ -59,7 +62,15 @@ window.addEventListener('scroll', handleScroll);
 return () => window.removeEventListener('scroll', handleScroll);
 }, [lastScrollY]);
 
-
+//remove email section
+function usernameWithoutEmail(username) {
+  const atIndex = username.indexOf('@');
+  if (atIndex !== -1) {
+    return username.substring(0, atIndex);
+  } else {
+    return username; // Username doesn't contain "@"
+  }
+}
 
 return (
 <>
@@ -115,6 +126,31 @@ toggleModal()
  as={Link}>
   <FaCartShopping color='black'/> Cart (1)
  </Nav.Link>
+
+
+ {userMail !== '' 
+ ?
+ <>
+  <Nav.Link
+className={`${getNavLinkClass('/staff')} link-sm-device mt-4`}
+as={Link}>
+<FaUserCircle fontSize={20} color='#f29632' /> {usernameWithoutEmail(userMail) }
+
+</Nav.Link> 
+
+<Nav.Link
+className={`${getNavLinkClass('/staff')} link-sm-device`}
+as={Link}
+onClick={() => logOut()}>
+<TbLogout fontSize={20} color='#f29632' /> Log out
+
+</Nav.Link> 
+ 
+ </>
+
+
+ : 
+ 
 <Nav.Link
 to="/#pricing-section"
 className={`${getNavLinkClass('/staff')} link-sm-device`}
@@ -122,9 +158,11 @@ onClick={() => {
   setModalType('account')
   toggleModal()  
   }}
-as={Link}><FaUserAlt color='black' />
-Login
+as={Link}>
+<FaUserAlt color='black' /> Login
 </Nav.Link> 
+ 
+ }
 
 
 
