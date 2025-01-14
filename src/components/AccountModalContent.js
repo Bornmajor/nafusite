@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useState,useEffect} from 'react';
 import { MdAttachEmail } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { Button } from 'antd';
@@ -14,12 +14,37 @@ const AccountModalContent = () => {
    const [isFormLoading,setIsFormLoading] = useState(false);
    const [email,setEmail] = useState('');
    const [pwd,setPwd] = useState('');
-   const {errorFeedback,contextHolder,successFeedback} = useContext(MyContext);
-   const [authType,setAuthType] = useState('login')
+   const {errorFeedback,contextHolder,successFeedback,fetchUserTokenFromDevice,toggleModal} = useContext(MyContext);
+   const [authType,setAuthType] = useState('login');
+   const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+
+
+  useEffect(() => {
+    // Event listener for online status
+    const handleOnline = () => {
+      setIsOnline(true);
+    };
+
+    // Event listener for offline status
+    const handleOffline = () => {
+      setIsOnline(false);
+    };
+
+    // Add event listeners
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    // Cleanup event listeners on component unmount
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
    // Function to generate a random 16-character token
 const generateToken = () => {
-  return [...Array(16)]
+  return [...Array(32)]
     .map(() => Math.random().toString(36)[2])
     .join('');
 };
@@ -53,7 +78,13 @@ const generateToken = () => {
     }
 
   
-
+    //check internet if available 
+    if(!isOnline){     
+       errorFeedback('Internet required to complete request!!')
+         //enable submit btn
+      setIsFormLoading(false);  
+       return false;
+    }
     // Firestore Users collection
     const usersCollection = "users";
 
@@ -88,14 +119,20 @@ const generateToken = () => {
          await setDoc(userDocRef, { email, password: hashedPassword, token });
          
          // Store email and token in localStorage
-         localStorage.setItem("userId", email);
-         localStorage.setItem("userToken", token);
+         localStorage.setItem("nafusiteUserEmail", email);
+         localStorage.setItem("nafusiteUserToken", token);
  
          successFeedback("User registered successfully");
-         console.log("User registered:", { email, token });
+        //  console.log("User registered:", { email, token });
+
+        //fetch token
+        fetchUserTokenFromDevice();
 
          //enable submit btn
          setIsFormLoading(false);  
+
+         //close modal
+         toggleModal();
        }
 
 
@@ -124,16 +161,21 @@ const generateToken = () => {
            await updateDoc(userDocRef, { token: newToken });
  
            // Store email and token in localStorage
-           localStorage.setItem("userId", email);
-           localStorage.setItem("userToken", newToken);
+           localStorage.setItem("nafusiteUserEmail", email);
+           localStorage.setItem("nafusiteUserToken", newToken);
  
            successFeedback("User logged in successfully");
            console.log("Login successful:", { email, newToken });
-                //enable submit btn
-         setIsFormLoading(false); 
+
+           //fetch token
+        fetchUserTokenFromDevice();
+              //enable submit btn
+         setIsFormLoading(false);
+         //close modal
+         toggleModal();
          } else {
            // Incorrect password
-           errorFeedback("Incorrect password");
+           errorFeedback("Authentication failed!Verify your email address or password");
                 //enable submit btn
          setIsFormLoading(false); 
          }

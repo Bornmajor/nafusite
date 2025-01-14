@@ -10,10 +10,11 @@ import { useLocation } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import LoginLetterAvatar from './LoginLetterAvatar';
 
 
 const TopBar = () => {
-const { toggleNavbar, navBarIsOpen,toggleModal,setModalType } = useContext(MyContext);
+const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail } = useContext(MyContext);
 const location = useLocation();
 
 // Update active navigation when you are on the current page
@@ -69,7 +70,7 @@ sticky={isHidden ? "":"top"}
 >
 <Container fluid>
 <Navbar.Brand to='/' as={Link} className='navlink'>
-<img src={appLogo} alt='App logo' width={80} />
+<img src={appLogo} alt='App logo' width={60} />
 {/* <span className='navbar-app-title'>Local connect</span> */}
 </Navbar.Brand>
 <Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} />
@@ -158,6 +159,10 @@ toggleModal()
 </span>
 </a>
 
+{userMail !== '' ? 
+//if logged in
+<LoginLetterAvatar email={userMail}/>
+:
 <Link className='mx-2'
 onClick={() => {
 setModalType('account')
@@ -166,7 +171,10 @@ toggleModal()
 >
 <FaUserAlt size={25} color='black' />
 </Link>
-{/* <Link className='btn btn-secondary btn-nav-call-action' onClick={toggleModal}>Get started</Link> */}
+
+}
+
+
 </Nav>
 </Offcanvas.Body>
 </Navbar.Offcanvas> 

@@ -468,6 +468,46 @@ p{
   }
 
 
+  .loader {
+    width: 80px;
+    aspect-ratio: 4;
+    --c:#f5ae49 90%,#0000;
+    background: 
+      radial-gradient(circle closest-side at left  6px top 50%,var(--c)),
+      radial-gradient(circle closest-side                     ,var(--c)),
+      radial-gradient(circle closest-side at right 6px top 50%,var(--c));
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    animation: l4 1s infinite alternate;
+  }
+  @keyframes l4 {
+      to{width:25px;aspect-ratio: 1}
+  }
+
+  .login-letter-avatar{
+    font-size: 15px;
+    font-weight: 600;
+    color:white;
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #efaf6a ;
+    cursor: pointer;
+
+  }
+  .login-letter-avatar::after {
+    display: none; 
+  }
+  .dropdown-avatar .drop-menu {
+   min-width: 2rem;
+    
+  }
+
 
   /*footer*/
   .footer{

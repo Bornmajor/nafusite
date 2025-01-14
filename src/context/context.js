@@ -10,7 +10,9 @@ export const MyContextProvider  = (props) =>{
     const [navBarIsOpen,setNavBarIsOpen] = useState(false);
     const [isAppLoading,setIsAppLoading] = useState(true)
     const [modeTheme,setModeTheme] = useState('light');
-    const [modalType,setModalType]= useState('')
+    const [modalType,setModalType]= useState('');
+    const [userToken,setUserToken] = useState('');
+    const [userMail,setUserMail] = useState('');
 
     const [showModal, setShowModal] = useState(false);
 
@@ -19,6 +21,54 @@ export const MyContextProvider  = (props) =>{
       setShowModal(!showModal);
       
     }
+    
+    const fetchUserTokenFromDevice = async() =>{
+      //fetch stored token from device
+     const email = localStorage.getItem('nafusiteUserEmail');
+     const token = localStorage.getItem('nafusiteUserToken');
+
+     if(token){
+      //assign token and userEmail
+      setUserMail(email);
+      setUserToken(token)
+
+     }{
+      //no stored tokens
+      console.log(`Stored tokens ${email} ${token}`);
+       
+     }
+
+
+    };
+
+    const logOut = () =>{
+      try{
+       setIsAppLoading(true) 
+          //remove tokens
+      localStorage.removeItem('nafusiteUserEmail');
+      localStorage.removeItem('nafusiteUserToken');
+
+      setUserToken('')
+      setUserMail('');
+      
+       setTimeout(() => {
+        setIsAppLoading(false);
+       }, 1000);
+
+
+      }catch(error){
+        errorFeedback(error.message)
+      }
+
+    
+      
+
+
+    }
+
+    useEffect(()=>{
+     fetchUserTokenFromDevice();
+    },[])
 
 
     const successFeedback = (msg) => {
@@ -54,7 +104,9 @@ export const MyContextProvider  = (props) =>{
         navBarIsOpen,setNavBarIsOpen,
         toggleNavbar,isAppLoading,setIsAppLoading,
         showModal, setShowModal,toggleModal,
-        modalType,setModalType,
+        modalType,setModalType,fetchUserTokenFromDevice,
+        userToken,setUserToken,userMail,setUserMail,
+        logOut
   
        
       }}>
