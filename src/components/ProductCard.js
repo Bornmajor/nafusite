@@ -3,7 +3,7 @@ import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
-const ProductCard = ({title,id,price,img_url,isLiked}) => {
+const ProductCard = ({title,id,price,img_url,isLiked,width,height,mode}) => {
 
     const [productLiked,setIsProductLiked] = useState(isLiked);
 
@@ -16,7 +16,7 @@ const ProductCard = ({title,id,price,img_url,isLiked}) => {
         <div className='product-card' key={id}>
 
              <Link to={`/product/${id}`}>
-             <img src={img_url} className='product-img'  />
+             <img src={img_url} className='product-img' width={width ? width : '180px'} height={height? height : '230px'}  />
              </Link>
              
 
@@ -30,7 +30,13 @@ const ProductCard = ({title,id,price,img_url,isLiked}) => {
 
             </Link>
 
-            <div className='action-content'  onClick={toggleLikedBtn}>
+            {mode == 'edit' ?
+             <Link className='edit-link' type='button'>
+                edit
+             </Link>
+
+            :
+           <div className='action-content'  onClick={toggleLikedBtn}>
                 {!productLiked ? 
              <FaRegHeart size={22} color='#f29632' />
                   :    
@@ -38,6 +44,10 @@ const ProductCard = ({title,id,price,img_url,isLiked}) => {
                 }
             
             </div>
+            
+            }
+
+
 
             </div>
 

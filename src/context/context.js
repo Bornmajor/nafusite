@@ -16,6 +16,16 @@ export const MyContextProvider  = (props) =>{
 
     const [showModal, setShowModal] = useState(false);
 
+    const [uploadProdTitle,setUploadProdTitle] = useState('');
+    const [uploadProdPrice,setUploadProdPrice] = useState('');
+    const [uploadProdDesc,setUploadProdDesc] = useState('');
+    const [uploadProdColor,setUploadProdColor] = useState('none');
+    const [uploadProdImages,setUploadProdImages] = useState([]);
+    const [uploadProdCategory,setProdCategory] = useState("");
+
+
+
+
     const toggleModal = () =>{
 
       setShowModal(!showModal);
@@ -106,7 +116,12 @@ export const MyContextProvider  = (props) =>{
         showModal, setShowModal,toggleModal,
         modalType,setModalType,fetchUserTokenFromDevice,
         userToken,setUserToken,userMail,setUserMail,
-        logOut
+        logOut,
+        uploadProdTitle,uploadProdPrice,uploadProdDesc, uploadProdColor,uploadProdImages,uploadProdCategory,
+        setUploadProdTitle,setUploadProdPrice,setUploadProdDesc,setUploadProdColor,setUploadProdImages,
+        setProdCategory
+        
+       
   
        
       }}>
