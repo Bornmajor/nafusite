@@ -1,5 +1,7 @@
 import { createContext,useEffect,useState } from "react";
 import { message } from "antd";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
 
 const MyContext = createContext();
 
@@ -13,6 +15,8 @@ export const MyContextProvider  = (props) =>{
     const [modalType,setModalType]= useState('');
     const [userToken,setUserToken] = useState('');
     const [userMail,setUserMail] = useState('');
+    const [wishlistData,setWishlistData] = useState([]);
+
 
     const [showModal, setShowModal] = useState(false);
 
@@ -76,9 +80,11 @@ export const MyContextProvider  = (props) =>{
 
     }
 
-    useEffect(()=>{
-     fetchUserTokenFromDevice();
-    },[])
+
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
 
     const successFeedback = (msg) => {
@@ -104,6 +110,33 @@ export const MyContextProvider  = (props) =>{
    
   const toggleNavbar = () => setNavBarIsOpen(!navBarIsOpen);
 
+  const getWishlistData = async() =>{
+    try{
+      const wishlistColRef = collection(db,"wishlist");
+      const querySnapshot = await getDocs(wishlistColRef);
+      const itemsArray = querySnapshot.docs.map((doc) => (
+        {
+        id:doc.id,
+        ...doc.data()
+      }))
+
+      setWishlistData(itemsArray);
+      console.log(`Wishlist data:`);
+      console.log(itemsArray);
+
+
+    }catch(error){
+      console.log(`Fetch wishlist data:${error.message}`);
+
+    }
+  }
+
+    useEffect(()=>{
+     fetchUserTokenFromDevice();
+     getWishlistData();
+    },[])
+
+
 
     return(
       <MyContext.Provider value={{
@@ -119,7 +152,11 @@ export const MyContextProvider  = (props) =>{
         logOut,
         uploadProdTitle,uploadProdPrice,uploadProdDesc, uploadProdColor,uploadProdImages,uploadProdCategory,
         setUploadProdTitle,setUploadProdPrice,setUploadProdDesc,setUploadProdColor,setUploadProdImages,
-        setProdCategory
+        setProdCategory,
+        capitalizeFirstLetter,
+        wishlistData,getWishlistData,
+      
+       
         
        
   

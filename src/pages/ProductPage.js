@@ -1,4 +1,4 @@
-import React ,{useState}from 'react';
+import React ,{useContext, useEffect, useState}from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { MdOutlineArrowForwardIos } from "react-icons/md";
@@ -11,20 +11,134 @@ import product_1 from '../assets/images/IMG_20241116_102001.jpg'
 import product_2 from '../assets/images/IMG_20241116_114701.jpg'
 import product_3 from '../assets/images/IMG_20241116_115256.jpg'
 import product_4 from '../assets/images/IMG_20241116_115343.jpg'
+import { collection, getDoc,doc,query,where,getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import MyContext from '../context/context';
+import { useLocation } from 'react-router-dom';
 
 const ProductPage = () => {
 const params = useParams();
 
 const [productLiked,setIsProductLiked] = useState(false);
+const {errorFeedback,capitalizeFirstLetter}= useContext(MyContext);
+const [product,setProduct] = useState(null);
+const [similarProductsList,setSimilarProductsList] = useState([])
+const location = useLocation();
+
+//scroll up when user access this view
+useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, [location.pathname]); // Trigger on route change
 
 const toggleLikedBtn = () =>{
     setIsProductLiked(!productLiked)
 }
 
+// Function to get the cover image from an array of images
+const getCoverImage = (productImages) => {
+    if (!productImages || productImages.length === 0) {
+      return null; // Return null if productImages is empty or undefined
+    }
+  
+    // Try to find an image with coverImg === "true"
+    const coverImage = productImages.find((img) => img.coverImg === "true");
+  
+    // Return the coverImage if found, otherwise return the first image
+    return coverImage || productImages[0];
+  };
+
+const getProductById = async(id) =>{
+
+try{
+const prodCollRef = collection(db,"products");
+
+const docRef = doc(prodCollRef,id);
+const docSnapshot  =  await getDoc(docRef);
+
+if (!docSnapshot.exists()) {
+    console.log(`No product found with the ID: ${id}`);
+
+    }
+
+const productData = { id: docSnapshot.id, ...docSnapshot.data() };  // Include doc ID with data
+console.log(productData);  // Log the product data
+
+    // Use getCoverImage to get the cover image from product_images
+const coverImage = getCoverImage(productData.product_images);
+
+// Add coverImage to the product data
+productData.coverImage = coverImage;
+
+    
+    setProduct(productData);
+    fetchSimilarProducts(productData.product_category) 
+
+
+
+}catch(error){
+        errorFeedback(`Something went wrong:${error.message}`);
+        console.log(error.message);
+}
+
+}
+
+const fetchSimilarProducts = async(category)=>{
+    try{
+    const productCollectionRef = collection(db,"products");
+
+    const q = query(productCollectionRef,where("product_category","==", category));
+
+    const querySnaphot = await getDocs(q);
+
+    const itemsArray = querySnaphot.docs.map((item) => ({
+        id:item.id,
+    ...item.data() 
+    }
+    ));
+
+    const getCoverImage = (productImages) => {
+        if (!productImages || productImages.length === 0) {
+          return null; // Return null if productImages is empty or undefined
+        }
+      
+        // Try to find an image with coverImg === "true"
+        const coverImage = productImages.find((img) => img.coverImg === "true");
+      
+        // Return the coverImage if found, otherwise return the first image
+        return coverImage || productImages[0];
+      };
+
+     // Map each product and include its selected cover image
+const updatedItems = itemsArray.map((item) => ({
+    ...item,
+    coverImage: getCoverImage(item.product_images),
+  }));
+
+    setSimilarProductsList(updatedItems)
+
+
+}catch(error){
+    errorFeedback(`Something went wrong:${error.message}`);
+    console.log(error.message);  
+}
+}
+
+useEffect(()=>{
+getProductById(params.prodId);
+},[])
+
+useEffect(()=>{
+// fetchSimilarProducts(product.product_category) 
+},[product]);
+
 
 return (
     <>
-    <div className='product-page-container'>
+    {product !== null ?
+    <>
+    
+    <div className='d-flex flex-column align-items-center justify-content-center' >
+<div className='product-page-container'>
 
 {/* <p>{params.prodId}</p> */}
 
@@ -37,13 +151,13 @@ Home
 <MdOutlineArrowForwardIos className='route-icon' size={16}/>
 
 <Link className='nav-route'>
-Category
+{capitalizeFirstLetter(product.product_category)}
 </Link>
 
 <MdOutlineArrowForwardIos className='route-icon' size={16} />
 
 <Link className='nav-route'>
-Product Name
+{product.product_title}
 </Link>
 
 </div>
@@ -53,14 +167,24 @@ Product Name
 
 <div className='product-images-container'>
 
-<img src={product_1} className='active-product-img' />
+{product.coverImage && <img src={product.coverImage.imageLink} className='active-product-img' alt={product.name}  />}
+
+
 
 <div className='alternative-imgs'>
 
+{product.product_images.length > 1 &&
+<>
+{product.product_images.map((item)=> <img src={item.imageLink} className='non-active-product-img' alt="" />)}
+
+
+</>
+
+}
+
+{/* <img src={product_1} className='non-active-product-img' />
 <img src={product_1} className='non-active-product-img' />
-<img src={product_1} className='non-active-product-img' />
-<img src={product_1} className='non-active-product-img' />
-<img src={product_1} className='non-active-product-img' />
+<img src={product_1} className='non-active-product-img' /> */}
 
 </div>
 
@@ -69,19 +193,17 @@ Product Name
 
 <div className='product-content'>
 
-<p className='title my-2'>Product title</p>
+<p className='title my-2'>{product.product_title}</p>
 
-<p className='pricing mb-2'>Ksh <span className='num'>500</span></p>
+<p className='pricing mb-2'>Ksh <span className='num'>{product.product_price}</span></p>
 
 <p className='desc mb-4'>
-Crafted in stunning 9-carat yellow gold, 
-this ring bears the timeless message of 
-affection with its engraved declaration: "I Love You".    
+{product.product_desc}   
 </p>
 
 <form className='product-form'>
 
-<div className='variants'>
+{/* <div className='variants'>
 
 <input type="radio" class="btn-check" name="color" id="option1" autocomplete="off" checked />
 <label class="btn btn-outline-secondary" for="option1">Gold</label>
@@ -90,9 +212,9 @@ affection with its engraved declaration: "I Love You".
 <label class="btn btn-outline-secondary" for="option2">Silver</label>
 
 
-</div>
+</div> */}
 
-<div className='variants'>
+{/* <div className='variants'>
 
 <input type="radio" class="btn-check" name="size" id="L" autocomplete="off" checked />
 <label class="btn btn-outline-secondary" for="L">L</label>
@@ -104,9 +226,9 @@ affection with its engraved declaration: "I Love You".
 <label class="btn btn-outline-secondary" for="XXXL">XXXL</label>
 
 
-</div>
+</div> */}
 
-<div className='quantity-container my-2'>
+{/* <div className='quantity-container my-2'>
 
 <div className='quantity'>
 
@@ -123,7 +245,7 @@ affection with its engraved declaration: "I Love You".
 
 </div>
 
-</div>
+</div> */}
 
 <div className='action-btn-container '>
 
@@ -152,19 +274,42 @@ affection with its engraved declaration: "I Love You".
 
 
 </div>
-
+</div>
 <div className='similar-products'>
 
+{similarProductsList.length !== 0 &&
 <Catalogue title="Similar products">
-<ProductCard id="1" img_url={product_1} title="Product 1" price="500"/>
-<ProductCard id="2" img_url={product_2} title="Product 2" price="500"/>
-<ProductCard id="3" img_url={product_3} title="Product 1" price="500"/>
-<ProductCard id="4" img_url={product_1} title="Product 1" price="500"/>
-<ProductCard id="5" img_url={product_2} title="Product 2" price="500"/>
-<ProductCard id="6" img_url={product_3} title="Product 1" price="500"/>
+{
+similarProductsList.map((item) => (
+<ProductCard id={item.id}
+width={`200px`}
+height={`200px`}
+img_url={item.coverImage.imageLink}
+title={item.product_title}
+price={item.product_price}
+/>   
+))    
+}
+
 </Catalogue>
+}
+
+
+
 
 </div>
+    </>
+
+
+:
+<div className='d-flex align-items-center justify-content-center inner-loader' >
+<div className='loader'></div>  <p className='bold mx-2'>Loading</p> 
+   
+</div>
+
+
+}
+
 
     </>
 

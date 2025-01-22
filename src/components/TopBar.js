@@ -104,10 +104,10 @@ onHide={toggleNavbar}
 
 
 {/* <Nav.Link to="/" id="nav-home-link" className={getNavLinkClass('/')} as={Link}>Home</Nav.Link> */}
-<Nav.Link to="/#features-section" className={getNavLinkClass('/home')} as={Link}>Necklace</Nav.Link>
-<Nav.Link to="/#testimony-section" className={getNavLinkClass('/staff')} as={Link}>Bracelets</Nav.Link>
-<Nav.Link to="/#pricing-section" className={getNavLinkClass('/staff')} as={Link}>Earrings</Nav.Link>
-<Nav.Link to="/#contact-section" className={getNavLinkClass('/staff')} as={Link}>Rings</Nav.Link>
+<Nav.Link to="/category/necklace" className={getNavLinkClass('/category/necklace')} as={Link}>Necklace</Nav.Link>
+<Nav.Link to="/category/bracelets" className={getNavLinkClass('/category/bracelets')} as={Link}>Bracelets</Nav.Link>
+<Nav.Link to="/category/earrings" className={getNavLinkClass('/category/earrings')} as={Link}>Earrings</Nav.Link>
+<Nav.Link to="/category/bags" className={getNavLinkClass('/category/bags')} as={Link}>Hand bags</Nav.Link>
 
 <Nav.Link to="/#pricing-section"
 className={`${getNavLinkClass('/staff')} link-sm-device`}  

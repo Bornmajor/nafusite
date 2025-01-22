@@ -45,6 +45,7 @@ errorFeedback('All fields required');
 
 
 }
+
 const publishProduct = async() => {
 try{
 

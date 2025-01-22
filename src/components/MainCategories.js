@@ -9,7 +9,7 @@ const MainCategories = () => {
     return (
         <div className='major-product-categories'>          
           
-          <CategoryCard title="Rings" imgUrl={ringImg} category="rings"/>
+          <CategoryCard title="Rings" imgUrl={ringImg} category="earrings"/>
           <CategoryCard title="Bracelets" imgUrl={braceletImg} category="bracelets"/>
           <CategoryCard title="Bags" imgUrl={bagImg} category="bags"/>
           <CategoryCard title="Necklace" imgUrl={necklaceImg} category="necklace"/>

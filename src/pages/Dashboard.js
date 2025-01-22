@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import DashboardBar from '../components/DashboardBar';
-// import '../assets/dashboard/css/dashboard.css'
+ import '../assets/dashboard/css/dashboard.css'
 import '../assets/dashboard/js/bootstrap.bundle.min'
 import { HiMenuAlt3 } from "react-icons/hi";
 import { RiSearchLine } from "react-icons/ri";

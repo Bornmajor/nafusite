@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useContext, useEffect, useState} from 'react';
 import product_1 from '../assets/images/IMG_20241116_102001.jpg'
 import product_2 from '../assets/images/IMG_20241116_114701.jpg'
 import product_3 from '../assets/images/IMG_20241116_115256.jpg'
@@ -6,10 +6,69 @@ import product_4 from '../assets/images/IMG_20241116_115343.jpg'
 import ProductCard from '../components/ProductCard';
 import { Sheet } from 'react-modal-sheet';
 import { FaFilter } from "react-icons/fa6";
+import { useParams } from 'react-router-dom';
+import { collection,query,getDocs,where } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import MyContext from '../context/context';
 
 
 const CategoryPage = () => {
 const [isOpen, setOpen] = useState(false);
+const [listProduct,setListProducts] = useState([]);
+const {errorFeedback} = useContext(MyContext)
+const params = useParams();
+
+
+const fetchProductsByCategory = async(category)=>{
+    try{
+    const productCollectionRef = collection(db,"products");
+
+    const q = query(productCollectionRef,where("product_category","==", category));
+
+    const querySnaphot = await getDocs(q);
+
+    const itemsArray = querySnaphot.docs.map((item) => ({
+        id:item.id,
+    ...item.data() 
+    }
+    ));
+
+    const getCoverImage = (productImages) => {
+        if (!productImages || productImages.length === 0) {
+          return null; // Return null if productImages is empty or undefined
+        }
+      
+        // Try to find an image with coverImg === "true"
+        const coverImage = productImages.find((img) => img.coverImg === "true");
+      
+        // Return the coverImage if found, otherwise return the first image
+        return coverImage || productImages[0];
+      };
+
+     // Map each product and include its selected cover image
+const updatedItems = itemsArray.map((item) => ({
+    ...item,
+    coverImage: getCoverImage(item.product_images),
+  }));
+
+  setListProducts(updatedItems);
+  console.log(updatedItems);
+
+
+}catch(error){
+    errorFeedback(`Something went wrong:${error.message}`);
+    console.log(error.message);  
+}
+}
+
+useEffect(()=>{
+fetchProductsByCategory(params.category)
+},[params.category]);
+
+
+
+
+
 return (
 <div className='category-page-container'>
 
@@ -176,19 +235,6 @@ Bags
 
 </div>
 
-<div className='variants'>
-
-<input type="radio" className="btn-check" name="size" id="L" autocomplete="off" checked />
-<label className="btn btn-outline-secondary" for="L">L</label>
-
-<input type="radio" className="btn-check" name="size" id="XL" autocomplete="off" />
-<label className="btn btn-outline-secondary mx-2" for="XL">XL</label>
-
-<input type="radio" className="btn-check" name="size" id="XXXL" autocomplete="off" />
-<label className="btn btn-outline-secondary mx-2" for="XXXL">XXXL</label>
-
-
-</div>
 
 </div>
 
@@ -215,15 +261,26 @@ Bags
 </button>    
 </div>
 
+{listProduct.length !== 0 ?
 
+listProduct.map((item) => (
+<ProductCard id={item.id}
+width={`200px`}
+height={`200px`}
+img_url={item.coverImage.imageLink}
+title={item.product_title}
+price={item.product_price}
+/>   
+))    
 
+:
+<div className='d-flex align-items-center justify-content-center inner-loader' >
+<div className='loader'></div>  <p className='bold mx-2'>Loading</p> 
+   
+</div>
 
-<ProductCard id="1" img_url={product_1} title="Product 1" price="500"/>
-<ProductCard id="2" img_url={product_2} title="Product 2" price="500"/>
-<ProductCard id="3" img_url={product_3} title="Product 1" price="500"/>
-<ProductCard id="4" img_url={product_1} title="Product 1" price="500"/>
-<ProductCard id="5" img_url={product_2} title="Product 2" price="500"/>
-<ProductCard id="6" img_url={product_3} title="Product 1" price="500"/>
+}
+
 
 
 
