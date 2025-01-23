@@ -1,7 +1,8 @@
 import { createContext,useEffect,useState } from "react";
 import { message } from "antd";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where,deleteDoc,setDoc,doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+
 
 const MyContext = createContext();
 
@@ -15,7 +16,11 @@ export const MyContextProvider  = (props) =>{
     const [modalType,setModalType]= useState('');
     const [userToken,setUserToken] = useState('');
     const [userMail,setUserMail] = useState('');
+
     const [wishlistData,setWishlistData] = useState([]);
+    const [cartListData,setCartListData] = useState([]);
+     const [listAllProducts,setListAllProducts] =useState([]);
+     const [currentUserWishlist,setCurrentUserWishlist] = useState([])
 
 
     const [showModal, setShowModal] = useState(false);
@@ -110,10 +115,18 @@ export const MyContextProvider  = (props) =>{
    
   const toggleNavbar = () => setNavBarIsOpen(!navBarIsOpen);
 
+
+  //fetch all product from wishlist  collection
   const getWishlistData = async() =>{
     try{
+      if(!userMail){
+         //user not logiin
+        setWishlistData([]);
+        return false;
+      }
       const wishlistColRef = collection(db,"wishlist");
-      const querySnapshot = await getDocs(wishlistColRef);
+      const q  = query(wishlistColRef,where("email","==",userMail))
+      const querySnapshot = await getDocs(q);
       const itemsArray = querySnapshot.docs.map((doc) => (
         {
         id:doc.id,
@@ -130,11 +143,237 @@ export const MyContextProvider  = (props) =>{
 
     }
   }
+  //fetch from cart collection  by current user
+  const getCartProducts = async()=>{
+  try{
+    if(!userMail){
+      //user not logiin
+      setCartListData([]);
+      return false;
+    }
+
+    const cartCollectionRef = collection(db,"cart");
+    const q = query(cartCollectionRef,where("email","==",userMail));
+    const querySnapshot = await getDocs(q);
+
+    const itemsArray = querySnapshot.docs.map((doc) => (
+      {
+      id:doc.id,
+      ...doc.data()  
+      }
+      
+    ));
+
+    setCartListData(itemsArray);
+    
+    console.log('List of product cart')
+    console.log(itemsArray);
+
+  }catch(error){
+    console.log(`Get all current user cart products request:${error.message}`);
+  }
+
+  }
+
+     const fetchAllProducts = async() =>{
+          try{
+          const querySnaphot = await getDocs(collection(db,"products"));
+          const itemsArray = querySnaphot.docs.map((doc) => (
+              {
+                  id:doc.id,
+                  ...doc.data()
+              }
+          ));
+          const getCoverImage = (productImages) => {
+              if (!productImages || productImages.length === 0) {
+                return null; // Return null if productImages is empty or undefined
+              }
+            
+              // Try to find an image with coverImg === "true"
+              const coverImage = productImages.find((img) => img.coverImg === "true");
+            
+              // Return the coverImage if found, otherwise return the first image
+              return coverImage || productImages[0];
+            };
+  
+           // Map each product and include its selected cover image
+      const updatedItems = itemsArray.map((item) => ({
+          ...item,
+          coverImage: getCoverImage(item.product_images),
+        }));
+  
+        setListAllProducts(updatedItems);
+        console.log(`List of all products:`);
+        console.log(updatedItems)
+  
+  
+          }catch(error){
+              errorFeedback(`Something went wrong:${error.message}`);
+              console.log(error.message);
+  
+          }
+  
+      }
+
+      const checkIfTokenExpired = async() =>{
+        try{
+
+          if(!userMail){
+            return false;
+          }
+
+          const userCollectionRef = collection(db,"users");
+          const q = query(userCollectionRef,where("token","==",userToken),where("email","==",userMail));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            //no matching token so force logout on user
+            console.log("No matching token in Firestore");
+            logOut();
+            
+          }else{
+            console.log("matching token in Firestore");
+          } 
+
+        }catch(error){
+          console.log(`Check token expired:${error.message}`);
+
+        }
+      }
+
+        //this function toggles between add and removing wishlist from server
+    const updateWishlistByAction = async(prod_id) =>{
+      try{
+       
+      if(!userMail){
+          errorFeedback('Login to save an item')
+          return false;
+      }    
+
+       const wishlistCollRef =  collection(db,"wishlist");
+       const q = query(
+          wishlistCollRef,
+          where("product_id","==",prod_id),
+          where("email","==",userMail)
+       )
+       const querySnapshot = await getDocs(q);
+
+       if (querySnapshot.empty) {
+          //does not exist
+          console.log("No matching documents found. Creating a new document...");
+
+          //AUTO generate doc id
+          const newDocRef = doc(wishlistCollRef);
+
+          await setDoc(newDocRef,{
+          "product_id":prod_id,
+          "email":userMail
+          });
+
+
+       }else{
+          //exist delete matching field
+          const updatePromises = querySnapshot.docs.map((docSnapshot) => {
+              const docRef = doc(db, "wishlist", docSnapshot.id);
+              return deleteDoc(docRef); // Delete the document
+            });
+      
+            await Promise.all(updatePromises);
+            console.log("Successfully removed specified field from matching documents.");
+       }
+
+       //refetch wishlist data
+       getWishlistData();
+       //update ui
+       //updateWishlistStatusUI();
+      
+
+      
+
+      }catch(error){
+          console.error("Error removing field from documents:", error.message);
+
+
+      }
+  }
+
+     //return product array wishlisted by user
+      const filterProductsByWishlist = () => {
+
+          // Extract the product_id values from wishlistData
+          const wishlistProductIds = wishlistData.map((item) => item.product_id);
+        
+          // Filter productData to include only products with matching product_id
+          const userWishlist = listAllProducts.filter((product) => wishlistProductIds.includes(product.id));
+        
+          console.log('List of products array wishlisted by user')
+          console.log(userWishlist);
+
+          setCurrentUserWishlist(userWishlist);
+  
+          //setListData(userWishlist);
+  
+  
+      
+      };
+
+
+         //add or remove product from cart
+         const removeProductCart = async(prod_id) =>{
+          try{
+            if(!userMail){
+              //not login
+              return false;
+           }   
+
+           const cartCollRef =  collection(db,"cart");
+           const q = query(
+            cartCollRef,
+              where("product_id","==",prod_id),
+              where("email","==",userMail)
+           )
+           const querySnapshot = await getDocs(q);
+    
+           if (!querySnapshot.empty) {
+                //exist delete matching field remove product from cart
+                const updatePromises = querySnapshot.docs.map((docSnapshot) => {
+                  const docRef = doc(db, "cart", docSnapshot.id);
+                  return deleteDoc(docRef); // Delete the document
+                });
+          
+                await Promise.all(updatePromises);
+                console.log("Successfully removed specified field from matching documents.");
+
+    
+           }else{
+            //does not exist
+            console.log("No matching documents found. Creating a new document...");
+    
+           }
+    
+           //refech cartdata
+           getCartProducts();
+  
+      
+          }catch(error){
+              errorFeedback(`Toggle product on cart request:${error.message}`);
+          }
+      
+         }
+  
+      useEffect(()=>{
+      filterProductsByWishlist();
+
+      },[wishlistData,listAllProducts])
+
+
 
     useEffect(()=>{
      fetchUserTokenFromDevice();
      getWishlistData();
-    },[])
+     getCartProducts();
+    checkIfTokenExpired();
+    },[userMail])
 
 
 
@@ -155,6 +394,10 @@ export const MyContextProvider  = (props) =>{
         setProdCategory,
         capitalizeFirstLetter,
         wishlistData,getWishlistData,
+        cartListData,setCartListData,removeProductCart,getCartProducts,
+        listAllProducts,fetchAllProducts,
+        updateWishlistByAction,
+        currentUserWishlist
       
        
         

@@ -9,19 +9,19 @@ import { db } from '../firebase/firebaseConfig';
 const ProductCard = ({title,id,price,img_url,isLiked,width,height,mode}) => {
 
     const [productLiked,setIsProductLiked] = useState(false);
-    const {userMail,errorFeedback,wishlistData,getWishlistData, } = useContext(MyContext);
+    const {userMail,errorFeedback,wishlistData,getWishlistData,updateWishlistByAction } = useContext(MyContext);
 
     const toggleLikedBtn = () =>{
         setIsProductLiked(!productLiked);
 
-        updateWishlistByAction();
+        updateWishlistByAction(id);
 
     }
 
     
     useEffect(()=>{
         updateWishlistStatusUI();
-        console.log('Product card renders')
+        // console.log('Product card renders')
     },[wishlistData])
 
 
@@ -34,21 +34,18 @@ const ProductCard = ({title,id,price,img_url,isLiked,width,height,mode}) => {
           
             return false;
         }
-        //empy wishlist data
-        if(wishlistData.length == 0){
+      
 
-            return false;
-
-        }
-
-       const wishlistExist = wishlistData.some(item => item.product_id == id && item.email == userMail);
+       const wishlistExist = wishlistData.some(item => item.product_id == id);
        if(wishlistExist){
         
         setIsProductLiked(true)
        }else{
         setIsProductLiked(false)
        }
-        console.log(`Liked status for${id} is ${wishlistExist}`)
+
+       console.log("Updating UI Product card wishlist..")
+        // console.log(`Liked status for${id} is ${wishlistExist}`)
         }catch(error){
             console.error("Error removing field from documents:", error.message);
         }
@@ -57,63 +54,9 @@ const ProductCard = ({title,id,price,img_url,isLiked,width,height,mode}) => {
 
 
 
-    //update doc based on two conditions and when it does not exist
+    //update wishlist doc based on two conditions and when it does not exist
     //when user clicks like button
-    //this function toggles between add and removing wishlist from server
-    const updateWishlistByAction = async() =>{
-        try{
-         
-        if(!userMail){
-            errorFeedback('Login to save an item')
-            return false;
-        }    
-
-         const wishlistCollRef =  collection(db,"wishlist");
-         const q = query(
-            wishlistCollRef,
-            where("product_id","==",id),
-            where("email","==",userMail)
-         )
-         const querySnapshot = await getDocs(q);
-
-         if (querySnapshot.empty) {
-            //does not exist
-            console.log("No matching documents found. Creating a new document...");
-
-            //AUTO generate doc id
-            const newDocRef = doc(wishlistCollRef);
-
-            await setDoc(newDocRef,{
-            "product_id":id,
-            "email":userMail
-            });
-
-
-         }else{
-            //exist delete matching field
-            const updatePromises = querySnapshot.docs.map((docSnapshot) => {
-                const docRef = doc(db, "wishlist", docSnapshot.id);
-                return deleteDoc(docRef); // Delete the document
-              });
-        
-              await Promise.all(updatePromises);
-              console.log("Successfully removed specified field from matching documents.");
-         }
-
-         //refetch wishlist data
-         getWishlistData();
-         //update ui
-         //updateWishlistStatusUI();
-        
-
-        
-
-        }catch(error){
-            console.error("Error removing field from documents:", error.message);
-
-
-        }
-    }
+  
 
     
     return (

@@ -15,8 +15,8 @@ import { getDocs,collection, query, where } from 'firebase/firestore';
 import MyContext from '../context/context';
 
 const Home = () => {
-    const [listAllProducts,setListAllProducts] =useState([]);
-    const {errorFeedback} = useContext(MyContext);
+   
+    const {errorFeedback,listAllProducts,fetchAllProducts} = useContext(MyContext);
 
     const [necklaceList,setNecklaceList] = useState([]);
     const [bagsList,setBagList] = useState([]);
@@ -24,68 +24,6 @@ const Home = () => {
     const [ringList,setRingList] = useState([]);
 
 
-
-    const fetchAllProducts = async() =>{
-        try{
-        const querySnaphot = await getDocs(collection(db,"products"));
-        const itemsArray = querySnaphot.docs.map((doc) => (
-            {
-                id:doc.id,
-                ...doc.data()
-            }
-        ));
-        const getCoverImage = (productImages) => {
-            if (!productImages || productImages.length === 0) {
-              return null; // Return null if productImages is empty or undefined
-            }
-          
-            // Try to find an image with coverImg === "true"
-            const coverImage = productImages.find((img) => img.coverImg === "true");
-          
-            // Return the coverImage if found, otherwise return the first image
-            return coverImage || productImages[0];
-          };
-
-         // Map each product and include its selected cover image
-    const updatedItems = itemsArray.map((item) => ({
-        ...item,
-        coverImage: getCoverImage(item.product_images),
-      }));
-
-      setListAllProducts(updatedItems);
-
-
-        }catch(error){
-            errorFeedback(`Something went wrong:${error.message}`);
-            console.log(error.message);
-
-        }
-
-    }
-    // const fetchProductsByCategory = async(category) =>{
-    //     try{
-    //         const productCollectionRef = collection(db,"products");
-
-    //         const q = query(productCollectionRef,where("product_color","==", category));
-
-    //         const querySnaphot = await getDocs(q);
-
-    //        const itemsArray = querySnaphot.docs((item) => ({
-    //           id:item.id,
-    //         ...item.data() 
-    //        }
-    //        ));
-
-    //        return itemsArray;
-
-
-
-    //     }catch(error){
-    //         errorFeedback(`Something went wrong:${error.message}`);
-    //         console.log(error.message);  
-    //     }
-
-    // }
 
 const filterProductsByCategory = (category) =>{
     try{

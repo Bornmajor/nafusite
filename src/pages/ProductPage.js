@@ -11,27 +11,68 @@ import product_1 from '../assets/images/IMG_20241116_102001.jpg'
 import product_2 from '../assets/images/IMG_20241116_114701.jpg'
 import product_3 from '../assets/images/IMG_20241116_115256.jpg'
 import product_4 from '../assets/images/IMG_20241116_115343.jpg'
-import { collection, getDoc,doc,query,where,getDocs } from 'firebase/firestore';
+import { collection, getDoc,doc,query,where,getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import MyContext from '../context/context';
 import { useLocation } from 'react-router-dom';
+import { FaCheck } from "react-icons/fa6";
+import { Modal } from 'react-bootstrap';
 
 const ProductPage = () => {
 const params = useParams();
 
 const [productLiked,setIsProductLiked] = useState(false);
-const {errorFeedback,capitalizeFirstLetter}= useContext(MyContext);
+const [isCart,setIsCart] = useState(false);
+const {errorFeedback,capitalizeFirstLetter,updateWishlistByAction,userMail,
+    wishlistData,cartListData,removeProductCart,getCartProducts,
+    successFeeback,contextHolder
+
+}= useContext(MyContext);
 const [product,setProduct] = useState(null);
 const [similarProductsList,setSimilarProductsList] = useState([])
 const location = useLocation();
+const [show, setShow] = useState(false);
+const [quality,setQuantity] = useState(1);
+const [color,setColor] = useState('');
+
+const toggleModal = ()=> {
+    setShow(!show);
+
+}
+
+const incrementQuantity = () =>{
+    if(quality > 8){
+     return false
+    }else{
+        setQuantity(quality + 1)
+    }
+}
+
+const decrementQuantity = () =>{
+    if(quality < 1 ){
+     return false
+    }else{
+        setQuantity(quality - 1)
+    }
+}
+
+
 
 //scroll up when user access this view
 useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top of the page
+    // console.log(`Scroll page ${location.pathname} up`)
   }, [location.pathname]); // Trigger on route change
 
 const toggleLikedBtn = () =>{
     setIsProductLiked(!productLiked)
+    updateWishlistByAction(params.prodId)
+
+}
+
+const toggleCartBtn = () =>{
+    setIsCart(!isCart);
+   // toggleProductCart();
 }
 
 // Function to get the cover image from an array of images
@@ -127,16 +168,108 @@ useEffect(()=>{
 getProductById(params.prodId);
 },[])
 
-useEffect(()=>{
-// fetchSimilarProducts(product.product_category) 
-},[product]);
+
+  //updates wishlist button when page loads
+  const updateWishlistStatusUI = async() =>{
+    try{
+     //not login 
+    if(!userMail){
+      
+        return false;
+    }
+  
+
+   const wishlistExist = wishlistData.some(item => item.product_id == params.prodId && item.email == userMail);
+   if(wishlistExist){
+    
+    setIsProductLiked(true)
+   }else{
+    setIsProductLiked(false)
+   }
+
+   console.log("Updating UI Product card wishlist..")
+    // console.log(`Liked status for${id} is ${wishlistExist}`)
+    }catch(error){
+        console.error("Updating wishlist ui:", error.message);
+    }
+
+}
+
+   const updateCartProductPageUI = () =>{
+    if(!userMail){
+        //user not login
+
+        return false;
+    }
+
+    
+
+    //check if user has product in their cart
+     const productExistOnCart = cartListData.some(item => item.product_id == params.prodId && item.email == userMail);
+     if(productExistOnCart){
+        setIsCart(true)
+     }else{
+        setIsCart(false)
+     }
+
+   }
+
+
+   useEffect(()=>{
+    //uppdates ui on product page for cart btn if changes on cartListData
+    updateCartProductPageUI()
+
+   },[cartListData]);
+
+   useEffect(()=>{
+        updateWishlistStatusUI();
+        // console.log('Product card renders')
+    },[wishlistData]);
+
+    //submit form for adding product to cart
+    const submitCartForm = async(e) =>{
+        try{
+         e.preventDefault(); 
+
+         toggleCartBtn();   
+         toggleModal();
+         
+         //check user has login
+         if(!userMail){
+            return false;
+         }
+         
+         const cartCollectionRef = collection(db,"cart");
+         const newDocRef = doc(cartCollectionRef);
+
+         await setDoc(newDocRef,{
+         "product_id":params.prodId,
+         quality,"product_color":color,email:userMail,
+         
+         });
+
+        successFeeback('Product added to cart');
+         getCartProducts();
+
+
+        }catch(error){
+            console.log(`Add product cart error:${error.message}`)
+        }
+       
+
+
+
+
+    }
+    
+    
 
 
 return (
     <>
     {product !== null ?
     <>
-    
+    {contextHolder}
     <div className='d-flex flex-column align-items-center justify-content-center' >
 <div className='product-page-container'>
 
@@ -201,56 +334,36 @@ Home
 {product.product_desc}   
 </p>
 
-<form className='product-form'>
-
-{/* <div className='variants'>
-
-<input type="radio" class="btn-check" name="color" id="option1" autocomplete="off" checked />
-<label class="btn btn-outline-secondary" for="option1">Gold</label>
-
-<input type="radio" class="btn-check" name="color" id="option2" autocomplete="off" />
-<label class="btn btn-outline-secondary" for="option2">Silver</label>
+<div className='product-form'>
 
 
-</div> */}
-
-{/* <div className='variants'>
-
-<input type="radio" class="btn-check" name="size" id="L" autocomplete="off" checked />
-<label class="btn btn-outline-secondary" for="L">L</label>
-
-<input type="radio" class="btn-check" name="size" id="XL" autocomplete="off" />
-<label class="btn btn-outline-secondary" for="XL">XL</label>
-
-<input type="radio" class="btn-check" name="size" id="XXXL" autocomplete="off" />
-<label class="btn btn-outline-secondary" for="XXXL">XXXL</label>
-
-
-</div> */}
-
-{/* <div className='quantity-container my-2'>
-
-<div className='quantity'>
-
-<button className='btn btn-secondary adjust-quantity-btn'>
-<FaMinus size="14px" />
-</button>
-
-<input type="number" className='input-quantity' value="1"/> 
-
-<button className='btn btn-secondary adjust-quantity-btn'>
-<FaPlus size="14px"  />
-</button>
-
-
-</div>
-
-</div> */}
 
 <div className='action-btn-container '>
 
-<button className='btn btn-primary'>Add to cart</button>
-<button className='btn btn-outline-primary mx-2'>Buy Now</button>
+{!isCart ?
+
+userMail ?
+
+<button className='btn btn-primary' onClick={toggleModal}>Add to cart</button>
+:
+<button className='btn btn-primary' onClick={() => errorFeedback('Login to add product to your cart')}>Add to cart</button>
+:
+<button className='btn btn-primary' onClick={() => 
+    {
+     toggleCartBtn();
+    removeProductCart(params.prodId) }    
+    }  >
+    Remove from cart</button>
+}
+
+
+{/* <button className='btn btn-primary' onClick={()=> toggleCartBtn()}><FaCheck /> Added to cart</button> */}
+
+
+
+
+
+{/* <button className='btn btn-outline-primary mx-2'>Buy Now</button> */}
 
 <div className='wishlist-content'  onClick={toggleLikedBtn}>
 {!productLiked ? 
@@ -262,7 +375,8 @@ Home
 </div>
 
 </div>
-</form>
+
+</div>
 
 
 </div>
@@ -310,6 +424,87 @@ price={item.product_price}
 
 }
 
+
+<Modal show={show} onHide={toggleModal}>
+<Modal.Header style={{border:'none'}} closeButton>
+<Modal.Title>Select variants</Modal.Title>
+</Modal.Header>
+<Modal.Body>
+
+<form onSubmit={submitCartForm}>
+
+<div className='container-group-form-variants mb-4'>
+<div className='variants'>
+
+{
+product && (
+product.product_color.length !== 0 &&
+
+product.product_color.map((item) => (
+<>
+<input type="radio"
+onChange={(e)=> setColor(e.target.value)}
+ className="btn-check"
+ name="product_color" value={item} id={item} autocomplete="off" required/>
+<label
+  className={`btn ${
+    item == 'gold'
+      ? 'btn-outline-warning'
+      : item == 'black'
+      ? 'btn-outline-secondary'
+      : item == 'white'
+      ? 'btn-outline-secondary'
+      : '' // Default case if no condition matches
+  }  mx-1`}
+  htmlFor={item}
+>
+  {capitalizeFirstLetter(item)}
+</label>
+</>    
+))    
+)    
+
+
+
+
+}       
+
+
+
+</div>    
+
+<div className='quantity-container my-2'>
+
+<div className='quantity'>
+
+<button className='btn btn-primary adjust-quantity-btn' onClick={decrementQuantity} type='button'>
+<FaMinus size="12px" />
+</button>
+
+<input type="number" className='input-quantity' value={quality} required/> 
+
+<button className='btn btn-primary adjust-quantity-btn'  onClick={incrementQuantity} type='button'>
+<FaPlus size="12px"  />
+</button>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<button className="btn btn-primary my-4 w-100" type='submit'>Add to cart</button>
+
+</form> 
+
+
+
+
+</Modal.Body>
+
+</Modal>
 
     </>
 

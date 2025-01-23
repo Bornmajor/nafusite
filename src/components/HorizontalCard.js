@@ -1,47 +1,56 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { IoMdCloseCircle } from "react-icons/io";
+import { Link } from 'react-router-dom';
+import MyContext from '../context/context';
 
 const HorizontalCard = ({title,id,imgUrl,price,mode}) => {
+  const {updateWishlistByAction} = useContext(MyContext)
 
 return (
-<div className='horizontal-card'>
+<div className='horizontal-card' key={id}>
 
+<a href={`/product/${id}`}>
 <img  className='prod-img' src={imgUrl} alt=''/>
+</a>
 
-<div className='product-details-content' style={{display:mode == 'wishlist' ? 'flex ' : '',gap:'20px'}}>
 
-<p className='title'>{title}</p>
+
+
+<a href={`/product/${id}`} className='product-details-content'>
+<p className='title text-truncate bold'>{title}</p>
 
 <p className='pricing'>Ksh {price}</p>
-
-</div>
 
 {mode == 'cart' &&
 
 <div className='quantity'>
 
-<div className='set_quantity'>
-
-<select class="form-select" aria-label="Default select example">
-  <option selected value="1"> 1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-</select>
+<p>1</p> <p>Red </p>
 
 </div>
 
-<div>
-<p>Color: Red </p>
-<p>Size: XL </p>    
-</div>
+}
+</a>
 
 
-</div>
+
+
+
+{mode == 'cart' ?
+//if cart mode
+<Link >
+<IoMdCloseCircle fontSize={30}/>
+</Link>
+:
+//if wishist mode
+<Link onClick={() => updateWishlistByAction(id)}>
+<IoMdCloseCircle fontSize={30}/>
+</Link>
+
 }
 
 
-<IoMdCloseCircle fontSize={25}/>
+
 
 
 </div>

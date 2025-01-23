@@ -17,7 +17,7 @@ import LoginLetterAvatar from './LoginLetterAvatar';
 
 
 const TopBar = () => {
-const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail,logOut } = useContext(MyContext);
+const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail,logOut,wishlistData } = useContext(MyContext);
 const location = useLocation();
 
 // Update active navigation when you are on the current page
@@ -109,7 +109,7 @@ onHide={toggleNavbar}
 <Nav.Link to="/category/earrings" className={getNavLinkClass('/category/earrings')} as={Link}>Earrings</Nav.Link>
 <Nav.Link to="/category/bags" className={getNavLinkClass('/category/bags')} as={Link}>Hand bags</Nav.Link>
 
-<Nav.Link to="/#pricing-section"
+<Nav.Link to="/#none"
 className={`${getNavLinkClass('/staff')} link-sm-device`}  
 onClick={() => {
 setModalType('wishlist')
@@ -117,7 +117,7 @@ toggleModal()
 }} as={Link}> 
 <FaHeart  color='black'  /> Wishlist (1)
 </Nav.Link>
-<Nav.Link to="/#pricing-section"
+<Nav.Link to="/#none"
  className={`${getNavLinkClass('/staff')} link-sm-device`} 
  onClick={() => {
   setModalType('cart')
@@ -178,7 +178,7 @@ toggleModal()
 >
 <FaHeart size={25} color='black'  />
 <span className="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-2
+{wishlistData.length}
 <span class="visually-hidden">unread messages</span>
 </span>
 </a>

@@ -2,7 +2,7 @@ import React,{useContext, useState,useEffect} from 'react';
 import { MdAttachEmail } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MyContext from '../context/context';
 import {Input} from 'antd';
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
@@ -17,6 +17,7 @@ const AccountModalContent = () => {
    const {errorFeedback,contextHolder,successFeedback,fetchUserTokenFromDevice,toggleModal} = useContext(MyContext);
    const [authType,setAuthType] = useState('login');
    const [isOnline, setIsOnline] = useState(navigator.onLine);
+   const navigate = useNavigate();
 
 
 
@@ -133,6 +134,10 @@ const generateToken = () => {
 
          //close modal
          toggleModal();
+
+         setTimeout(() => {
+          navigate('/')
+         }, 1500);
        }
 
 
@@ -173,6 +178,7 @@ const generateToken = () => {
          setIsFormLoading(false);
          //close modal
          toggleModal();
+         
          } else {
            // Incorrect password
            errorFeedback("Authentication failed!Verify your email address or password");

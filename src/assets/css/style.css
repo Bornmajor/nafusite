@@ -49,14 +49,13 @@
     border-radius: 20px;
     font-weight: 600;
   }
-
+  .btn-outline-secondary,.btn-outline-warning{
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
   
-  .btn-outline-primary:hover{
-    background-color: #f29632 !important;
-    color: white;
-    border-color: #f29632;
-
   }
+
 
 
 
@@ -332,6 +331,7 @@ p{
   .product-container .variants{
   margin: 20px 0;
   }
+  .product-form .variants
   .product-container .variants .btn{
     margin-right: 10px;
   }
@@ -347,7 +347,8 @@ p{
   }
 
   .quantity-container .quantity .adjust-quantity-btn{
-   
+    font-size: 12px;
+    /* padding: 8px 12px; */
     border-radius: 3px;
   }
 
@@ -361,6 +362,7 @@ p{
     align-items: center;
 
   }
+
   .wishlist-icon{
     cursor: pointer;
   }
@@ -381,25 +383,47 @@ p{
     margin: 0; 
   }
 
+  .container-group-form-variants{
+    display: flex;
+   gap:30px;
+
+  }
+
   /*horizontal card*/
   .horizontal-card{
     display: flex;
-    gap:30px;
+    gap:20px;
     align-items: center;
-    background-color: #efaf6a27;
-    padding: 20px;
+    background-color: #fc901c67;
+    padding: 15px 30px;
     border-radius: 4px;
     margin: 20px 0;
     justify-content: space-between;
   }
+  .horizontal-card a{
+    text-decoration: none;
+    color: black;
+  }
 
+  
   .horizontal-card .prod-img{
     width: 70px;
+    height: 70px;
+    object-fit: cover;
+  }
+  .horizontal-card .title{
+    max-width: 200px;
+  }
+  .horizontal-card .product-details-content{
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   /* flex-direction: column; */
   }
 
   .horizontal-card .quantity{
     display: flex;
-    gap:20px;
+
   }
 
   .horizontal-card .quantity .form-select{
@@ -599,11 +623,20 @@ display: none;
 
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 550px) {
 .category-card .category-img{
   max-width: 45px;
   width: 100%;
 }  
+.horizontal-card .product-details-content{
+  flex-direction: column;
+  gap: 10px;
+  width: 30%;
+ }
+ .horizontal-card .title{
+  max-width: 130px;
+}
+
 }
 
 @media screen and (max-width: 810px) {
