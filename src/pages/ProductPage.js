@@ -463,7 +463,7 @@ onChange={(e)=> setColor(e.target.value)}
       : item == 'white'
       ? 'btn-outline-secondary'
       : '' // Default case if no condition matches
-  }  mx-1`}
+  }  `}
   htmlFor={item}
 >
   {capitalizeFirstLetter(item)}

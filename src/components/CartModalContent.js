@@ -42,6 +42,7 @@ const CartModalContent = () => {
 
       await Promise.all(updatePromises);
       console.log("Successfully cleared users' cart");
+      setOpen(false)
            
       //reload cart 
       getCartProducts();

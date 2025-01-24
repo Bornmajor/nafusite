@@ -391,6 +391,9 @@ p{
    gap:30px;
 
   }
+  .container-group-form-variants .variants label{
+    margin-right: 8px;
+  }
 
   /*horizontal card*/
   .horizontal-card{
@@ -646,7 +649,17 @@ p{
   }
 
 
+
 /*media query*/
+@media screen and (max-width:430px) {
+  .container-group-form-variants{
+   flex-direction: column;
+
+  }
+  
+}
+
+
 @media screen and (max-width: 640px) {
 
 .footer{

@@ -247,11 +247,12 @@ export const MyContextProvider  = (props) =>{
         //this function toggles between add and removing wishlist from server
     const updateWishlistByAction = async(prod_id) =>{
       try{
-        warningFeedback('Removing product from wishlist');
+       
       if(!userMail){
           errorFeedback('Login to save an item')
           return false;
       }    
+       warningFeedback('Removing product from wishlist');
 
        const wishlistCollRef =  collection(db,"wishlist");
        const q = query(
@@ -348,11 +349,12 @@ export const MyContextProvider  = (props) =>{
          //add or remove product from cart
          const removeProductCart = async(prod_id) =>{
           try{
-            warningFeedback('Removing product from cart');
+           
             if(!userMail){
               //not login
               return false;
            }   
+          warningFeedback('Removing product from cart');
 
            const cartCollRef =  collection(db,"cart");
            const q = query(
