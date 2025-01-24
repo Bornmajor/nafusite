@@ -25,7 +25,7 @@ const [productLiked,setIsProductLiked] = useState(false);
 const [isCart,setIsCart] = useState(false);
 const {errorFeedback,capitalizeFirstLetter,updateWishlistByAction,userMail,
     wishlistData,cartListData,removeProductCart,getCartProducts,
-    successFeeback,contextHolder
+    successFeedback,contextHolder
 
 }= useContext(MyContext);
 const [product,setProduct] = useState(null);
@@ -34,6 +34,8 @@ const location = useLocation();
 const [show, setShow] = useState(false);
 const [quality,setQuantity] = useState(1);
 const [color,setColor] = useState('');
+const [errorMessage,setErrorMessage] = useState('');
+
 
 const toggleModal = ()=> {
     setShow(!show);
@@ -98,6 +100,8 @@ const docSnapshot  =  await getDoc(docRef);
 
 if (!docSnapshot.exists()) {
     console.log(`No product found with the ID: ${id}`);
+    setErrorMessage('Product does not exist!')
+    return false;
 
     }
 
@@ -242,13 +246,17 @@ getProductById(params.prodId);
          const cartCollectionRef = collection(db,"cart");
          const newDocRef = doc(cartCollectionRef);
 
+         
+
          await setDoc(newDocRef,{
          "product_id":params.prodId,
-         quality,"product_color":color,email:userMail,
+         quality,"product_color":color,
+         email:userMail,
+         "product_price":product.product_price
          
          });
 
-        successFeeback('Product added to cart');
+         successFeedback('Product added to cart');
          getCartProducts();
 
 
@@ -417,7 +425,7 @@ price={item.product_price}
 
 :
 <div className='d-flex align-items-center justify-content-center inner-loader' >
-<div className='loader'></div>  <p className='bold mx-2'>Loading</p> 
+<div className='loader'></div>  <p className='bold mx-2'> {!errorMessage ? 'Loading': errorMessage }</p> 
    
 </div>
 
@@ -437,7 +445,7 @@ price={item.product_price}
 <div className='variants'>
 
 {
-product && (
+product !== null  && (
 product.product_color.length !== 0 &&
 
 product.product_color.map((item) => (

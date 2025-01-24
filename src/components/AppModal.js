@@ -6,7 +6,7 @@ import CartModalContent from './CartModalContent';
 import AccountModalContent from './AccountModalContent';
 
 const AppModal = () => {
-  const { showModal, toggleModal,modalType, } = useContext(MyContext);
+  const { showModal, toggleModal,modalType,isModalLarge,setIsModalLarge } = useContext(MyContext);
   const [title,setTitle] = useState('');
 
 
@@ -48,7 +48,11 @@ const AppModal = () => {
 
   return (
     <>
-      <Modal  show={showModal} onHide={toggleModal}>
+      <Modal
+        show={showModal}
+       onHide={toggleModal}
+      size={isModalLarge}
+       >
         <Modal.Header style={{border:'none'}} closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

@@ -26,6 +26,9 @@
   .bold{
     font-weight: 600;
   }
+  .extra-bold{
+    font-weight: 800;
+  }
   .btn-primary{
   
   background-color: #f29632 !important;
@@ -392,13 +395,15 @@ p{
   /*horizontal card*/
   .horizontal-card{
     display: flex;
-    gap:20px;
+    gap:10px;
     align-items: center;
-    background-color: #fc901c67;
+    /* background-color: #f29532a2; */
+    background-color: #f1f1f1;
     padding: 15px 30px;
     border-radius: 4px;
-    margin: 20px 0;
+    margin: 0 0 20px 0;
     justify-content: space-between;
+    
   }
   .horizontal-card a{
     text-decoration: none;
@@ -412,7 +417,7 @@ p{
     object-fit: cover;
   }
   .horizontal-card .title{
-    max-width: 200px;
+    max-width: 150px;
   }
   .horizontal-card .product-details-content{
    display: flex;
@@ -423,6 +428,7 @@ p{
 
   .horizontal-card .quantity{
     display: flex;
+    flex-direction: column;
 
   }
 
@@ -476,7 +482,40 @@ p{
   .filter-menu-btn{
     display: none;
   }
+  .cart-modal-container{
+    display: flex;
+    gap:30px;
+    align-items: flex-start;
+   
+  }
+  .cart-modal-container .cart-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+    font-size: 18px;
+    border-radius: 5px;
+    padding:  12px 18px;
+    height: 200px;
+    width: 100%;
+    max-width: 250px;
 
+    
+  }
+  .cart-modal-container .cart-btn{
+    font-size: 14px;
+  }
+  .cart-modal-container .cart-products-container{
+    width: 100%;
+
+  }
+  .cart-products-container .main-header,.cart-info .main-header{
+    font-size: 20px;
+    
+  }
+.cart-products-container .sm-cart-info{
+  display: none;
+}
   /*account form*/
   .form-check-input:checked{
   background-color: #f29632;
@@ -630,7 +669,7 @@ display: none;
 }  
 .horizontal-card .product-details-content{
   flex-direction: column;
-  gap: 10px;
+  
   width: 30%;
  }
  .horizontal-card .title{
@@ -661,6 +700,17 @@ display: none;
       visibility: hidden;
     }
     .link-sm-device{
+      display: block;
+    }
+   .cart-modal-container{
+     flex-direction: column;
+     
+    }
+    .cart-modal-container .cart-info{
+      max-width: 100%;
+      display: none;
+    }
+    .cart-products-container .sm-cart-info{
       display: block;
     }
 }

@@ -7,12 +7,13 @@ const WishlistModalContent = () => {
 
  
 
-    const {currentUserWishlist} = useContext(MyContext);
+    const {currentUserWishlist,contextHolder} = useContext(MyContext);
 
 
 
     return (
         <div className=''>
+            {contextHolder}
 
             {
                 currentUserWishlist.length !== 0 ?

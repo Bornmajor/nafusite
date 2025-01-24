@@ -14,6 +14,8 @@ export const MyContextProvider  = (props) =>{
     const [isAppLoading,setIsAppLoading] = useState(true)
     const [modeTheme,setModeTheme] = useState('light');
     const [modalType,setModalType]= useState('');
+    const [isModalLarge,setIsModalLarge] = useState('')
+
     const [userToken,setUserToken] = useState('');
     const [userMail,setUserMail] = useState('');
 
@@ -21,6 +23,7 @@ export const MyContextProvider  = (props) =>{
     const [cartListData,setCartListData] = useState([]);
      const [listAllProducts,setListAllProducts] =useState([]);
      const [currentUserWishlist,setCurrentUserWishlist] = useState([])
+     const  [cartProductsArray,setCartProductsArray] = useState([]);
 
 
     const [showModal, setShowModal] = useState(false);
@@ -166,7 +169,7 @@ export const MyContextProvider  = (props) =>{
 
     setCartListData(itemsArray);
     
-    console.log('List of product cart')
+    console.log('List cart data by user:')
     console.log(itemsArray);
 
   }catch(error){
@@ -244,7 +247,7 @@ export const MyContextProvider  = (props) =>{
         //this function toggles between add and removing wishlist from server
     const updateWishlistByAction = async(prod_id) =>{
       try{
-       
+        warningFeedback('Removing product from wishlist');
       if(!userMail){
           errorFeedback('Login to save an item')
           return false;
@@ -292,6 +295,7 @@ export const MyContextProvider  = (props) =>{
 
       }catch(error){
           console.error("Error removing field from documents:", error.message);
+          errorFeedback('Remove request failed');
 
 
       }
@@ -302,25 +306,49 @@ export const MyContextProvider  = (props) =>{
 
           // Extract the product_id values from wishlistData
           const wishlistProductIds = wishlistData.map((item) => item.product_id);
-        
-          // Filter productData to include only products with matching product_id
+          //console.log(wishlistProductIds);
+
+                  // Filter productData to include only products with matching product_id
           const userWishlist = listAllProducts.filter((product) => wishlistProductIds.includes(product.id));
-        
+          
           console.log('List of products array wishlisted by user')
           console.log(userWishlist);
 
-          setCurrentUserWishlist(userWishlist);
+         setCurrentUserWishlist(userWishlist);
   
-          //setListData(userWishlist);
-  
-  
-      
+   
+
+          
       };
+
+      //return product array added to cart by user inject quantity and color from cart to final array
+      const filterProductsByUserCart = () =>{
+        
+        const mergedData = cartListData.map(cartItem => {
+          const product = listAllProducts.find(product => product.id === cartItem.product_id);
+          if (product) {
+            return {
+              ...product,
+              product_color: cartItem.product_color,
+              quantity: cartItem.quality
+            };
+          }
+          return null; // Handle cases where product is not found
+        }).filter(item => item !== null); // Remove nulls for unmatched products
+    
+
+    
+         
+        console.log('List of products array added to cart by user') 
+        console.log(mergedData)
+        setCartProductsArray(mergedData);  
+      }
 
 
          //add or remove product from cart
          const removeProductCart = async(prod_id) =>{
           try{
+            warningFeedback('Removing product from cart');
             if(!userMail){
               //not login
               return false;
@@ -343,7 +371,7 @@ export const MyContextProvider  = (props) =>{
           
                 await Promise.all(updatePromises);
                 console.log("Successfully removed specified field from matching documents.");
-
+            
     
            }else{
             //does not exist
@@ -356,15 +384,25 @@ export const MyContextProvider  = (props) =>{
   
       
           }catch(error){
-              errorFeedback(`Toggle product on cart request:${error.message}`);
+              console.log(`Removing product from cart request:${error.message}`);
+              errorFeedback('Remove request failed');
           }
       
          }
   
+       useEffect(()=>{
+        fetchAllProducts();
+       },[]);
+
       useEffect(()=>{
       filterProductsByWishlist();
 
       },[wishlistData,listAllProducts])
+
+      useEffect(() =>{
+       filterProductsByUserCart();  
+      },[cartListData,listAllProducts])
+      
 
 
 
@@ -386,7 +424,7 @@ export const MyContextProvider  = (props) =>{
         navBarIsOpen,setNavBarIsOpen,
         toggleNavbar,isAppLoading,setIsAppLoading,
         showModal, setShowModal,toggleModal,
-        modalType,setModalType,fetchUserTokenFromDevice,
+        modalType,setModalType,isModalLarge,setIsModalLarge,fetchUserTokenFromDevice,
         userToken,setUserToken,userMail,setUserMail,
         logOut,
         uploadProdTitle,uploadProdPrice,uploadProdDesc, uploadProdColor,uploadProdImages,uploadProdCategory,
@@ -394,16 +432,11 @@ export const MyContextProvider  = (props) =>{
         setProdCategory,
         capitalizeFirstLetter,
         wishlistData,getWishlistData,
-        cartListData,setCartListData,removeProductCart,getCartProducts,
+        cartListData,setCartListData,removeProductCart,getCartProducts,cartProductsArray,setCartProductsArray,
         listAllProducts,fetchAllProducts,
         updateWishlistByAction,
-        currentUserWishlist
-      
-       
-        
-       
-  
-       
+        currentUserWishlist,
+
       }}>
         {props.children}
       </MyContext.Provider>

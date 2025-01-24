@@ -17,7 +17,8 @@ import LoginLetterAvatar from './LoginLetterAvatar';
 
 
 const TopBar = () => {
-const { toggleNavbar, navBarIsOpen,toggleModal,setModalType,userMail,logOut,wishlistData } = useContext(MyContext);
+const { toggleNavbar, navBarIsOpen,toggleModal,
+  setModalType,userMail,logOut,wishlistData,cartListData,modalType,setIsModalLarge } = useContext(MyContext);
 const location = useLocation();
 
 // Update active navigation when you are on the current page
@@ -72,6 +73,16 @@ function usernameWithoutEmail(username) {
   }
 }
 
+
+//modify size of modal
+useEffect(()=>{
+if(modalType == 'cart'){
+  setIsModalLarge('lg');  
+}else{
+  setIsModalLarge('');  
+}
+},[modalType])
+
 return (
 <>
 <Navbar expand="lg" 
@@ -115,7 +126,8 @@ onClick={() => {
 setModalType('wishlist')
 toggleModal()  
 }} as={Link}> 
-<FaHeart  color='black'  /> Wishlist (1)
+<FaHeart  color='black'  /> Wishlist ({wishlistData.length})
+
 </Nav.Link>
 <Nav.Link to="/#none"
  className={`${getNavLinkClass('/staff')} link-sm-device`} 
@@ -124,7 +136,7 @@ toggleModal()
   toggleModal()  
   }}
  as={Link}>
-  <FaCartShopping color='black'/> Cart (1)
+  <FaCartShopping color='black'/> Cart ({cartListData.length})
  </Nav.Link>
 
 
@@ -172,6 +184,7 @@ as={Link}>
 <Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
 <a type="button" className="position-relative mx-2" 
 onClick={() => {
+  
 setModalType('wishlist')
 toggleModal()  
 }}
@@ -192,7 +205,7 @@ toggleModal()
 
 <FaCartShopping size={25} color='black'/>
 <span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-2
+{cartListData.length}
 <span class="visually-hidden">unread messages</span>
 </span>
 </a>

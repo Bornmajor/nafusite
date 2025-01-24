@@ -3,11 +3,11 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import MyContext from '../context/context';
 
-const HorizontalCard = ({title,id,imgUrl,price,mode}) => {
-  const {updateWishlistByAction} = useContext(MyContext)
+const HorizontalCard = ({title,id,imgUrl,price,mode,quantity,color}) => {
+  const {updateWishlistByAction,removeProductCart } = useContext(MyContext)
 
 return (
-<div className='horizontal-card' key={id}>
+<div className='horizontal-card'  key={id}>
 
 <a href={`/product/${id}`}>
 <img  className='prod-img' src={imgUrl} alt=''/>
@@ -17,15 +17,19 @@ return (
 
 
 <a href={`/product/${id}`} className='product-details-content'>
-<p className='title text-truncate bold'>{title}</p>
+<p className='title text-truncate '>{title}</p>
 
-<p className='pricing'>Ksh {price}</p>
+<p className='pricing bold'>Ksh {price}</p>
 
 {mode == 'cart' &&
 
 <div className='quantity'>
+  {color &&
+ <p> <span className='text-muted'>Color:</span> <span>{color}</span></p> 
+  }
 
-<p>1</p> <p>Red </p>
+<p> <span className='text-muted'>Quantity:</span> <span>{quantity}</span></p>
+{/* <p>1</p> <p></p> */}
 
 </div>
 
@@ -38,16 +42,18 @@ return (
 
 {mode == 'cart' ?
 //if cart mode
-<Link >
-<IoMdCloseCircle fontSize={30}/>
-</Link>
+<span onClick={() => removeProductCart(id) }>
+<IoMdCloseCircle fontSize={30} />
+</span>
 :
 //if wishist mode
-<Link onClick={() => updateWishlistByAction(id)}>
+<span onClick={() => updateWishlistByAction(id)}>
 <IoMdCloseCircle fontSize={30}/>
-</Link>
+</span>
 
 }
+
+
 
 
 
