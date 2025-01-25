@@ -252,7 +252,7 @@ export const MyContextProvider  = (props) =>{
           errorFeedback('Login to save an item')
           return false;
       }    
-       warningFeedback('Removing product from wishlist');
+   
 
        const wishlistCollRef =  collection(db,"wishlist");
        const q = query(
@@ -276,6 +276,7 @@ export const MyContextProvider  = (props) =>{
 
 
        }else{
+        warningFeedback('Removing product from wishlist');
           //exist delete matching field
           const updatePromises = querySnapshot.docs.map((docSnapshot) => {
               const docRef = doc(db, "wishlist", docSnapshot.id);
@@ -354,8 +355,8 @@ export const MyContextProvider  = (props) =>{
               //not login
               return false;
            }   
-          warningFeedback('Removing product from cart');
-
+          
+           warningFeedback('Removing product from cart');
            const cartCollRef =  collection(db,"cart");
            const q = query(
             cartCollRef,

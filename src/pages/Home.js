@@ -16,7 +16,7 @@ import MyContext from '../context/context';
 
 const Home = () => {
    
-    const {errorFeedback,listAllProducts,fetchAllProducts} = useContext(MyContext);
+    const {errorFeedback,listAllProducts,fetchAllProducts,contextHolder} = useContext(MyContext);
 
     const [necklaceList,setNecklaceList] = useState([]);
     const [bagsList,setBagList] = useState([]);
@@ -100,6 +100,7 @@ const getBagsProducts = () =>{
 
     return (
        <>
+       {contextHolder}
        <HeroSection />
        <MainCategories />
 

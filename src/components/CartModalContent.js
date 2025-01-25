@@ -9,7 +9,7 @@ import { db } from '../firebase/firebaseConfig';
 
 const CartModalContent = () => {
     const [isOpen, setOpen] = useState(false);
-    const {cartProductsArray,userMail,getCartProducts,contextHolder} = useContext(MyContext);
+    const {cartProductsArray,userMail,getCartProducts,contextHolder,warningFeedback} = useContext(MyContext);
     const toggleSheet = () =>{
         setOpen(!isOpen);
     }
@@ -78,7 +78,7 @@ const CartModalContent = () => {
 
                <div className="d-flex align-items-center my-3">
             <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn">Pay now</button>     
+            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Pay now</button>     
             </div>
             
                 
@@ -165,7 +165,7 @@ const CartModalContent = () => {
 
                <div className="d-flex align-items-center justify-content-between my-4">
             <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn">Make payment</button>     
+            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Make payment</button>     
             </div>
             
 
