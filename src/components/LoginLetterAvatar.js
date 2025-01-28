@@ -3,7 +3,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import MyContext from '../context/context';
 
 const LoginLetterAvatar = ({email}) => {
-  const {logOut} = useContext(MyContext);
+  const {logOut,setModalType,toggleModal} = useContext(MyContext);
 
 // Extract the first two characters
 const firstTwoLetters = email.substring(0, 2); 
@@ -22,6 +22,12 @@ return (
       </Dropdown.Toggle>
 
       <Dropdown.Menu className='drop-menu'>
+      <Dropdown.Item onClick={() => {
+      setModalType('profile')
+      toggleModal();  
+      }}>
+         Profile
+      </Dropdown.Item>
         <Dropdown.Item onClick={() => logOut()}>Log out</Dropdown.Item>
       
       </Dropdown.Menu>

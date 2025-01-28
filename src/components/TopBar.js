@@ -74,14 +74,7 @@ function usernameWithoutEmail(username) {
 }
 
 
-//modify size of modal
-useEffect(()=>{
-if(modalType == 'cart'){
-  setIsModalLarge('lg');  
-}else{
-  setIsModalLarge('');  
-}
-},[modalType])
+
 
 return (
 <>

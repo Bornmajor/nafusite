@@ -170,7 +170,8 @@ const updatedItems = itemsArray.map((item) => ({
 
 useEffect(()=>{
 getProductById(params.prodId);
-},[])
+
+},[params.prodId])
 
 
   //updates wishlist button when page loads

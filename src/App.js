@@ -14,7 +14,6 @@ import ProductPage from './pages/ProductPage';
 
 
 
-
 function App() {
   const router = createBrowserRouter([
     {

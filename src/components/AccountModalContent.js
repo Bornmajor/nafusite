@@ -9,15 +9,24 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore
 import bcrypt from "bcryptjs";
 import {db} from '../firebase/firebaseConfig'
 import validator from 'validator'; //validate email
+import appLogo from '../assets/images/logo.png'
+import { Select } from 'antd';
 
 const AccountModalContent = () => {
    const [isFormLoading,setIsFormLoading] = useState(false);
    const [email,setEmail] = useState('');
    const [pwd,setPwd] = useState('');
-   const {errorFeedback,contextHolder,successFeedback,fetchUserTokenFromDevice,toggleModal} = useContext(MyContext);
+   const {errorFeedback,contextHolder,successFeedback,fetchUserTokenFromDevice,toggleModal,setModalType} = useContext(MyContext);
    const [authType,setAuthType] = useState('login');
    const [isOnline, setIsOnline] = useState(navigator.onLine);
    const navigate = useNavigate();
+
+   const onChange = (value) => {
+    console.log(`selected ${value}`);
+  };
+  const onSearch = (value) => {
+    console.log('search:', value);
+  };
 
 
 
@@ -117,7 +126,7 @@ const generateToken = () => {
          const token = generateToken();
  
          // Save user to Firestore
-         await setDoc(userDocRef, { email, password: hashedPassword, token });
+         await setDoc(userDocRef, { email, password: hashedPassword, token,isActive: true });
          
          // Store email and token in localStorage
          localStorage.setItem("nafusiteUserEmail", email);
@@ -138,6 +147,12 @@ const generateToken = () => {
          setTimeout(() => {
           navigate('/')
          }, 1500);
+
+         setTimeout(() => {
+          setModalType('profile')
+          toggleModal();  
+         }, 3000);
+         
        }
 
 
@@ -208,7 +223,11 @@ const generateToken = () => {
 return (
 <div className='account-setup-container'>
 {contextHolder}
-<p className='header mb-2'>{authType === 'login' ? 'Verify your identity to login':'Setup your account'}</p>
+<div className='logo-container'>
+<img alt="app logo" src={appLogo} className='logo-img'/>
+</div>
+
+<p className='header text-center my-3'>{authType === 'login' ? 'Verify your identity to login':'Setup your account'}</p>
 <Input
 type='email'
 className='input-form mb-3'

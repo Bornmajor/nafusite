@@ -34,9 +34,531 @@ export const MyContextProvider  = (props) =>{
     const [uploadProdColor,setUploadProdColor] = useState('none');
     const [uploadProdImages,setUploadProdImages] = useState([]);
     const [uploadProdCategory,setProdCategory] = useState("");
+    
 
-
-
+    const kenyaCounties = [
+      {
+        "county": "Mombasa",
+        "constituencies": [
+          "Changamwe",
+          "Jomvu",
+          "Kisauni",
+          "Nyali",
+          "Likoni",
+          "Mvita"
+        ]
+      },
+      {
+        "county": "Kwale",
+        "constituencies": [
+          "Msambweni",
+          "Lunga Lunga",
+          "Matuga",
+          "Kinango"
+        ]
+      },
+      {
+        "county": "Kilifi",
+        "constituencies": [
+          "Kilifi North",
+          "Kilifi South",
+          "Kaloleni",
+          "Rabai",
+          "Ganze",
+          "Malindi",
+          "Magarini"
+        ]
+      },
+      {
+        "county": "Tana River",
+        "constituencies": [
+          "Garsen",
+          "Galole",
+          "Bura"
+        ]
+      },
+      {
+        "county": "Lamu",
+        "constituencies": [
+          "Lamu East",
+          "Lamu West"
+        ]
+      },
+      {
+        "county": "Taita-Taveta",
+        "constituencies": [
+          "Taveta",
+          "Wundanyi",
+          "Mwatate",
+          "Voi"
+        ]
+      },
+      {
+        "county": "Garissa",
+        "constituencies": [
+          "Dadaab",
+          "Fafi",
+          "Garissa Township",
+          "Ijara",
+          "Lagdera",
+          "Balambala"
+        ]
+      },
+      {
+        "county": "Wajir",
+        "constituencies": [
+          "Eldas",
+          "Tarbaj",
+          "Wajir East",
+          "Wajir North",
+          "Wajir South",
+          "Wajir West"
+        ]
+      },
+      {
+        "county": "Mandera",
+        "constituencies": [
+          "Banissa",
+          "Lafey",
+          "Mandera East",
+          "Mandera North",
+          "Mandera South",
+          "Mandera West"
+        ]
+      },
+      {
+        "county": "Marsabit",
+        "constituencies": [
+          "Laisamis",
+          "Moyale",
+          "North Horr",
+          "Saku"
+        ]
+      },
+      {
+        "county": "Isiolo",
+        "constituencies": [
+          "Isiolo North",
+          "Isiolo South"
+        ]
+      },
+      {
+        "county": "Meru",
+        "constituencies": [
+          "Igembe South",
+          "Igembe Central",
+          "Igembe North",
+          "Tigania West",
+          "Tigania East",
+          "North Imenti",
+          "Buuri",
+          "Central Imenti",
+          "South Imenti"
+        ]
+      },
+      {
+        "county": "Tharaka-Nithi",
+        "constituencies": [
+          "Tharaka",
+          "Maara",
+          "Chuka/Igambang'ombe"
+        ]
+      },
+      {
+        "county": "Embu",
+        "constituencies": [
+          "Manyatta",
+          "Runyenjes",
+          "Mbeere North",
+          "Mbeere South"
+        ]
+      },
+      {
+        "county": "Kitui",
+        "constituencies": [
+          "Mwingi North",
+          "Mwingi West",
+          "Mwingi Central",
+          "Kitui West",
+          "Kitui Rural",
+          "Kitui Central",
+          "Kitui East",
+          "Kitui South"
+        ]
+      },
+      {
+        "county": "Machakos",
+        "constituencies": [
+          "Masinga",
+          "Yatta",
+          "Kangundo",
+          "Matungulu",
+          "Kathiani",
+          "Mavoko",
+          "Machakos Town",
+          "Mwala"
+        ]
+      },
+      {
+        "county": "Makueni",
+        "constituencies": [
+          "Mbooni",
+          "Kilome",
+          "Kaiti",
+          "Makueni",
+          "Kibwezi West",
+          "Kibwezi East"
+        ]
+      },
+      {
+        "county": "Nyandarua",
+        "constituencies": [
+          "Kinangop",
+          "Kipipiri",
+          "Ndaragwa",
+          "Ol-Kalou",
+          "Ol Joro Orok"
+        ]
+      },
+      {
+        "county": "Nyeri",
+        "constituencies": [
+          "Kieni",
+          "Mathira",
+          "Mukurweini",
+          "Othaya",
+          "Nyeri Town"
+        ]
+      },
+      {
+        "county": "Kirinyaga",
+        "constituencies": [
+          "Mwea",
+          "Gichugu",
+          "Ndia",
+          "Kirinyaga Central"
+        ]
+      },
+      {
+        "county": "Murang'a",
+        "constituencies": [
+          "Gatanga",
+          "Kandara",
+          "Mathioya",
+          "Kiharu",
+          "Kigumo",
+          "Maragua",
+          "Kangema"
+        ]
+      },
+      {
+        "county": "Kiambu",
+        "constituencies": [
+          "Gatundu South",
+          "Gatundu North",
+          "Juja",
+          "Thika Town",
+          "Ruiru",
+          "Githunguri",
+          "Kiambu",
+          "Kiambaa",
+          "Kabete",
+          "Kikuyu",
+          "Limuru",
+          "Lari"
+        ]
+      },
+      {
+        "county": "Turkana",
+        "constituencies": [
+          "Loima",
+          "Turkana Central",
+          "Turkana East",
+          "Turkana North",
+          "Turkana South",
+          "Turkana West"
+        ]
+      },
+      {
+        "county": "West Pokot",
+        "constituencies": [
+          "Kapenguria",
+          "Sigor",
+          "Kacheliba",
+          "Pokot South"
+        ]
+      },
+      {
+        "county": "Samburu",
+        "constituencies": [
+          "Samburu East",
+          "Samburu North",
+          "Samburu West"
+        ]
+      },
+      {
+        "county": "Trans-Nzoia",
+        "constituencies": [
+          "Cherangany",
+          "Endebess",
+          "Kiminini",
+          "Kwanza",
+          "Saboti"
+        ]
+      },
+      {
+        "county": "Uasin Gishu",
+        "constituencies": [
+          "Ainabkoi",
+          "Kapseret",
+          "Kesses",
+          "Moiben",
+          "Soy",
+          "Turbo"
+        ]
+      },
+      {
+        "county": "Elgeyo-Marakwet",
+        "constituencies": [
+          "Marakwet East",
+          "Marakwet West",
+          "Keiyo North",
+          "Keiyo South"
+        ]
+      },
+      {
+        "county": "Nandi",
+        "constituencies": [
+          "Aldai",
+          "Chesumei",
+          "Emgwen",
+          "Mosop",
+          "Nandi Hills",
+          "Tinderet"
+        ]
+      },
+      {
+        "county": "Baringo",
+        "constituencies": [
+          "Baringo North",
+          "Baringo Central",
+          "Baringo South",
+          "Eldama Ravine",
+          "Mogotio",
+          "Tiaty"
+        ]
+      },
+      {
+        "county": "Laikipia",
+        "constituencies": [
+          "Laikipia West",
+          "Laikipia East",
+          "Laikipia North"
+        ]
+      },
+      {
+        "county": "Nakuru",
+        "constituencies": [
+          "Naivasha",
+          "Nakuru Town East",
+          "Nakuru Town West",
+          "Molo",
+          "Njoro",
+          "Subukia",
+          "Rongai",
+          "Kuresoi North",
+          "Kuresoi South",
+          "Gilgil"
+        ]
+      },
+      {
+        "county": "Narok",
+        "constituencies": [
+          "Narok North",
+          "Narok East",
+          "Narok South",
+          "Narok West",
+          "Emurua Dikirr"
+        ]
+      },
+      {
+        "county": "Kajiado",
+        "constituencies": [
+          "Kajiado North",
+          "Kajiado Central",
+          "Kajiado East",
+          "Kajiado West",
+          "Kajiado South"
+        ]
+      },
+      {
+        "county": "Kericho",
+        "constituencies": [
+          "Ainamoi",
+          "Belgut",
+          "Kipkelion East",
+          "Kipkelion West",
+          "Bureti",
+          "Soin/Sigowet"
+        ]
+      },
+      {
+        "county": "Bomet",
+        "constituencies": [
+          "Bomet East",
+          "Bomet Central",
+          "Chepalungu",
+          "Sotik",
+          "Konoin"
+        ]
+      },
+      {
+        "county": "Kakamega",
+        "constituencies": [
+          "Lurambi",
+          "Ikolomani",
+          "Shinyalu",
+          "Malava",
+          "Mumias East",
+          "Mumias West",
+          "Matungu",
+          "Navakholo",
+          "Butere",
+          "Khwisero",
+          "Lugari"
+        ]
+      },
+      {
+        "county": "Vihiga",
+        "constituencies": [
+          "Sabatia",
+          "Vihiga",
+          "Luanda",
+          "Hamisi",
+          "Emuhaya"
+        ]
+      },
+      {
+        "county": "Bungoma",
+        "constituencies": [
+          "Kabuchai",
+          "Kanduyi",
+          "Sirisia",
+          "Tongaren",
+          "Webuye East",
+          "Webuye West",
+          "Kimilili",
+          "Mt. Elgon"
+        ]
+      },
+      {
+        "county": "Busia",
+        "constituencies": [
+          "Teso North",
+          "Teso South",
+          "Nambale",
+          "Matayos",
+          "Butula",
+          "Funyula",
+          "Budalangi"
+        ]
+      },
+      {
+        "county": "Siaya",
+        "constituencies": [
+          "Alego Usonga",
+          "Gem",
+          "Ugenya",
+          "Ugunja",
+          "Rarieda",
+          "Bondo"
+        ]
+      },
+      {
+        "county": "Kisumu",
+        "constituencies": [
+          "Kisumu East",
+          "Kisumu West",
+          "Kisumu Central",
+          "Nyando",
+          "Muhoroni",
+          "Seme"
+        ]
+      },
+      {
+        "county": "Homa Bay",
+        "constituencies": [
+          "Homa Bay Town",
+          "Rangwe",
+          "Ndhiwa",
+          "Suba North",
+          "Suba South",
+          "Kabondo Kasipul",
+          "Kasipul",
+          "Karachuonyo"
+        ]
+      },
+      {
+        "county": "Migori",
+        "constituencies": [
+          "Rongo",
+          "Awendo",
+          "Suna East",
+          "Suna West",
+          "Uriri",
+          "Nyatike",
+          "Kuria East",
+          "Kuria West"
+        ]
+      },
+      {
+        "county": "Kisii",
+        "constituencies": [
+          "Kitutu Chache North",
+          "Kitutu Chache South",
+          "Nyaribari Chache",
+          "Nyaribari Masaba",
+          "Bobasi",
+          "Bomachoge Borabu",
+          "Bomachoge Chache",
+          "South Mugirango"
+        ]
+      },
+      {
+        "county": "Nyamira",
+        "constituencies": [
+          "Borabu",
+          "North Mugirango",
+          "West Mugirango",
+          "Kitutu Masaba"
+        ]
+      },
+      {
+        "county": "Nairobi",
+        "constituencies": [
+          "Westlands",
+          "Dagoretti North",
+          "Dagoretti South",
+          "Lang'ata",
+          "Kibra",
+          "Roysambu",
+          "Kasarani",
+          "Ruaraka",
+          "Embakasi South",
+          "Embakasi North",
+          "Embakasi Central",
+          "Embakasi East",
+          "Embakasi West",
+          "Makadara",
+          "Kamukunji",
+          "Starehe",
+          "Mathare"
+        ]
+      }
+      // Continues for the remaining counties...
+    ];
+    
+    const [listCounties,setListCounties] = useState(kenyaCounties);
 
     const toggleModal = () =>{
 
@@ -164,7 +686,7 @@ export const MyContextProvider  = (props) =>{
       id:doc.id,
       ...doc.data()  
       }
-      
+     
     ));
 
     setCartListData(itemsArray);
@@ -414,7 +936,7 @@ export const MyContextProvider  = (props) =>{
      getWishlistData();
      getCartProducts();
     checkIfTokenExpired();
-    },[userMail])
+    },[userMail]);
 
 
 
@@ -439,6 +961,7 @@ export const MyContextProvider  = (props) =>{
         listAllProducts,fetchAllProducts,
         updateWishlistByAction,
         currentUserWishlist,
+        listCounties
 
       }}>
         {props.children}

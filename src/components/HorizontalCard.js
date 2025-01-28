@@ -9,14 +9,14 @@ const HorizontalCard = ({title,id,imgUrl,price,mode,quantity,color}) => {
 return (
 <div className='horizontal-card'  key={id}>
 
-<a href={`/product/${id}`}>
+<Link to={`/product/${id}`}>
 <img  className='prod-img' src={imgUrl} alt=''/>
-</a>
+</Link>
 
 
 
 
-<a href={`/product/${id}`} className='product-details-content'>
+<Link to={`/product/${id}`} className='product-details-content'>
 <p className='title text-truncate '>{title}</p>
 
 <p className='pricing bold'>Ksh {price}</p>
@@ -34,7 +34,7 @@ return (
 </div>
 
 }
-</a>
+</Link>
 
 
 

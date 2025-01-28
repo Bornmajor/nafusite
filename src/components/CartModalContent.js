@@ -9,11 +9,11 @@ import { db } from '../firebase/firebaseConfig';
 
 const CartModalContent = () => {
     const [isOpen, setOpen] = useState(false);
-    const {cartProductsArray,userMail,getCartProducts,contextHolder,warningFeedback} = useContext(MyContext);
+    const {cartProductsArray,userMail,getCartProducts,contextHolder,warningFeedback,setModalType} = useContext(MyContext);
     const toggleSheet = () =>{
         setOpen(!isOpen);
     }
-
+ 
     //calculate subtotal for cart p
     const calculateCartTotal = (cartData) => {
         // Map each item to its total (quality * price)
@@ -78,7 +78,7 @@ const CartModalContent = () => {
 
                <div className="d-flex align-items-center my-3">
             <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Pay now</button>     
+            <button className="btn btn-primary mx-2 cart-btn" onClick={() => setModalType('place_order')}>Place order</button>     
             </div>
             
                 
@@ -102,7 +102,7 @@ const CartModalContent = () => {
 
                 <div className='d-flex align-items-center justify-content-between my-3 '>
                     <p className='main-header bold'>No. of items <IoIosArrowRoundForward fontSize="20px" /> <span  className='bold'>{cartProductsArray.length}</span></p>
-                 <button className='btn btn-primary' onClick={() => toggleSheet()} >Order items</button>
+                 <button className='btn btn-primary' onClick={() => toggleSheet()} >Order</button>
                  </div>
                 
                 
@@ -165,7 +165,7 @@ const CartModalContent = () => {
 
                <div className="d-flex align-items-center justify-content-between my-4">
             <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Make payment</button>     
+            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Place order</button>     
             </div>
             
 
