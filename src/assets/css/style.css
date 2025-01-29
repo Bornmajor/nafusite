@@ -17,6 +17,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+
 .active-nav-link{
   font-weight: 600;
   color: #f29632;
@@ -38,7 +39,7 @@
   
   background-color: #f29632 !important;
   border: none;
-  padding: 8px 15px;
+  /* padding: 8px 15px; */
   border-radius: 20px;
   color: white;
   }
@@ -47,15 +48,14 @@
   background-color: #ff8400 !important;
   border: none;
   color: black;
-  color: white;
+  color: white !important;
   }
 
   .btn-outline-primary{
     border-color: #f29632;
     color: #f29632;
-    padding: 8px 15px;
     border-radius: 20px;
-    font-weight: 600;
+  
   }
   .btn-outline-primary:hover{
     background-color: #f29632;
@@ -73,7 +73,8 @@
 
 
 .text-primary{
-color:#efaf6a;
+
+color:#f29632 !important;
 }
 
 .badge-icon{
@@ -642,7 +643,60 @@ p{
     height: 80vh;
   }
 
-  
+  /*place order*/
+  .submit-form-btn{
+    height: 40px !important;
+    width: 150px !important;
+  }
+  .payment-order-content .section{
+    background-color: #f1f1f1;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+
+  }
+
+  .payment-order-content .section .text-content{
+    max-width: 200px;
+  }
+
+  .payment-order-content .section .title{
+    font-size: 20px;
+  }
+
+
+  .payment-order-content  .section-container{
+   display: flex;
+   justify-content: space-between;
+
+  }
+
+  .payment-order-content .summary-order-product .img-product{
+   width: 40px;
+   height: 40px;
+   object-fit: cover;
+   border-radius: 50%;
+  }
+
+  .payment-order-content .summary-order-product{
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    gap:15px;
+    margin: 10px 0;
+  }
+
+  .payment-order-content .summary-order-product .prod-title{
+    max-width: 100px;
+  }
+
+  .confirm-order-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
 
 
   /*footer*/
@@ -686,6 +740,15 @@ p{
   }
   
 }
+
+@media screen and (max-width:450px) {
+  .payment-order-content  .section-container{
+    flex-direction: column;
+   
+    }
+ 
+}
+
 
 
 @media screen and (max-width: 640px) {

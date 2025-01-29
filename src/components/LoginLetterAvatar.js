@@ -28,6 +28,7 @@ return (
       }}>
          Profile
       </Dropdown.Item>
+      <Dropdown.Item >Orders</Dropdown.Item>
         <Dropdown.Item onClick={() => logOut()}>Log out</Dropdown.Item>
       
       </Dropdown.Menu>

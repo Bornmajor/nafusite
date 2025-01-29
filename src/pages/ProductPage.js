@@ -286,13 +286,13 @@ return (
 
 <div className='breadcrumb-nav'>
 
-<Link className='nav-route'>
+<Link className='nav-route' to="/">
 Home
 </Link>
 
 <MdOutlineArrowForwardIos className='route-icon' size={16}/>
 
-<Link className='nav-route'>
+<Link className='nav-route' to={`/category/${product.product_category}`}>
 {capitalizeFirstLetter(product.product_category)}
 </Link>
 

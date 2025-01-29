@@ -7,7 +7,7 @@ import { db } from "../firebase/firebaseConfig";
 const MyContext = createContext();
 
 export const MyContextProvider  = (props) =>{
-    const [uiTheme,setUiTheme] = useState('#025cde');
+    const [uiTheme,setUiTheme] = useState('#f29632');
     const [textColor,setTextColor] = useState('black');
     const [messageApi, contextHolder] = message.useMessage();
     const [navBarIsOpen,setNavBarIsOpen] = useState(false);
@@ -34,6 +34,7 @@ export const MyContextProvider  = (props) =>{
     const [uploadProdColor,setUploadProdColor] = useState('none');
     const [uploadProdImages,setUploadProdImages] = useState([]);
     const [uploadProdCategory,setProdCategory] = useState("");
+      const [viewOrderType,setViewOrderType] = useState('confirm_address');
     
 
     const kenyaCounties = [
@@ -565,7 +566,8 @@ export const MyContextProvider  = (props) =>{
       setShowModal(!showModal);
       
     }
-    
+
+       
     const fetchUserTokenFromDevice = async() =>{
       //fetch stored token from device
      const email = localStorage.getItem('nafusiteUserEmail');
@@ -961,7 +963,7 @@ export const MyContextProvider  = (props) =>{
         listAllProducts,fetchAllProducts,
         updateWishlistByAction,
         currentUserWishlist,
-        listCounties
+        listCounties,viewOrderType,setViewOrderType
 
       }}>
         {props.children}

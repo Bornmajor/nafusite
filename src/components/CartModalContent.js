@@ -165,7 +165,13 @@ const CartModalContent = () => {
 
                <div className="d-flex align-items-center justify-content-between my-4">
             <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn" onClick={() => warningFeedback('This feature unavailable')}>Place order</button>     
+            <button className="btn btn-primary mx-2 cart-btn" onClick={() =>
+              {
+                setOpen(false);   
+              setModalType('place_order')
+              }}>
+                Place order
+                </button>     
             </div>
             
 
