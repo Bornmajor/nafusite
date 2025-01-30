@@ -6,6 +6,7 @@ import CartModalContent from './CartModalContent';
 import AccountModalContent from './AccountModalContent';
 import ProfileModalContent from './ProfileModalContent';
 import PlaceOrderModalContent from './PlaceOrderModalContent';
+import OrderModalContent from './OrderModalContent';
 
 const AppModal = () => {
   const { showModal, toggleModal,modalType,isModalLarge,setIsModalLarge } = useContext(MyContext);
@@ -23,9 +24,13 @@ const AppModal = () => {
       setTitle('Profile')
     }else if(modalType == 'place_order'){
       setTitle('Place order')
+    }else if(modalType == 'orders'){
+      setTitle('Orders')
     } else{
       setTitle('');
     }
+
+ 
 
   },[modalType]);
 
@@ -67,6 +72,10 @@ useEffect(()=>{
         return (
           <PlaceOrderModalContent />
         );
+        case 'orders':
+          return (
+            <OrderModalContent />
+          );
       default:
         return (
 <div className='d-flex align-items-center justify-content-center inner-loader' >

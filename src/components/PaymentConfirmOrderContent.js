@@ -16,10 +16,13 @@ import { Button } from 'antd';
 
 const PaymentConfirmOrderContent = () => {
 
-    const {userMail,errorFeedback,cartProductsArray,setViewOrderType,viewOrderType,cartListData,successFeedback} = useContext(MyContext);
+    const {userMail,errorFeedback,cartProductsArray,setViewOrderType
+      ,viewOrderType,cartListData,successFeedback,setSessionOrderId
+    } = useContext(MyContext);
      const [profileData, setProfileData] = useState(null);
      const [errorMessage,setErrorMessage] =useState('');
      const [isFormLoading, setIsFormLoading] = useState(false);
+     const [transactionNumber,setTransactionNumber] = useState('')
 
         //calculate subtotal for cart p
     const calculateCartTotal = (cartData) => {
@@ -65,6 +68,27 @@ const PaymentConfirmOrderContent = () => {
             //not login
          if(!userMail){return false;}
 
+
+         if(!transactionNumber){
+          errorFeedback('Transaction number field required');
+          setIsFormLoading(false);
+          return false
+         }
+
+         //valid transaction number
+         if(transactionNumber.toString().length !== 10){
+          errorFeedback('Transaction number should have 10 digits');
+          setIsFormLoading(false);
+           return false;
+         }
+
+         if (!/^[0-9]+$/.test(transactionNumber)) { 
+          errorFeedback('Transaction number contain non-numeric value');
+          setIsFormLoading(false);
+          return false;  // Returns false if the string contains non-numeric characters
+        }
+         
+
          //saved address
          const userDocRef = doc(db, "users", userMail);
          const docSnapshot = await getDoc(userDocRef);
@@ -86,13 +110,14 @@ const PaymentConfirmOrderContent = () => {
             "cart":cartListData,
             "address":address,
             "total_amount":calculateCartTotal(cartProductsArray),
-            "status":"ordered",
-            "transaction":"",
+            "status":"pending_payment",
+            "transaction_no":transactionNumber,
             "order_date": new Date().toISOString(),
 
         }
 
-        await addDoc(orderCollectionRef,orderData);
+        const docRef = await addDoc(orderCollectionRef,orderData);
+        setSessionOrderId(docRef.id);
         //if created order
         setIsFormLoading(false);
         successFeedback('Order created!!')
@@ -210,25 +235,38 @@ cartProductsArray.map((item) =>
 <div className='section payment'>
 
 <div className='d-flex justify-content-between'>
-<p className='title bold'>Payment</p> 
+{/* <p className='title bold'>Payment</p>  */}
+</div>
+<div class="form-floating mb-3">
+  <input type="text"
+   class="form-control"
+    id="floatingInput"
+   placeholder="072 123 1234"
+   value={transactionNumber}
+   onChange={(e) => setTransactionNumber(e.target.value)}
+   />
+  <label for="floatingInput">Transaction  Number</label>
 </div>
 
 
 <div class="section-container">
 
+
 <div className='d-flex align-items-center my-3' style={{gap:'10px'}}>
 
 
- <Button className="btn btn-primary submit-form-btn" loading={isFormLoading} onClick={() => proceedConfirmContext()}> Pay now</Button>
 
-<button className='btn btn-secondary'>Pay later</button>    
-</div>
+ <Button className="btn btn-primary submit-form-btn " loading={isFormLoading} onClick={() => proceedConfirmContext()}> Confirm </Button>
 
-<div className='d-flex align-items-center' style={{ gap: '10px', }}>
 {viewOrderType &&
 <button className='btn btn-outline-primary' onClick={() => setViewOrderType('confirm_address')}>
-Cancel process</button>}
+Cancel</button>}
+
+
+{/* <button className='btn btn-secondary'>Pay later</button>     */}
 </div>
+
+
 
 
 </div>

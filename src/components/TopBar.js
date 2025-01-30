@@ -13,6 +13,7 @@ import { FaHeart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import LoginLetterAvatar from './LoginLetterAvatar';
+import { BsBagCheckFill } from "react-icons/bs";
 
 
 
@@ -84,11 +85,50 @@ id='navbar'
 sticky={isHidden ? "":"top"}
 >
 <Container fluid>
+  
 <Navbar.Brand to='/' as={Link} className='navlink'>
-<img src={appLogo} alt='App logo' width={60} />
+<img className='top-bar-logo-img' src={appLogo} alt='App logo'  />
 {/* <span className='navbar-app-title'>Local connect</span> */}
 </Navbar.Brand>
+
+<div className='toggle-wishlist-cart-container'>
+
+ <span className='wishlist-cart-sm-container mx-1'>
+  <a type="button" className="position-relative mx-2" 
+onClick={() => {
+  
+setModalType('wishlist')
+toggleModal();
+}}
+>
+<FaHeart size={25} color='black'  />
+<span className="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+{wishlistData.length}
+<span class="visually-hidden">unread messages</span>
+</span>
+</a>
+
+<a type="button" class="position-relative mx-3"
+onClick={() => {
+setModalType('cart')
+toggleModal();
+}}
+>
+
+<FaCartShopping size={25} color='black'/>
+<span class="badge-icon position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+{cartListData.length}
+<span class="visually-hidden">unread messages</span>
+</span>
+</a>  
+  </span> 
+
+
 <Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} />
+</div>
+
+
+
 <Navbar.Offcanvas
 id="offcanvasNavbar"
 aria-labelledby="offcanvasNavbarLabel"
@@ -113,11 +153,12 @@ onHide={toggleNavbar}
 <Nav.Link to="/category/earrings" className={getNavLinkClass('/category/earrings')} as={Link}>Earrings</Nav.Link>
 <Nav.Link to="/category/bags" className={getNavLinkClass('/category/bags')} as={Link}>Hand bags</Nav.Link>
 
-<Nav.Link to="/#none"
+{/* <Nav.Link to="/#none"
 className={`${getNavLinkClass('/staff')} link-sm-device`}  
 onClick={() => {
-setModalType('wishlist')
-toggleModal()  
+setModalType('wishlist');
+toggleModal();
+
 }} as={Link}> 
 <FaHeart  color='black'  /> Wishlist ({wishlistData.length})
 
@@ -126,22 +167,38 @@ toggleModal()
  className={`${getNavLinkClass('/staff')} link-sm-device`} 
  onClick={() => {
   setModalType('cart')
-  toggleModal()  
+  toggleModal();
+ 
   }}
  as={Link}>
   <FaCartShopping color='black'/> Cart ({cartListData.length})
- </Nav.Link>
+ </Nav.Link> */}
 
 
  {userMail !== '' 
  ?
- <>
+ <div className='mt-4'>
   <Nav.Link
 className={`${getNavLinkClass('/staff')} link-sm-device mt-4`}
-as={Link}>
+as={Link}
+onClick={() =>{
+  setModalType('account');
+  toggleModal();
+}}
+>
 <FaUserCircle fontSize={20} color='#f29632' /> {usernameWithoutEmail(userMail) }
 
 </Nav.Link> 
+
+<Nav.Link
+className={`${getNavLinkClass('/staff')} link-sm-device`}
+as={Link}
+onClick={() => {
+ setModalType('orders');
+  toggleModal();   
+}}>
+  <BsBagCheckFill fontSize={18} color='#f29632'/> Orders
+</Nav.Link>
 
 <Nav.Link
 className={`${getNavLinkClass('/staff')} link-sm-device`}
@@ -151,8 +208,7 @@ onClick={() => logOut()}>
 
 </Nav.Link> 
  
- </>
-
+ </div>
 
  : 
  
@@ -161,7 +217,8 @@ to="/#pricing-section"
 className={`${getNavLinkClass('/staff')} link-sm-device`}
 onClick={() => {
   setModalType('account')
-  toggleModal()  
+  toggleModal();
+  
   }}
 as={Link}>
 <FaUserAlt color='black' /> Login
@@ -179,7 +236,7 @@ as={Link}>
 onClick={() => {
   
 setModalType('wishlist')
-toggleModal()  
+toggleModal();
 }}
 >
 <FaHeart size={25} color='black'  />
@@ -192,7 +249,7 @@ toggleModal()
 <a type="button" class="position-relative mx-2"
 onClick={() => {
 setModalType('cart')
-toggleModal()  
+toggleModal();
 }}
 >
 
@@ -210,7 +267,7 @@ toggleModal()
 <Link className='mx-2'
 onClick={() => {
 setModalType('account')
-toggleModal()  
+toggleModal();
 }}
 >
 <FaUserAlt size={25} color='black' />
@@ -222,6 +279,7 @@ toggleModal()
 </Nav>
 </Offcanvas.Body>
 </Navbar.Offcanvas> 
+
 </Container>
 </Navbar>
 </>

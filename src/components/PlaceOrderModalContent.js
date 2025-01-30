@@ -82,6 +82,8 @@ const PlaceOrderModalContent = () => {
       setCurrentStep(1)
     }else if(viewOrderType == 'confirm'){
       setCurrentStep(3);
+    }else if(viewOrderType == 'confirm_address'){
+      setCurrentStep(0);
     }
     },[viewOrderType]);
 

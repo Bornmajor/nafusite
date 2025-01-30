@@ -24,11 +24,16 @@ return (
       <Dropdown.Menu className='drop-menu'>
       <Dropdown.Item onClick={() => {
       setModalType('profile')
-      toggleModal();  
+      toggleModal();
+     
       }}>
          Profile
       </Dropdown.Item>
-      <Dropdown.Item >Orders</Dropdown.Item>
+      <Dropdown.Item  onClick={() =>{
+        setModalType('orders');
+        toggleModal();
+
+      }}>Orders</Dropdown.Item>
         <Dropdown.Item onClick={() => logOut()}>Log out</Dropdown.Item>
       
       </Dropdown.Menu>

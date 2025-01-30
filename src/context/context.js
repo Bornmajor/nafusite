@@ -25,6 +25,10 @@ export const MyContextProvider  = (props) =>{
      const [currentUserWishlist,setCurrentUserWishlist] = useState([])
      const  [cartProductsArray,setCartProductsArray] = useState([]);
 
+     //order id for new created order for payment confirm
+     const [sessionOrderId,setSessionOrderId] = useState('');
+     const [orderList,setOrderList] = useState([]);
+
 
     const [showModal, setShowModal] = useState(false);
 
@@ -917,6 +921,40 @@ export const MyContextProvider  = (props) =>{
       
          }
   
+         const fetchUsersOrders = async() =>{
+          try{
+              if(!userMail) return false; //when users is not login stop execution
+  
+              
+  
+           const orderCollectionRef = collection(db,"orders");
+           const q = query(orderCollectionRef,where("email","==",userMail));
+           const querySnapshot = await getDocs(q);
+  
+         
+  
+           const itemsArray =  querySnapshot.docs.map((doc) => (
+                  {
+                      id:doc.id,
+                      ...doc.data()
+                  }
+              ));
+  
+              setOrderList(itemsArray);
+              
+            
+  
+          
+  
+  
+          }catch(error){
+              console.log(`Fetch order error:${error.message}`);
+              errorFeedback('Something went wrong:failed to fetch orders')
+  
+          }
+      }
+
+      
        useEffect(()=>{
         fetchAllProducts();
        },[]);
@@ -963,7 +1001,9 @@ export const MyContextProvider  = (props) =>{
         listAllProducts,fetchAllProducts,
         updateWishlistByAction,
         currentUserWishlist,
-        listCounties,viewOrderType,setViewOrderType
+        listCounties,viewOrderType,setViewOrderType,
+        sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList
+
 
       }}>
         {props.children}
