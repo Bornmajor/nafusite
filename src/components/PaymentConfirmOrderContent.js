@@ -17,7 +17,7 @@ import { Button } from 'antd';
 const PaymentConfirmOrderContent = () => {
 
     const {userMail,errorFeedback,cartProductsArray,setViewOrderType
-      ,viewOrderType,cartListData,successFeedback,setSessionOrderId
+      ,viewOrderType,cartListData,successFeedback,setSessionOrderId,warningFeedback
     } = useContext(MyContext);
      const [profileData, setProfileData] = useState(null);
      const [errorMessage,setErrorMessage] =useState('');
@@ -120,7 +120,7 @@ const PaymentConfirmOrderContent = () => {
         setSessionOrderId(docRef.id);
         //if created order
         setIsFormLoading(false);
-        successFeedback('Order created!!')
+        successFeedback('Order created!!');
         setViewOrderType('confirm');
 
 
@@ -213,7 +213,10 @@ cartProductsArray.map((item) =>
 
 <div className='summary-order-product' key={item.id}>
 <p className='prod-title text-truncate'>{item.product_title}</p>
-<p>Ksh {item.product_price}</p>
+<div>
+<p>Ksh {item.product_price} x {item.quantity} </p>  
+</div>
+
 
 
 </div>    

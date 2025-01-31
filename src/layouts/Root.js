@@ -8,13 +8,14 @@ import AppLoader from '../components/AppLoader';
 
 
 const Root = () => {
-const {isAppLoading,setIsAppLoading,setNavBarIsOpen} = useContext(MyContext);
+const {isAppLoading,setIsAppLoading,setNavBarIsOpen,setShowModal} = useContext(MyContext);
 const location = useLocation();
 
 useEffect(()=>{
 
 // Your code to run when the route changes
 console.log('Route changed:', location.pathname);
+
 setTimeout(() => {
 setIsAppLoading(false)  
 }, 2500);
@@ -33,6 +34,8 @@ element.scrollIntoView({ behavior: "smooth" });
 
 //close navbar on change route
 setNavBarIsOpen(false);
+//close modals when change route
+setShowModal(false);
 
 },[location])
 

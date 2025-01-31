@@ -32,7 +32,7 @@ const [product,setProduct] = useState(null);
 const [similarProductsList,setSimilarProductsList] = useState([])
 const location = useLocation();
 const [show, setShow] = useState(false);
-const [quality,setQuantity] = useState(1);
+const [quantity,setQuantity] = useState(1);
 const [color,setColor] = useState('');
 const [errorMessage,setErrorMessage] = useState('');
 
@@ -43,18 +43,18 @@ const toggleModal = ()=> {
 }
 
 const incrementQuantity = () =>{
-    if(quality > 8){
+    if(quantity > 8){
      return false
     }else{
-        setQuantity(quality + 1)
+        setQuantity(quantity + 1)
     }
 }
 
 const decrementQuantity = () =>{
-    if(quality < 1 ){
+    if(quantity < 1 ){
      return false
     }else{
-        setQuantity(quality - 1)
+        setQuantity(quantity - 1)
     }
 }
 
@@ -251,7 +251,7 @@ getProductById(params.prodId);
 
          await setDoc(newDocRef,{
          "product_id":params.prodId,
-         quality,"product_color":color,
+         quantity,"product_color":color,
          email:userMail,
          "product_price":product.product_price
          
@@ -490,7 +490,7 @@ onChange={(e)=> setColor(e.target.value)}
 <FaMinus size="12px" />
 </button>
 
-<input type="number" className='input-quantity' value={quality} required/> 
+<input type="number" className='input-quantity' value={quantity} required/> 
 
 <button className='btn btn-primary adjust-quantity-btn'  onClick={incrementQuantity} type='button'>
 <FaPlus size="12px"  />

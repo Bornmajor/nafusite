@@ -220,9 +220,9 @@ p{
   .testimonial-card{
     background-color: white;
     width: 400px;
-    max-width: 400px;
-    min-width: 400px;
-    height: 230px;
+    max-width: 350px;
+    min-width: 350px;
+    height: 240px;
     padding: 20px;
     border-radius: 4px;
     margin-right: 20px;
@@ -741,12 +741,17 @@ p{
     justify-content: space-between;
     align-items: center;
     background-color: #f1f1f1;
-    cursor: pointer;
+  
    }
    .order-card .inner-container{
+    text-decoration: none;
+    color: black;
     display: flex;
     flex-direction: column;
     gap: 10px;
+   }
+   .order-card .inner-container:hover{
+   color: black;
    }
    .order-card .long-text{
     max-width: 150px;
@@ -754,6 +759,116 @@ p{
 
    .clickable-item{
     cursor: pointer;
+   }
+
+   /*single page order */
+   .single-order-container-page{
+    display: flex;
+    /* flex-wrap: wrap; */
+    padding: 10px 40px;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+   }
+   .single-order-container-page .section{
+    background-color: #f1f1f1;
+    margin: 30px 0;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+    /* max-width: 300px; */
+
+
+   }
+   .single-order-container-page .section .section-titles{
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 600;
+   }
+
+   .single-order-container-page .page-header{
+    font-size: 25px;
+   
+   }
+
+   .single-order-container-page .alert-status{
+    padding: 5px 10px !important;
+    max-width: 200px;
+   }
+   .single-order-container-page .date-time{
+    font-size: 20px;
+   }
+   .single-order-container-page .product-item-card{
+     max-width: 450px;
+     display: flex;
+     gap:20px;
+   
+     width: 100%;
+     margin: 10px 0;
+     align-items: center;
+     text-decoration: none;
+     color: black;
+    
+   }
+   .single-order-container-page .product-item-card:hover{
+    color: black;
+   }
+   .single-order-container-page .product-item-card .category{
+    font-size: 13px;
+   }
+   .single-order-container-page .section .long-text{
+    max-width: 200px;
+   }
+   .single-order-container-page .product-item-card .img-product{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+   }
+   .single-order-container-page .product-item-card .quantity-price{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+   }
+   .single-order-container-page .address-section{
+    border: 1px solid #f58d1e;
+    margin: 20px 0;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #fcfcfc;
+    max-width: 450px;
+    font-size: 14px;
+   }
+
+   .single-order-container-page .payement-tabs{
+    background-color: #fcfcfc;
+    margin: 15px 0;
+    padding: 5px 10px;
+    max-width: 400px;
+    border-radius: 5px;
+
+   }
+   .single-order-container-page .section .alert-address{
+    max-width: 80px;
+    font-size: 12px;
+    font-weight: 600;
+   }
+   .single-order-container-page .order-list{
+    margin: 0;
+    padding: 0 15px;
+   }
+   .gap-10{
+    gap: 10px;
+   }
+   .gap-20{
+    gap: 20px;
+   }
+
+   .gap-30{
+    gap: 30px;
    }
  
 
@@ -792,6 +907,17 @@ p{
   color: #f29632;
   }
 
+  .footer .inner-container .links{
+    display: block;
+    text-decoration: none;
+    color: black;
+  }
+
+  .footer .inner-container .links:hover{
+    color: #f29632;
+    font-weight: 600;
+  }
+
 
 
 /*media query*/
@@ -811,6 +937,13 @@ p{
      .order-card .long-text{
       max-width: 130px;
      }
+     .single-order-container-page .section{
+
+      max-width: 280px;
+      width: 100%;
+
+  
+     }
 }
 
  
@@ -818,6 +951,10 @@ p{
   .container-group-form-variants{
    flex-direction: column;
 
+  }
+  #navbar{
+    padding: 10px 10px;
+  
   }
   
 }
@@ -827,25 +964,27 @@ p{
     flex-direction: column;
    
     }
+    .single-order-container-page .product-item-card{
+      flex-direction: column;
+      align-items: flex-start;
+      margin:15px 0;
+      gap:0;
+      
+    }
  
 }
 
-
-
-@media screen and (max-width: 640px) {
-
-.footer{
-  flex-direction: column;
-}
-.footer .inner-container{
-  margin: 20px 0;
-}
-.breadcrumb-nav{
-display: none;
-
+@media screen and (max-width: 500px) {
+  .single-order-container-page .product-item-card{
+    justify-content: space-between;
+    gap: 10px;
+ 
 }
 
-}
+  }
+  
+
+
 
 @media screen and (max-width: 550px) {
 .category-card .category-img{
@@ -863,6 +1002,23 @@ display: none;
 
 }
 
+@media screen and (max-width: 640px) {
+
+.footer{
+  flex-direction: column;
+}
+.footer .inner-container{
+  margin: 20px 0;
+}
+.breadcrumb-nav{
+display: none;
+
+}
+
+}
+
+
+
 @media screen and (max-width: 810px) {
   .product-page-container .product-container{
   flex-direction: column;
@@ -877,6 +1033,10 @@ display: none;
     height:40vh;
 
 }
+.single-order-container-page{
+  flex-direction: column;
+
+ }
  
   }
 
@@ -919,6 +1079,23 @@ display: none;
   }
 
 }
+
+
+@media screen and (max-width:1062px) {
+
+.single-order-container-page{
+
+padding: 10px 30px;
+gap: 10px;
+align-items: flex-start;
+justify-content: flex-start;
+}  
+
+
+
+}
+
+
 
 
 

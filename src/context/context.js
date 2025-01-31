@@ -860,7 +860,7 @@ export const MyContextProvider  = (props) =>{
             return {
               ...product,
               product_color: cartItem.product_color,
-              quantity: cartItem.quality
+              quantity: cartItem.quantity
             };
           }
           return null; // Handle cases where product is not found

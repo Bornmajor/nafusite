@@ -180,9 +180,8 @@ toggleModal();
  <div className='mt-4'>
   <Nav.Link
 className={`${getNavLinkClass('/staff')} link-sm-device mt-4`}
-as={Link}
 onClick={() =>{
-  setModalType('account');
+  setModalType('profile');
   toggleModal();
 }}
 >
@@ -192,7 +191,6 @@ onClick={() =>{
 
 <Nav.Link
 className={`${getNavLinkClass('/staff')} link-sm-device`}
-as={Link}
 onClick={() => {
  setModalType('orders');
   toggleModal();   

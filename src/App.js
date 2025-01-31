@@ -10,6 +10,7 @@ import ErrorPage from './pages/ErrorPage';
 import CategoryPage from './pages/CategoryPage';
 import { MyContextProvider } from './context/context';
 import ProductPage from './pages/ProductPage';
+import OrderPage from './pages/OrderPage';
 
 
 
@@ -31,6 +32,11 @@ function App() {
         {
           path:"/category/:category",
           element:<CategoryPage />
+        },
+        {
+          path:"/order/:orderId",
+          element:<OrderPage />
+
         }
   
       ],

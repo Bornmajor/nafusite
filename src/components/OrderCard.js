@@ -7,7 +7,7 @@ import { doc,deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { Popconfirm } from 'antd';
 import { IoCalendarClearSharp } from "react-icons/io5";
-
+import { Link } from 'react-router-dom';
 
 const OrderCard = ({id,status,total_amount,order_date}) => {
     const {userMail,successFeedback,errorFeedback,setOrderList,orderList,fetchUsersOrders} = useContext(MyContext);
@@ -82,17 +82,17 @@ const OrderCard = ({id,status,total_amount,order_date}) => {
     return (
         <div className='order-card' key={id}>
 
-            <div className='inner-container'>
+            <Link className='inner-container' to={`/order/${id}`}>
              <p className='order-id long-text bold text-truncate'>Order: {id}</p>
             <p className='status bold' style={{
                 color: getStatusColor(status) 
             }}><TbAlertSquareRoundedFilled /> {status}</p>  
-            </div>
+            </Link>
 
-            <div className='inner-container'>
+            <Link className='inner-container' to={`/order/${id}`}>
             <p><IoCalendarClearSharp /> {formatDate(order_date)} </p>
             <p> <span className='bold'>Ksh</span>. {total_amount} </p>
-            </div>
+            </Link>
 
                 <Popconfirm
                 title="Cancel this order?"
