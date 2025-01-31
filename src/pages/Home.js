@@ -13,6 +13,7 @@ import Footer from '../components/Footer';
 import { db } from '../firebase/firebaseConfig';
 import { getDocs,collection, query, where } from 'firebase/firestore';
 import MyContext from '../context/context';
+import SkeletonCatalogue from '../components/SkeletonCatalogue';
 
 const Home = () => {
    
@@ -104,7 +105,7 @@ const getBagsProducts = () =>{
        <HeroSection />
        <MainCategories />
 
-       {listAllProducts.length !== 0 &&
+       {listAllProducts.length !== 0 ?
        <Catalogue >
         {
          listAllProducts.map((item) => (
@@ -119,6 +120,8 @@ const getBagsProducts = () =>{
         }
 
        </Catalogue>
+       :
+       <SkeletonCatalogue />
        }
 
 {necklaceList.length !== 0 &&

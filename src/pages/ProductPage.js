@@ -28,6 +28,7 @@ const {errorFeedback,capitalizeFirstLetter,updateWishlistByAction,userMail,
     successFeedback,contextHolder
 
 }= useContext(MyContext);
+
 const [product,setProduct] = useState(null);
 const [similarProductsList,setSimilarProductsList] = useState([])
 const location = useLocation();
@@ -35,7 +36,11 @@ const [show, setShow] = useState(false);
 const [quantity,setQuantity] = useState(1);
 const [color,setColor] = useState('');
 const [errorMessage,setErrorMessage] = useState('');
+const [largeImage,setLargeImage] = useState('');
 
+const updateLargeImage = (imageLink) => {
+    setLargeImage(imageLink);
+}
 
 const toggleModal = ()=> {
     setShow(!show);
@@ -43,7 +48,7 @@ const toggleModal = ()=> {
 }
 
 const incrementQuantity = () =>{
-    if(quantity > 8){
+    if(quantity > 7){
      return false
     }else{
         setQuantity(quantity + 1)
@@ -51,8 +56,8 @@ const incrementQuantity = () =>{
 }
 
 const decrementQuantity = () =>{
-    if(quantity < 1 ){
-     return false
+    if(quantity < 2){
+     return false;
     }else{
         setQuantity(quantity - 1)
     }
@@ -111,6 +116,9 @@ console.log(productData);  // Log the product data
     // Use getCoverImage to get the cover image from product_images
 const coverImage = getCoverImage(productData.product_images);
 
+ //set largeview image
+ setLargeImage(coverImage.imageLink);
+
 // Add coverImage to the product data
 productData.coverImage = coverImage;
 
@@ -158,6 +166,8 @@ const updatedItems = itemsArray.map((item) => ({
     ...item,
     coverImage: getCoverImage(item.product_images),
   }));
+
+ 
 
     setSimilarProductsList(updatedItems)
 
@@ -309,15 +319,27 @@ Home
 
 <div className='product-images-container'>
 
-{product.coverImage && <img src={product.coverImage.imageLink} className='active-product-img' alt={product.name}  />}
+{product.coverImage && 
 
 
+
+<img src={largeImage} className='active-product-img' alt={product.name}  />
+}
+
+{/* <img src={product.coverImage.imageLink} className='active-product-img' 
+alt={product.name}  /> */}
 
 <div className='alternative-imgs'>
 
 {product.product_images.length > 1 &&
 <>
-{product.product_images.map((item)=> <img src={item.imageLink} className='non-active-product-img' alt="" />)}
+{product.product_images.map((item)=> 
+<img
+src={item.imageLink} 
+className={`non-active-product-img ${largeImage == item.imageLink && 'active-large-img'}`}
+ alt={item.imageLink}
+ onClick={() => updateLargeImage(item.imageLink)}
+ />)}
 
 
 </>

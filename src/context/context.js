@@ -773,13 +773,22 @@ export const MyContextProvider  = (props) =>{
       }
 
         //this function toggles between add and removing wishlist from server
-    const updateWishlistByAction = async(prod_id) =>{
+    const updateWishlistByAction = async(prod_id,remove) =>{
       try{
        
       if(!userMail){
           errorFeedback('Login to save an item')
           return false;
-      }    
+      }  
+
+      if(remove){
+      //console.log('Removing cart');
+      const newWishListData = wishlistData.filter((item) => item.product_id !== prod_id);
+      setWishlistData(newWishListData);
+
+      }  
+
+
    
 
        const wishlistCollRef =  collection(db,"wishlist");
@@ -804,7 +813,7 @@ export const MyContextProvider  = (props) =>{
 
 
        }else{
-        warningFeedback('Removing product from wishlist');
+       // warningFeedback('Removing product from wishlist');
           //exist delete matching field
           const updatePromises = querySnapshot.docs.map((docSnapshot) => {
               const docRef = doc(db, "wishlist", docSnapshot.id);
@@ -882,9 +891,14 @@ export const MyContextProvider  = (props) =>{
             if(!userMail){
               //not login
               return false;
-           }   
+           } 
+           
+           //filter list to give immediate feedback
+          // const newOrderList = orderList.filter((item) => item.id !== id);
+          const newCartList = cartListData.filter((item) => item.product_id !== prod_id ) 
+          setCartListData(newCartList);
           
-           warningFeedback('Removing product from cart');
+          // warningFeedback('Removing product from cart');
            const cartCollRef =  collection(db,"cart");
            const q = query(
             cartCollRef,

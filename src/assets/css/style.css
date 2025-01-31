@@ -184,6 +184,12 @@ p{
   .product-card .product-img{
     object-fit: cover;
   }
+  .skeleton-product-card{
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+    
+  }
    /*main category*/
    .major-product-categories{
     display: flex;
@@ -325,6 +331,12 @@ p{
   .product-images-container .non-active-product-img{
     width: 20%;
     margin-right: 10px;
+  }
+
+  .product-images-container .active-large-img{
+    padding: 5px;
+    border: 2px solid #e3e3e3;
+    border-radius: 5px;
   }
 
   .product-container .product-content .title{
@@ -694,6 +706,7 @@ p{
     font-size: 12px;
     gap:15px;
     margin: 10px 0;
+    align-items: center;
   }
 
   .payment-order-content .summary-order-product .prod-title{

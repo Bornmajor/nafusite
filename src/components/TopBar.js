@@ -212,13 +212,13 @@ onClick={() => logOut()}>
  
 <Nav.Link
 to="/#pricing-section"
-className={`${getNavLinkClass('/staff')} link-sm-device`}
+className={`${getNavLinkClass('/staff')} link-sm-device mt-3`}
 onClick={() => {
   setModalType('account')
   toggleModal();
   
   }}
-as={Link}>
+>
 <FaUserAlt color='black' /> Login
 </Nav.Link> 
  

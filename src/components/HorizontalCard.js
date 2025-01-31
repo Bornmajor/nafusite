@@ -47,7 +47,7 @@ return (
 </span>
 :
 //if wishist mode
-<span onClick={() => updateWishlistByAction(id)}>
+<span onClick={() => updateWishlistByAction(id,'remove')}>
 <IoMdCloseCircle fontSize={30}/>
 </span>
 

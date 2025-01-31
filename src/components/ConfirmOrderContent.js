@@ -109,7 +109,7 @@ const ConfirmOrderContent = () => {
         <div className='confirm-order-container'>
 
         <Alert
-        message="Please follow instructions to complete your order within 10 minutes.Use your transaction number to make a payment."
+        message="Please follow instructions to complete your order in the next 10 minutes.Use your transaction number to make a payment."
         type="warning"
         closable 
         showIcon

@@ -212,6 +212,7 @@ const PaymentConfirmOrderContent = () => {
 cartProductsArray.map((item) => 
 
 <div className='summary-order-product' key={item.id}>
+  <img src={item.coverImage.imageLink} className='img-product' alt={item.coverImage.imageLink}/>
 <p className='prod-title text-truncate'>{item.product_title}</p>
 <div>
 <p>Ksh {item.product_price} x {item.quantity} </p>  
