@@ -6,17 +6,21 @@
 .nav-link:hover{
   font-weight: 600;
   color: #f29632;
-
+ 
 }
 .navbar-brand{
   background-color: transparent;
   box-shadow: none;
 }
+.menu-top-navbar{
+  border: none;
+}
 .top-bar-logo-img{
   width: 60px;
 }
+
 .app-link{
-  color: #f29632;
+  color: #f58d1e;
   text-decoration: none;
   cursor: pointer;
 }
@@ -100,6 +104,24 @@ p{
   text-align: center;
   margin: 20px 0;
 }
+.catalogue .group-scroll-btns{
+  margin: 5px 20px;
+  display: flex;
+  align-items: center;
+}
+.catalogue .group-scroll-btns .scroll-btn{
+ font-size: 20px;
+ color: #f29632;
+ background-color: #f1f1f1;
+ padding: 8px;
+ border-radius: 5px;
+ margin-right: 10px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
+}
+
 /*hero section*/
 
 .hero-section .cover-img{
@@ -286,6 +308,7 @@ p{
   }
 
   .product-page-container{
+    position: relative;
     padding: 30px;
   }
 
@@ -629,15 +652,15 @@ p{
     font-size: 15px;
     font-weight: 600;
     color:white;
-    background-color: black;
-    width: 40px;
-    height: 40px;
+    background-color:  #f29632;
+    /* width: 40px;
+    height: 40px; */
     border-radius: 50%;
     margin: 0px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid #efaf6a ;
+    border: 1.8px solid  black;
     cursor: pointer;
 
   }
@@ -883,7 +906,42 @@ p{
    .gap-30{
     gap: 30px;
    }
+   .font-12{
+    font-size: 12px;
+   }
+   .font-14{
+    font-size: 14px;
+   }
+   .font-18{
+    font-size: 18px;
+   }
+   .font-20{
+    font-size: 20px;
+   }
+
+   /*Update adddress Content */
+   .add_address_section{
+    border-radius:  1px solid #f29632;
+
+   }
  
+   .address-form .location-card{
+    border: 1px solid #f29632;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    margin-right: 10px;
+    max-width: 300px;
+    display: flex;
+    align-items: flex-start;
+    gap:8px;
+    text-align: start;
+    font-size: 14px;
+   }
+
+   /* .address-form .location-card .area{
+    font-size: 18px;
+   } */
 
   
 
@@ -957,6 +1015,7 @@ p{
 
   
      }
+
 }
 
  
@@ -1016,6 +1075,14 @@ p{
 }
 
 @media screen and (max-width: 640px) {
+    .product-page-container .product-container{
+  flex-direction: column;
+  
+  }
+  .product-container .product-images-container{
+    width: 100%;
+    max-width: 350px;
+  }
 
 .footer{
   flex-direction: column;
@@ -1033,14 +1100,8 @@ display: none;
 
 
 @media screen and (max-width: 810px) {
-  .product-page-container .product-container{
-  flex-direction: column;
-  
-  }
 
-  .product-container .product-images-container{
-    width: 100%;
-  }
+
 
   .hero-section .cover-img{
     height:40vh;
@@ -1083,6 +1144,12 @@ display: none;
     .cart-products-container .sm-cart-info{
       display: block;
     }
+    .nav-link{
+      font-size: 20px;
+    }
+
+   
+ 
 }
 
 @media screen and (min-width:992px) {

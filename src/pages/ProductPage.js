@@ -17,6 +17,9 @@ import MyContext from '../context/context';
 import { useLocation } from 'react-router-dom';
 import { FaCheck } from "react-icons/fa6";
 import { Modal } from 'react-bootstrap';
+import Description from '../components/Description';
+import SkeletonCatalogue from '../components/SkeletonCatalogue';
+import { BsCartXFill,BsCartCheckFill } from "react-icons/bs";
 
 const ProductPage = () => {
 const params = useParams();
@@ -167,9 +170,9 @@ const updatedItems = itemsArray.map((item) => ({
     coverImage: getCoverImage(item.product_images),
   }));
 
- 
-
-    setSimilarProductsList(updatedItems)
+    //remove currrent itemon
+    const updatedfilteredItems = updatedItems.filter((item) => item.id !== params.prodId);
+    setSimilarProductsList(updatedfilteredItems)
 
 
 }catch(error){
@@ -322,7 +325,6 @@ Home
 {product.coverImage && 
 
 
-
 <img src={largeImage} className='active-product-img' alt={product.name}  />
 }
 
@@ -362,7 +364,8 @@ className={`non-active-product-img ${largeImage == item.imageLink && 'active-lar
 <p className='pricing mb-2'>Ksh <span className='num'>{product.product_price}</span></p>
 
 <p className='desc mb-4'>
-{product.product_desc}   
+<Description text={product.product_desc}  maxLength={200} />    
+  
 </p>
 
 <div className='product-form'>
@@ -375,16 +378,27 @@ className={`non-active-product-img ${largeImage == item.imageLink && 'active-lar
 
 userMail ?
 
-<button className='btn btn-primary' onClick={toggleModal}>Add to cart</button>
+<button className='btn btn-primary' onClick={toggleModal}>
+    <span className='d-flex align-items-center gap-10'>
+   <BsCartCheckFill />
+    Add to cart
+    </span>
+   
+ </button>
 :
 <button className='btn btn-primary' onClick={() => errorFeedback('Login to add product to your cart')}>Add to cart</button>
 :
-<button className='btn btn-primary' onClick={() => 
+<button className='btn btn-outline-primary' onClick={() => 
     {
      toggleCartBtn();
     removeProductCart(params.prodId) }    
-    }  >
-    Remove from cart</button>
+    } >
+        <span className='d-flex align-items-center gap-10'>
+    <BsCartXFill />   
+    Remove from cart   
+        </span>
+   
+    </button>
 }
 
 
@@ -422,7 +436,8 @@ userMail ?
 </div>
 <div className='similar-products'>
 
-{similarProductsList.length !== 0 &&
+{similarProductsList.length !== 0 ?
+
 <Catalogue title="Similar products">
 {
 similarProductsList.map((item) => (
@@ -437,6 +452,9 @@ price={item.product_price}
 }
 
 </Catalogue>
+
+:
+<SkeletonCatalogue />
 }
 
 

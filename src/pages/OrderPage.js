@@ -108,9 +108,6 @@ const OrderPage = () => {
             setErrorMessage('Order ID doesnot exist');
             return false;
 
-
-
-
         }
 
         const orderData = {id:docSnapshot.id,...docSnapshot.data()};
@@ -203,7 +200,7 @@ const OrderPage = () => {
 
                 
 
-               <p className='page-header bold'>Order ID: {params.orderId}</p>  
+               <p className='page-header'>Order ID: <span className='bold'>{params.orderId}</span></p>  
                
              </div>
 

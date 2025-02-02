@@ -249,10 +249,10 @@ required
   {authType === 'login' ? 'Login':'Create account'}
    </Button>
 
-<div class="form-check form-switch my-3">
+{/* <div class="form-check form-switch my-3">
   <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="keep_me_in" checked />
   <label class="form-check-label" for="flexSwitchCheckDefault">Keep me sign In</label>
-</div>
+</div> */}
 
 <div className='alternative-link-container my-3'>
   {authType === 'login' ?

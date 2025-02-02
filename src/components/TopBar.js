@@ -3,17 +3,24 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import MyContext from '../context/context';
 import appLogo from '../assets/images/logo.png';
 import { useLocation } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { FaUserCircle } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import LoginLetterAvatar from './LoginLetterAvatar';
 import { BsBagCheckFill } from "react-icons/bs";
+import { SiPantheon } from 'react-icons/si';
+import { CgMenuRight } from "react-icons/cg";
+import { FaUserCircle } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import ringImg from '../assets/images/icons8-wedding-rings-100.png'
+import braceletImg from '../assets/images/icons8-bracelet-90.png'
+import bagImg from '../assets/images/icons8-bag-100.png'
+import necklaceImg from '../assets/images/icons8-necklace-100.png'
 
 
 
@@ -124,7 +131,9 @@ toggleModal();
   </span> 
 
 
-<Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} />
+<Navbar.Toggle aria-controls="offcanvasNavbar" className='menu-top-navbar' onClick={toggleNavbar} >
+  <CgMenuRight  fontSize={'28px'} color='#f29632' />
+  </Navbar.Toggle>
 </div>
 
 
@@ -145,13 +154,74 @@ onHide={toggleNavbar}
 <Nav className='justify-content-end flex-grow-1 pe-3'>
 
 
+<div className='link-sm-device mb-3 pb-3'>
+{userMail !== '' ? 
+
+//if logged in
+<div className='d-flex align-items-center gap-10'>
+
+  <span onClick={() => {
+  setModalType('profile')
+  toggleModal();
+  }}>
+    <LoginLetterAvatar email={userMail} isDroppable={false} width={'50px'} height={'50px'}/>
+  </span>
+
+ 
+ <div>
+  <p className='font-20'>{usernameWithoutEmail(userMail)}</p> 
+  <p className='clickable-item font-14' onClick={() =>  logOut()}> <FiLogOut /> logout</p>
+  </div>
+
+
+</div>
+
+:
+<span  className='clickable-item mx-2'
+onClick={() => {
+setModalType('account')
+toggleModal();
+}}
+>
+  <div className='d-flex align-items-center gap-10'>
+   <FaUserCircle size={30} color='black' />  <p className='font-20'>Sign In</p> 
+  </div>
+
+</span>
+
+}
+</div>
+
+
+
 
 
 {/* <Nav.Link to="/" id="nav-home-link" className={getNavLinkClass('/')} as={Link}>Home</Nav.Link> */}
-<Nav.Link to="/category/necklace" className={getNavLinkClass('/category/necklace')} as={Link}>Necklace</Nav.Link>
-<Nav.Link to="/category/bracelets" className={getNavLinkClass('/category/bracelets')} as={Link}>Bracelets</Nav.Link>
-<Nav.Link to="/category/earrings" className={getNavLinkClass('/category/earrings')} as={Link}>Earrings</Nav.Link>
-<Nav.Link to="/category/bags" className={getNavLinkClass('/category/bags')} as={Link}>Hand bags</Nav.Link>
+
+{
+ userMail && 
+  <Nav.Link
+className={`${getNavLinkClass('/staff')} link-sm-device`}
+onClick={() => {
+setModalType('orders');
+toggleModal();   
+}}>
+Orders
+
+</Nav.Link>}
+
+<Nav.Link to="/category/necklace" className={`${getNavLinkClass('/category/necklace')}`} as={Link}>
+ Necklace
+</Nav.Link>
+<Nav.Link to="/category/bracelets" className={`${getNavLinkClass('/category/bracelets')}`} as={Link}>
+ Bracelets
+</Nav.Link>
+<Nav.Link to="/category/earrings" className={`${getNavLinkClass('/category/earrings')} `} as={Link}>
+ Earrings
+</Nav.Link>
+<Nav.Link to="/category/bags" className={`${getNavLinkClass('/category/bags')}`} as={Link}>
+ Hand bags
+</Nav.Link>
 
 {/* <Nav.Link to="/#none"
 className={`${getNavLinkClass('/staff')} link-sm-device`}  
@@ -175,7 +245,7 @@ toggleModal();
  </Nav.Link> */}
 
 
- {userMail !== '' 
+ {/* {userMail !== '' 
  ?
  <div className='mt-4'>
   <Nav.Link
@@ -222,14 +292,14 @@ onClick={() => {
 <FaUserAlt color='black' /> Login
 </Nav.Link> 
  
- }
+ } */}
 
 
 
 
 
 </Nav>
-<Nav className='justify-content-end flex-grow-1 pe-3 top-right-nav-content'>
+<Nav className='justify-content-end align-items-center flex-grow-1 pe-3 top-right-nav-content'>
 <a type="button" className="position-relative mx-2" 
 onClick={() => {
   
@@ -260,16 +330,16 @@ toggleModal();
 
 {userMail !== '' ? 
 //if logged in
-<LoginLetterAvatar email={userMail}/>
+<LoginLetterAvatar email={userMail} isDroppable={true}/>
 :
-<Link className='mx-2'
+<span  className='clickable-item mx-2'
 onClick={() => {
 setModalType('account')
 toggleModal();
 }}
 >
-<FaUserAlt size={25} color='black' />
-</Link>
+<FaUserCircle size={28} color='black' />
+</span>
 
 }
 

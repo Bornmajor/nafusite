@@ -24,6 +24,7 @@ export const MyContextProvider  = (props) =>{
      const [listAllProducts,setListAllProducts] =useState([]);
      const [currentUserWishlist,setCurrentUserWishlist] = useState([])
      const  [cartProductsArray,setCartProductsArray] = useState([]);
+     const [orderAddress,setOrderAddress] = useState('');
 
      //order id for new created order for payment confirm
      const [sessionOrderId,setSessionOrderId] = useState('');
@@ -1016,7 +1017,8 @@ export const MyContextProvider  = (props) =>{
         updateWishlistByAction,
         currentUserWishlist,
         listCounties,viewOrderType,setViewOrderType,
-        sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList
+        sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList,
+        orderAddress,setOrderAddress
 
 
       }}>

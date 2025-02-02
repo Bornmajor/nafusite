@@ -17,7 +17,7 @@ import { Button } from 'antd';
 const PaymentConfirmOrderContent = () => {
 
     const {userMail,errorFeedback,cartProductsArray,setViewOrderType
-      ,viewOrderType,cartListData,successFeedback,setSessionOrderId,warningFeedback
+      ,viewOrderType,cartListData,successFeedback,setSessionOrderId,orderAddress, setOrderAddress,warningFeedback
     } = useContext(MyContext);
      const [profileData, setProfileData] = useState(null);
      const [errorMessage,setErrorMessage] =useState('');
@@ -50,11 +50,7 @@ const PaymentConfirmOrderContent = () => {
     
           const userData = { ...docSnapshot.data() };
           setProfileData(userData);
-        //   setOfficialName(userData.official_names || '');
-        //   setPhonenumber(userData.phone_number || '');
-        //   setLocation(userData.location || '');
-        //   setSelectedCounty(userData.county || '');
-        //   setSelectedConstituency(userData.constituency || '');
+
 
         } catch (error) {
           console.log(`Profile fetch data error: ${error.message}`);
@@ -87,6 +83,12 @@ const PaymentConfirmOrderContent = () => {
           setIsFormLoading(false);
           return false;  // Returns false if the string contains non-numeric characters
         }
+
+        if (!orderAddress) {
+          errorFeedback('Address required restart process');
+          setIsFormLoading(false);
+          return;
+        }
          
 
          //saved address
@@ -96,13 +98,16 @@ const PaymentConfirmOrderContent = () => {
             
          const userData = { ...docSnapshot.data() };
 
-         const address = {
+         const contact_address = {
             "phone_number": userData.phone_number,
             "official_names":userData.official_names,
-            "county":userData.county,
-            "constituency":userData.constituency,
-            "location":userData.location          
+         
          };
+
+         const address = {
+          ...contact_address,...orderAddress
+         }
+
 
         const orderCollectionRef =  collection(db,"orders");
         const orderData = {
@@ -122,6 +127,7 @@ const PaymentConfirmOrderContent = () => {
         setIsFormLoading(false);
         successFeedback('Order created!!');
         setViewOrderType('confirm');
+        setOrderAddress('');
 
 
         }catch(error){
@@ -170,11 +176,15 @@ const PaymentConfirmOrderContent = () => {
 <p className='text-content text-truncate'> <BsFillTelephoneFill /> {profileData.phone_number}</p>   
 </div>
 
+{orderAddress &&
 <div className='my-2'>
-<p className='text-content text-truncate'> <FaCity /> {profileData.county}</p>
-<p className='text-content text-truncate'> <FaBuilding /> {profileData.constituency} </p>
-<p className='text-content text-truncate'> <AiFillHome /> {profileData.location}</p>   
+<p className='text-content text-truncate'> <FaCity /> {orderAddress.county}</p>
+<p className='text-content text-truncate'> <FaBuilding /> {orderAddress.constituency} </p>
+<p className='text-content text-truncate'> <AiFillHome /> {orderAddress.location}</p>   
 </div>
+}
+
+
 </div>
 :
 <div className='d-flex align-items-center justify-content-center inner-loader' >
