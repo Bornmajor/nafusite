@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Link, NavLink } from 'react-router-dom';
 import MyContext from '../context/context';
-import appLogo from '../assets/images/logo.png';
+import appLogo from '../assets/images/new_logo.png';
 import { useLocation } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
@@ -164,7 +164,7 @@ onHide={toggleNavbar}
   setModalType('profile')
   toggleModal();
   }}>
-    <LoginLetterAvatar email={userMail} isDroppable={false} width={'50px'} height={'50px'}/>
+    <LoginLetterAvatar email={userMail} isDroppable={false} width={'53px'} height={'53px'}/>
   </span>
 
  

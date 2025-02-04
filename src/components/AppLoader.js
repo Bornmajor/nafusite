@@ -1,5 +1,5 @@
 import React from 'react'
-import appLogo from '../assets/images/logo.png'
+import appLogo from '../assets/images/new_logo.png'
 
 const AppLoader = ({statusMsg}) => {
  

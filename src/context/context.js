@@ -969,6 +969,15 @@ export const MyContextProvider  = (props) =>{
           }
       }
 
+
+         // Function to generate a random 16-character token
+const generateToken = () => {
+  return [...Array(32)]
+    .map(() => Math.random().toString(36)[2])
+    .join('');
+};
+
+
       
        useEffect(()=>{
         fetchAllProducts();
@@ -1018,7 +1027,7 @@ export const MyContextProvider  = (props) =>{
         currentUserWishlist,
         listCounties,viewOrderType,setViewOrderType,
         sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList,
-        orderAddress,setOrderAddress
+        orderAddress,setOrderAddress,generateToken
 
 
       }}>

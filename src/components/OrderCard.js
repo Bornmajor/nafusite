@@ -7,6 +7,8 @@ import { doc,deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { Popconfirm } from 'antd';
 import { IoCalendarClearSharp } from "react-icons/io5";
+import { FaCircleCheck } from "react-icons/fa6";
+import { IoCloseCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 const OrderCard = ({id,status,total_amount,order_date}) => {
@@ -86,7 +88,36 @@ const OrderCard = ({id,status,total_amount,order_date}) => {
              <p className='order-id long-text bold text-truncate'>Order: {id}</p>
             <p className='status bold' style={{
                 color: getStatusColor(status) 
-            }}><TbAlertSquareRoundedFilled /> {status}</p>  
+            }}>
+              {status == 'pending_payment' && (
+                <>
+                 <TbAlertSquareRoundedFilled /> Pending payment
+                </>
+               
+                )}
+
+            {status == 'completed' && (
+                <>
+                 <FaCircleCheck /> Completed
+                </>
+               
+                )}
+
+             {status == 'paid' && (
+                <>
+                 <FaCircleCheck /> Paid
+                </>
+               
+                )}
+
+          {status == 'cancelled' && (
+                <>
+                 <IoCloseCircle/> Cancelled
+                </>
+               
+                )}
+              
+              </p>  
             </Link>
 
             <Link className='inner-container' to={`/order/${id}`}>

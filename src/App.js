@@ -11,6 +11,8 @@ import CategoryPage from './pages/CategoryPage';
 import { MyContextProvider } from './context/context';
 import ProductPage from './pages/ProductPage';
 import OrderPage from './pages/OrderPage';
+import ForgetPassword from './pages/ForgetPassword';
+import ResetPassword from './pages/ResetPassword';
 
 
 
@@ -37,9 +39,19 @@ function App() {
           path:"/order/:orderId",
           element:<OrderPage />
 
-        }
-  
+        },
+        
       ],
+      errorElement:<ErrorPage />
+    },
+    {
+      path:"/forget-password",
+      element:<ForgetPassword />,
+      errorElement:<ErrorPage />
+    },
+    {
+      path:"/reset-password/:email/:token",
+      element:<ResetPassword />,
       errorElement:<ErrorPage />
     }
 

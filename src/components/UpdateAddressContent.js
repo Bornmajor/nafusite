@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import MyContext from '../context/context';
 import { Button } from 'antd';
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { IoIosArrowBack } from "react-icons/io";
 import { LuMapPinCheckInside } from "react-icons/lu";
 import { MdAddLocationAlt } from "react-icons/md";
+import { IoMdCloseCircle } from "react-icons/io";
 
 const UpdateAddressContent = () => {
   const { listCounties, errorFeedback, userMail,
@@ -30,6 +31,7 @@ const UpdateAddressContent = () => {
   const fetchUserData = async () => {
     try {
       if (!userMail) return;
+      setIsFormLoading(true);
 
       const userDocRef = doc(db, "users", userMail);
       const docSnapshot = await getDoc(userDocRef);
@@ -44,6 +46,8 @@ const UpdateAddressContent = () => {
       setOfficialName(userData.official_names || '');
       setPhonenumber(userData.phone_number || '');
       setAddressList(userData.address);
+
+      setIsFormLoading(false);
      // setLocation(userData.location || '');
       // setSelectedCounty(userData.county || '');
       // setSelectedConstituency(userData.constituency || '');
@@ -141,8 +145,11 @@ const UpdateAddressContent = () => {
       
       const userDocRef = doc(db, "users", userMail);
       
+      const randomString = generateLocalId();
+
       //new address
       const new_address = {
+        loc_id: randomString,
         county: selectedCounty,
         constituency: selectedConstituency,
         location,
@@ -162,21 +169,55 @@ const UpdateAddressContent = () => {
     setIsFormLoading(false);
   };
 
+  //generate random string for loc_id
+  function generateLocalId() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+  }
+
   //update order Address context
   const updateOrderAddress = (location,county,constituency) =>{
 
+    
     const orderAddressObject = {
+      
       county,
       constituency,
       location,
       
     }
     setOrderAddress(orderAddressObject);
+    // console.log(orderAddressObject);
     setErrorAddressEntry(false)
 
 
-  
+  }
 
+  //removing object in address array from users collection
+  const deleteAddress = async(loc_id,location,county,constituency) =>{
+    try{
+      if(!userMail){return false; }
+      const userDocRef = doc(db,"users",userMail);
+
+      const removeItem = {
+        loc_id,
+        location,
+        county,
+        constituency
+      }
+
+      await updateDoc(userDocRef,{
+        address:arrayRemove(removeItem)
+      });
+
+      successFeedback('Address removed');
+      fetchUserData();
+
+
+    }catch(error){
+      errorFeedback(`Remove address failed:${error.message}`);
+      console.log('Failed to remove address');
+      
+    }
   }
   // useEffect(()=>{
   //   console.log(orderAddress);
@@ -216,7 +257,16 @@ const UpdateAddressContent = () => {
 
         addressList.map((item,index) => 
 
-        <div className='my-2' key={index}>
+        <div className='container-location-card my-2' key={index}>
+
+          <div className="d-flex justify-content-end mb-1 mx-1">
+          <span className='app-link' onClick={() => 
+            deleteAddress(item.loc_id,item.location,item.county,item.constituency)}
+            ><IoMdCloseCircle fontSize={25} /></span>  
+            </div>
+          
+          
+
         <input type="radio"
          className="btn-check "
           name="address"
@@ -235,6 +285,10 @@ const UpdateAddressContent = () => {
        </div>
 
        </label>
+
+       
+
+
        </div>
 
         )  

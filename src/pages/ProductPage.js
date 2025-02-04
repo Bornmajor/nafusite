@@ -116,6 +116,10 @@ if (!docSnapshot.exists()) {
 const productData = { id: docSnapshot.id, ...docSnapshot.data() };  // Include doc ID with data
 console.log(productData);  // Log the product data
 
+//update header title
+document.title = productData.product_title;
+
+
     // Use getCoverImage to get the cover image from product_images
 const coverImage = getCoverImage(productData.product_images);
 
@@ -124,6 +128,7 @@ const coverImage = getCoverImage(productData.product_images);
 
 // Add coverImage to the product data
 productData.coverImage = coverImage;
+
 
     
     setProduct(productData);

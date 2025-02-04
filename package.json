@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "antd": "^5.22.7",
-    "bcrypt": "^5.1.1",
+    "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
+    "dotenv": "^16.4.7",
     "firebase": "^11.1.0",
     "motion": "^11.17.0",
     "react": "18.0.0",
@@ -45,5 +47,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.26.0",
+    "buffer": "^6.0.3",
+    "https-browserify": "^1.0.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0"
   }
 }

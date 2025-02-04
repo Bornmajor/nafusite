@@ -9,14 +9,16 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore
 import bcrypt from "bcryptjs";
 import {db} from '../firebase/firebaseConfig'
 import validator from 'validator'; //validate email
-import appLogo from '../assets/images/logo.png'
+import appLogo from '../assets/images/new_logo.png'
 import { Select } from 'antd';
 
 const AccountModalContent = () => {
    const [isFormLoading,setIsFormLoading] = useState(false);
    const [email,setEmail] = useState('');
    const [pwd,setPwd] = useState('');
-   const {errorFeedback,contextHolder,successFeedback,fetchUserTokenFromDevice,toggleModal,setModalType} = useContext(MyContext);
+   const {errorFeedback,contextHolder,successFeedback,
+    fetchUserTokenFromDevice,toggleModal,setModalType,
+    generateToken} = useContext(MyContext);
    const [authType,setAuthType] = useState('login');
    const [isOnline, setIsOnline] = useState(navigator.onLine);
    const navigate = useNavigate();
@@ -52,12 +54,6 @@ const AccountModalContent = () => {
     };
   }, []);
 
-   // Function to generate a random 16-character token
-const generateToken = () => {
-  return [...Array(32)]
-    .map(() => Math.random().toString(36)[2])
-    .join('');
-};
 
    const submitForm = async() =>{
     try{
@@ -196,7 +192,7 @@ const generateToken = () => {
          
          } else {
            // Incorrect password
-           errorFeedback("Authentication failed!Verify your email address or password");
+           errorFeedback("Authentication failed! Email or password is incorrect");
                 //enable submit btn
          setIsFormLoading(false); 
          }
@@ -222,6 +218,7 @@ const generateToken = () => {
 
 return (
 <div className='account-setup-container'>
+  
 {contextHolder}
 <div className='logo-container'>
 <img alt="app logo" src={appLogo} className='logo-img'/>
@@ -256,13 +253,13 @@ required
 
 <div className='alternative-link-container my-3'>
   {authType === 'login' ?
-   <Link className='alternative-link' onClick={() => setAuthType('register')}>Create an account </Link>
+   <span className='clickable-item alternative-link' onClick={() => setAuthType('register')}>Create an account </span>
     :
-   <Link className='alternative-link' onClick={() => setAuthType('login')}>Already have an account</Link> 
+   <span className='clickable-item alternative-link' onClick={() => setAuthType('login')}>Already have an account</span> 
    }
  
 
-<Link className='alternative-link mx-3'>Forgot password</Link>
+<Link className='alternative-link mx-3' to="/forget-password">Forgot password</Link>
 
 
 

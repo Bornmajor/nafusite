@@ -51,13 +51,6 @@ const ProfileModalContent = () => {
 
               }
 
-              if(location === '' || location.trim() === ' '){
-                // Validate email
-                errorFeedback('Location field required');
-                setIsFormLoading(false);     
-                return false;
-
-              }
 
               const userDocRef = doc(db,"users",userMail);
               const userDoc = await getDoc(userDocRef);
@@ -95,6 +88,8 @@ const ProfileModalContent = () => {
         return false;
         }
 
+        setIsFormLoading(true);
+
         const userDocRef = doc(db,"users",userMail);
         const  docSnapshot  = await getDoc(userDocRef);
 
@@ -114,7 +109,9 @@ const ProfileModalContent = () => {
        setOfficialName(userData.official_names);
        setPhonenumber(userData.phone_number);
        setLocation(userData.location);
-       setSecondaryNumber(userData.secondary_number);
+
+       setIsFormLoading(false);
+       
 
 
 

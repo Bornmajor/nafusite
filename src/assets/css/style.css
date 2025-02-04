@@ -16,7 +16,7 @@
   border: none;
 }
 .top-bar-logo-img{
-  width: 60px;
+  width: 90px;
 }
 
 .app-link{
@@ -68,6 +68,16 @@
     background-color: #f29632;
     border-color: #f29632;
   }
+  /* .btn-outline-primary:checked{
+    background-color: #f29632 !important;
+  } */
+
+  .btn-check:checked + .btn-outline-primary {
+    background-color: #f29632  !important; /* Change to your preferred color */
+    color: white !important;
+    border-color: #f29632  !important;
+}
+
   .btn-outline-secondary,.btn-outline-warning{
     padding: 8px 15px;
     border-radius: 20px;
@@ -635,7 +645,7 @@ p{
   .loader {
     width: 80px;
     aspect-ratio: 4;
-    --c:#f5ae49 90%,#0000;
+    --c:#ad7d53 90%,#0000;
     background: 
       radial-gradient(circle closest-side at left  6px top 50%,var(--c)),
       radial-gradient(circle closest-side                     ,var(--c)),
@@ -919,6 +929,14 @@ p{
     font-size: 20px;
    }
 
+   .view-order-modal .status-order-tab{
+    margin-right: 5px;
+    min-width: 100px;
+    max-width: 120px;
+    font-size: 14px;
+    padding: 5px 0px;
+    /* text-align: start; */
+   }
    /*Update adddress Content */
    .add_address_section{
     border-radius:  1px solid #f29632;
@@ -937,11 +955,35 @@ p{
     gap:8px;
     text-align: start;
     font-size: 14px;
+    max-width: 280px;
+    min-width: 200px;
    }
 
    /* .address-form .location-card .area{
     font-size: 18px;
    } */
+
+   /*Forget and reset password */
+   .recovery-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+   }
+
+   .recovery-form-container{
+    background-color: #f1f1f1;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 5px;
+   }
+   .recovery-form-container .logo-img{
+    width: 150px;
+   }
+
+
+
 
   
 
@@ -997,7 +1039,7 @@ p{
 
 @media screen and (max-width:325px) {
 .top-bar-logo-img{
-  width: 45px;
+  width: 75px;
 }
 }
 
@@ -1146,6 +1188,11 @@ display: none;
     }
     .nav-link{
       font-size: 20px;
+    }
+    .login-letter-avatar{
+      font-size: 20px;
+
+  
     }
 
    
