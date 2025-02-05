@@ -197,6 +197,7 @@ const OrderPage = () => {
                 {order.status == 'pending_payment' && (<Alert className='alert-status my-2' message="Pending payment" type="warning" />)              }
                 {order.status == 'cancelled' && (<Alert className='alert-status my-2' message="Cancelled" type="danger" />)}
                  {order.status == 'completed' && (<Alert className='alert-status my-2' message="Completed" type="success" />)}
+                 {order.status == 'paid' && (<Alert className='alert-status my-2' message="Paid" type="success" />)}
 
                 
 

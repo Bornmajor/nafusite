@@ -11,7 +11,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 const UpdateAddressContent = () => {
   const { listCounties, errorFeedback, userMail,
      successFeedback, setViewOrderType, viewOrderType,toggleModal,
-     setOrderAddress,orderAddress
+     setOrderAddress,orderAddress,updateLastUserActive
      } = useContext(MyContext);
   const [isFormLoading, setIsFormLoading] = useState(false);
 
@@ -114,6 +114,9 @@ const UpdateAddressContent = () => {
         official_names: officialName,
         phone_number: phonenumber,
         });
+
+        //update last user active time 
+        await updateLastUserActive(userMail);
 
       successFeedback("Profile saved!!");
       setViewOrderType('payment');

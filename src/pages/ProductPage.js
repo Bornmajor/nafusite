@@ -20,6 +20,7 @@ import { Modal } from 'react-bootstrap';
 import Description from '../components/Description';
 import SkeletonCatalogue from '../components/SkeletonCatalogue';
 import { BsCartXFill,BsCartCheckFill } from "react-icons/bs";
+import { MdRemoveShoppingCart } from "react-icons/md";
 
 const ProductPage = () => {
 const params = useParams();
@@ -28,7 +29,7 @@ const [productLiked,setIsProductLiked] = useState(false);
 const [isCart,setIsCart] = useState(false);
 const {errorFeedback,capitalizeFirstLetter,updateWishlistByAction,userMail,
     wishlistData,cartListData,removeProductCart,getCartProducts,
-    successFeedback,contextHolder
+    successFeedback,contextHolder,updateLastUserActive
 
 }= useContext(MyContext);
 
@@ -249,6 +250,19 @@ getProductById(params.prodId);
         // console.log('Product card renders')
     },[wishlistData]);
 
+    //update userlast activetime on server
+    const updateUserActivity = async() =>{
+
+        if(userMail){
+            await updateLastUserActive(userMail);
+        }
+
+    }
+
+    useEffect(()=>{
+        updateUserActivity();
+    },[userMail]);
+
     //submit form for adding product to cart
     const submitCartForm = async(e) =>{
         try{
@@ -261,6 +275,8 @@ getProductById(params.prodId);
          if(!userMail){
             return false;
          }
+
+         await updateLastUserActive(userMail);
          
          const cartCollectionRef = collection(db,"cart");
          const newDocRef = doc(cartCollectionRef);
@@ -379,7 +395,12 @@ className={`non-active-product-img ${largeImage == item.imageLink && 'active-lar
 
 <div className='action-btn-container '>
 
-{!isCart ?
+{!product.isStock ?
+
+<button className='btn btn-danger' disabled> <MdRemoveShoppingCart /> Out of stock</button>
+:
+
+!isCart ?
 
 userMail ?
 
@@ -404,7 +425,9 @@ userMail ?
         </span>
    
     </button>
-}
+
+}    
+
 
 
 {/* <button className='btn btn-primary' onClick={()=> toggleCartBtn()}><FaCheck /> Added to cart</button> */}

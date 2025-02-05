@@ -9,7 +9,7 @@ import { deleteDoc,doc } from 'firebase/firestore';
 import {Tabs} from 'antd';
 
 const ConfirmOrderContent = () => {
-    const {toggleModal,uiTheme,setViewOrderType,sessionOrderId,userMail,errorFeedback,successFeedback}= useContext(MyContext);
+    const {toggleModal,uiTheme,setViewOrderType,sessionOrderId,userMail,errorFeedback,successFeedback,updateLastUserActive}= useContext(MyContext);
     const [isFormLoading, setIsFormLoading] = useState(false);
     const [paymentMode,setPaymentMode] = useState('mpesa');
     const [alignValue, setAlignValue] = useState('center');
@@ -26,6 +26,8 @@ const ConfirmOrderContent = () => {
 
         await deleteDoc(orderRef);
          successFeedback('Order deleted');
+
+         await updateLastUserActive(userMail);
          setIsFormLoading(false);
          toggleModal();
 

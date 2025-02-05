@@ -170,7 +170,7 @@ onHide={toggleNavbar}
  
  <div>
   <p className='font-20'>{usernameWithoutEmail(userMail)}</p> 
-  <p className='clickable-item font-14' onClick={() =>  logOut()}> <FiLogOut /> logout</p>
+  <p className='clickable-item' onClick={() =>  logOut()}> <FiLogOut /> logout</p>
   </div>
 
 

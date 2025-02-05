@@ -1,6 +1,6 @@
 import { createContext,useEffect,useState } from "react";
 import { message } from "antd";
-import { collection, getDocs, query, where,deleteDoc,setDoc,doc } from "firebase/firestore";
+import { collection, getDocs, query, where,deleteDoc,setDoc,doc, getDoc, updateDoc,orderBy } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 
@@ -592,9 +592,12 @@ export const MyContextProvider  = (props) =>{
 
     };
 
-    const logOut = () =>{
+    const logOut = async() =>{
       try{
-       setIsAppLoading(true) 
+       setIsAppLoading(true);
+       
+       //update last active
+       await updateLastUserActive(userMail);
           //remove tokens
       localStorage.removeItem('nafusiteUserEmail');
       localStorage.removeItem('nafusiteUserToken');
@@ -709,7 +712,13 @@ export const MyContextProvider  = (props) =>{
 
      const fetchAllProducts = async() =>{
           try{
-          const querySnaphot = await getDocs(collection(db,"products"));
+            
+
+          const prodCollectionRef =  collection(db,"products");
+          const q = query(prodCollectionRef,where("isVisible","==",true),orderBy("date_published","desc"));
+
+
+          const querySnaphot = await getDocs(q);
           const itemsArray = querySnaphot.docs.map((doc) => (
               {
                   id:doc.id,
@@ -740,7 +749,7 @@ export const MyContextProvider  = (props) =>{
   
   
           }catch(error){
-              errorFeedback(`Something went wrong:${error.message}`);
+              errorFeedback(`Error fetch all products`);
               console.log(error.message);
   
           }
@@ -782,13 +791,14 @@ export const MyContextProvider  = (props) =>{
           return false;
       }  
 
+      await updateLastUserActive(userMail);
+
       if(remove){
       //console.log('Removing cart');
       const newWishListData = wishlistData.filter((item) => item.product_id !== prod_id);
       setWishlistData(newWishListData);
 
       }  
-
 
    
 
@@ -893,6 +903,8 @@ export const MyContextProvider  = (props) =>{
               //not login
               return false;
            } 
+
+           await updateLastUserActive(userMail);
            
            //filter list to give immediate feedback
           // const newOrderList = orderList.filter((item) => item.id !== id);
@@ -978,6 +990,26 @@ const generateToken = () => {
 };
 
 
+const updateLastUserActive = async(userMail) =>{
+  try{
+
+   const docUserRef = doc(db,"users",userMail);
+   const docSnapshot = await getDoc(docUserRef);
+
+   if(docSnapshot.exists()){
+
+   await updateDoc(docUserRef,{last_active:new Date().toISOString()});
+
+   }
+   
+
+  }catch(error){
+    errorFeedback(`Failed  to update last user active  time`);
+    console.log(`Failed to update last user active time: ${error.message}`)
+  }
+}
+
+
       
        useEffect(()=>{
         fetchAllProducts();
@@ -1027,7 +1059,8 @@ const generateToken = () => {
         currentUserWishlist,
         listCounties,viewOrderType,setViewOrderType,
         sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList,
-        orderAddress,setOrderAddress,generateToken
+        orderAddress,setOrderAddress,generateToken,
+        updateLastUserActive
 
 
       }}>

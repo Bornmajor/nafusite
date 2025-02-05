@@ -122,7 +122,7 @@ const AccountModalContent = () => {
          const token = generateToken();
  
          // Save user to Firestore
-         await setDoc(userDocRef, { email, password: hashedPassword, token,isActive: true });
+         await setDoc(userDocRef, { email, password: hashedPassword, token,isActive: true,last_active:new Date().toISOString() });
          
          // Store email and token in localStorage
          localStorage.setItem("nafusiteUserEmail", email);
@@ -170,11 +170,20 @@ const AccountModalContent = () => {
          // Compare hashed password
          const isPasswordMatch = bcrypt.compareSync(pwd, userData.password);
          if (isPasswordMatch) {
+
+          //check if account is active before allow login
+          if(!userData.isActive){
+           errorFeedback('This account is disabled')
+          //enable submit btn
+          setIsFormLoading(false);
+            return false;
+          }
+
            // Generate a new token for this session
            const newToken = generateToken();
  
            // Update token in Firestore
-           await updateDoc(userDocRef, { token: newToken });
+           await updateDoc(userDocRef, { token: newToken,last_active:new Date().toISOString() });
  
            // Store email and token in localStorage
            localStorage.setItem("nafusiteUserEmail", email);

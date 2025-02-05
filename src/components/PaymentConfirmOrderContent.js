@@ -17,7 +17,8 @@ import { Button } from 'antd';
 const PaymentConfirmOrderContent = () => {
 
     const {userMail,errorFeedback,cartProductsArray,setViewOrderType
-      ,viewOrderType,cartListData,successFeedback,setSessionOrderId,orderAddress, setOrderAddress,warningFeedback
+      ,viewOrderType,cartListData,successFeedback,setSessionOrderId,orderAddress, setOrderAddress,
+      warningFeedback,updateLastUserActive
     } = useContext(MyContext);
      const [profileData, setProfileData] = useState(null);
      const [errorMessage,setErrorMessage] =useState('');
@@ -128,6 +129,8 @@ const PaymentConfirmOrderContent = () => {
         successFeedback('Order created!!');
         setViewOrderType('confirm');
         setOrderAddress('');
+
+        await updateLastUserActive(userMail);
 
 
         }catch(error){

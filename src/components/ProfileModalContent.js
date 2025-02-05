@@ -17,7 +17,7 @@ const ProfileModalContent = () => {
     const [isFormLoading,setIsFormLoading] = useState(false);
     const [profileData,setProfileData]  = useState(null);
     const [userCounty,selectUserCounty] = useState([]);
-    const{errorFeedback,userMail,successFeedback} = useContext(MyContext);
+    const{errorFeedback,userMail,successFeedback,updateLastUserActive} = useContext(MyContext);
 
 
       
@@ -63,6 +63,9 @@ const ProfileModalContent = () => {
                 } 
                 await updateDoc(userDocRef,data);
                 successFeedback("Profile updated");
+
+                  //update last user active time 
+        await updateLastUserActive(userMail);
 
                 setIsFormLoading(false);   
 
