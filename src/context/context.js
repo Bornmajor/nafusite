@@ -993,6 +993,9 @@ const generateToken = () => {
 const updateLastUserActive = async(userMail) =>{
   try{
 
+    if(!userMail){
+      return false;
+  }  
    const docUserRef = doc(db,"users",userMail);
    const docSnapshot = await getDoc(docUserRef);
 
