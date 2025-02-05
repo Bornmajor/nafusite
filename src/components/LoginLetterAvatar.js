@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import MyContext from '../context/context';
+import ConfirmDialog from './ConfirmDialog';
 
 const LoginLetterAvatar = ({email,isDroppable,width,height}) => {
   const {logOut,setModalType,toggleModal} = useContext(MyContext);
@@ -37,7 +38,11 @@ return (
       toggleModal();
 
     }}>Orders</Dropdown.Item>
-      <Dropdown.Item onClick={() => logOut()}>Log out</Dropdown.Item>
+    
+    <ConfirmDialog confirmText={'Do you wish to logout?'} action={async() => await logOut()}>
+    <Dropdown.Item >Log out</Dropdown.Item>   
+    </ConfirmDialog>
+     
     
     </Dropdown.Menu>}
 

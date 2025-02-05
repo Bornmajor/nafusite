@@ -7,10 +7,6 @@ import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import Catalogue from '../components/Catalogue';
 import ProductCard from '../components/ProductCard';
-import product_1 from '../assets/images/IMG_20241116_102001.jpg'
-import product_2 from '../assets/images/IMG_20241116_114701.jpg'
-import product_3 from '../assets/images/IMG_20241116_115256.jpg'
-import product_4 from '../assets/images/IMG_20241116_115343.jpg'
 import { collection, getDoc,doc,query,where,getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import MyContext from '../context/context';
@@ -397,29 +393,29 @@ className={`non-active-product-img ${largeImage == item.imageLink && 'active-lar
 
 {!product.isStock ?
 
-<button className='btn btn-danger' disabled> <MdRemoveShoppingCart /> Out of stock</button>
+<button className='btn btn-danger product-action-btn' disabled> <MdRemoveShoppingCart /> Out of stock</button>
 :
 
 !isCart ?
 
 userMail ?
 
-<button className='btn btn-primary' onClick={toggleModal}>
-    <span className='d-flex align-items-center gap-10'>
+<button className='btn btn-primary product-action-btn' onClick={toggleModal}>
+    <span className='d-flex align-items-center justify-content-center gap-10'>
    <BsCartCheckFill />
     Add to cart
     </span>
    
  </button>
 :
-<button className='btn btn-primary' onClick={() => errorFeedback('Login to add product to your cart')}>Add to cart</button>
+<button className='btn btn-primary product-action-btn' onClick={() => errorFeedback('Login to add product to your cart')}>Add to cart</button>
 :
-<button className='btn btn-outline-primary' onClick={() => 
+<button className='btn btn-outline-primary product-action-btn' onClick={() => 
     {
      toggleCartBtn();
     removeProductCart(params.prodId) }    
     } >
-        <span className='d-flex align-items-center gap-10'>
+        <span className='d-flex align-items-center justify-content-center gap-10'>
     <BsCartXFill />   
     Remove from cart   
         </span>

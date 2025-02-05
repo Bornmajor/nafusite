@@ -21,6 +21,7 @@ import ringImg from '../assets/images/icons8-wedding-rings-100.png'
 import braceletImg from '../assets/images/icons8-bracelet-90.png'
 import bagImg from '../assets/images/icons8-bag-100.png'
 import necklaceImg from '../assets/images/icons8-necklace-100.png'
+import ConfirmDialog from './ConfirmDialog';
 
 
 
@@ -170,7 +171,12 @@ onHide={toggleNavbar}
  
  <div>
   <p className='font-20'>{usernameWithoutEmail(userMail)}</p> 
-  <p className='clickable-item' onClick={() =>  logOut()}> <FiLogOut /> logout</p>
+
+  <ConfirmDialog confirmText={'Do you wish to logout?'} action={async() => await logOut()}>
+    <p className='clickable-item' > <FiLogOut /> logout</p>
+    </ConfirmDialog>
+ 
+
   </div>
 
 
