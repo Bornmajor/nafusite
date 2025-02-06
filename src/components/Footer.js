@@ -28,7 +28,7 @@ return (
 
 <p className='header'>Contact Us</p>
 
-<p> <MdEmail /> support@nafusite.com</p>
+<p> <MdEmail /> nafusiteenterprises@gmail.com</p>
 <p><BsFillTelephoneFill />  0101514005 </p>
 
 </div>

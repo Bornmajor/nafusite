@@ -1,12 +1,9 @@
 import React,{useContext, useEffect, useState} from 'react';
-import product_1 from '../assets/images/IMG_20241116_102001.jpg'
-import product_2 from '../assets/images/IMG_20241116_114701.jpg'
-import product_3 from '../assets/images/IMG_20241116_115256.jpg'
-import product_4 from '../assets/images/IMG_20241116_115343.jpg'
+import empty_list_img from '../assets/images/empty_list.png'
 import ProductCard from '../components/ProductCard';
 import { Sheet } from 'react-modal-sheet';
 import { FaFilter } from "react-icons/fa6";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { collection,query,getDocs,where } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import MyContext from '../context/context';
@@ -14,9 +11,16 @@ import MyContext from '../context/context';
 
 const CategoryPage = () => {
 const [isOpen, setOpen] = useState(false);
-const [listProduct,setListProducts] = useState([]);
+const [listProducts,setListProducts] = useState([]);
 const {errorFeedback} = useContext(MyContext)
 const params = useParams();
+const [sortBy,setSortBy] = useState('');
+const [category,setCategory] = useState(params.category);
+const [colorItems,setColorItems] = useState([]);
+const [filterListItems,setFilteredListItems] = useState([]);
+const navigate = useNavigate();
+const [isPageLoading,setIsPageLoading] = useState(true);
+
 
 
 const fetchProductsByCategory = async(category)=>{
@@ -52,20 +56,102 @@ const updatedItems = itemsArray.map((item) => ({
   }));
 
   setListProducts(updatedItems);
+  setFilteredListItems(updatedItems)
   console.log(updatedItems);
+
+  //set page loader to off
+  setIsPageLoading(false);
+
 
 
 }catch(error){
     errorFeedback(`Something went wrong:${error.message}`);
     console.log(error.message);  
+
+      //set page loader to off
+  setIsPageLoading(false);
 }
 }
 
 useEffect(()=>{
-fetchProductsByCategory(params.category)
+fetchProductsByCategory(params.category);
 },[params.category]);
 
 
+const handleCheckboxChange = (value) => {
+    
+  setColorItems((prevSelected) => {
+    if (prevSelected.includes(value)) {
+      // If the value is already in the array, remove it
+      return prevSelected.filter((item) => item !== value);
+    } else {
+      // Otherwise, add the value to the array
+      return [...prevSelected, value];
+    }
+  });
+
+
+
+
+};
+
+
+const applyFilters = () => {
+
+  //close sheet 
+  setOpen(false);
+   const filters = 
+    {
+      category:params.category,  // Only show necklaces
+      sortBy: sortBy,       // Sort by price descending
+      color: colorItems   
+    }
+ 
+
+    const filteredList = listProducts
+    .filter(product => {
+        // Filter by selected colors (ensure product_color exists)
+        if (filters.color.length > 0 && product.product_color) {
+            const hasMatchingColor = filters.color.some(color => product.product_color.includes(color));
+            if (!hasMatchingColor) return false;
+        }
+        return true;
+    })
+    .sort((a, b) => {
+        // Sorting by price (descending) if available
+        if (filters.sortBy === "price") {
+            return Number(b.product_price || 0) - Number(a.product_price || 0);
+        }
+        // Sorting by name (ascendin)
+        if (filters.sortBy === "name") {
+            return (a.product_title || "").localeCompare(b.product_title || "");
+        }
+        return 0; // No sorting
+    });
+ 
+ setFilteredListItems(filteredList);
+      console.log(filteredList)
+};
+
+const clearFilters = () =>{
+
+    //close sheet 
+    setOpen(false);
+
+  //reset sort_by and colors array
+
+  setSortBy('');
+  setColorItems([]);
+  setFilteredListItems(listProducts)
+  
+}
+
+
+
+//update category
+useEffect(()=>{
+navigate(`/category/${category}`)
+},[category])
 
 
 
@@ -80,45 +166,80 @@ className='filter-bottom-tab'>
 <Sheet.Header />
 <Sheet.Content className='content-body'>
     
-<form name='sheet-bottom-form'>
-<input className="form-control" 
-type="text"
-placeholder="Search product..." aria-label="Search product..."
-/>
+<div name='sheet-bottom-form'>
 
-<select className="form-select my-2" aria-label="Default select example">
-<option selected>Sort by</option>
-<option value="1">Name</option>
-<option value="2">Price</option>
-<option value="3">Popularity</option>
+
+<div className='select-container'>
+{/* <label className='bold'>Sort by</label> */}
+<select
+ className="form-select my-3"
+ aria-label="Default select example"
+ onChange={(e) => setSortBy(e.target.value)}
+ >
+<option value="" selected={sortBy == ''}>Sort by</option>
+<option value="price" selected={sortBy == 'price'}>Price</option>
+<option value="name" selected={sortBy == 'name'}>Name</option>
 </select>
+
+</div>
 
 
 <div className='category-list'>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input className="form-check-input"
+ type="radio"
+ name="category"
+ id="flexRadioDefault1"
+ value="necklace"
+ onChange={(e) => setCategory(e.target.value)}
+ checked={category == 'necklace'}
+ />
 <label className="form-check-label" for="flexRadioDefault1">
-Rings
+Necklace
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+ className="form-check-input"
+  type="radio"
+   name="category"
+   id="flexRadioDefault1"
+   value="bracelets"
+   onChange={(e) => setCategory(e.target.value)}
+   checked={category == 'bracelets'}
+   />
 <label className="form-check-label" for="flexRadioDefault1">
 Bracelets
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+className="form-check-input"
+type="radio"
+name="category"
+id="flexRadioDefault1"
+value="earrings"
+onChange={(e) => setCategory(e.target.value)}
+checked={category == 'earrings'}
+/>
 <label className="form-check-label" for="flexRadioDefault1">
 Earrings
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+ className="form-check-input"
+type="radio"
+name="category"
+id="flexRadioDefault1"
+value="bags"
+onChange={(e) => setCategory(e.target.value)}
+checked={category == 'bags'}
+    />
 <label className="form-check-label" for="flexRadioDefault1">
 Bags
 </label>
@@ -128,41 +249,58 @@ Bags
 
 <div className='variant-group '>
 
-<div className='variants my-2'>
+<div className='variants my-3'>
 
-<input type="radio" className="btn-check " name="color" id="option1" autocomplete="off" checked />
-<label className="btn btn-outline-secondary" for="option1">Gold</label>
+<input
+type="checkbox"
+className="btn-check"
+name="color"
+id="gold-sm"
+autocomplete="off" 
+value="gold"
+onChange={(e)=> handleCheckboxChange('gold') }
 
-<input type="radio" className="btn-check" name="color" id="option2" autocomplete="off" />
-<label className="btn btn-outline-secondary  mx-2" for="option2">Silver</label>
+/>
+<label className="btn btn-outline-primary font-14" for="gold-sm">Gold</label>
 
+<input
+type="checkbox"
+className="btn-check"
+name="color"
+id="white-sm"
+autocomplete="off"
+value="white"
+onChange={(e)=> handleCheckboxChange('white') }
+/>
+<label className="btn btn-outline-primary  font-14 mx-2" for="white-sm">
+  White
+  </label>
+
+<input
+ type="checkbox"
+className="btn-check"
+name="color"
+id="black-sm"
+autocomplete="off"
+value="black"
+onChange={(e)=> handleCheckboxChange('black') }
+
+     />
+<label className="btn btn-outline-primary  font-14 " for="black-sm">Black</label>
 
 </div>
 
-<div className='variants'>
-
-<input type="radio" className="btn-check" name="size" id="L" autocomplete="off" checked />
-<label className="btn btn-outline-secondary" for="L">L</label>
-
-<input type="radio" className="btn-check" name="size" id="XL" autocomplete="off" />
-<label className="btn btn-outline-secondary mx-2" for="XL">XL</label>
-
-<input type="radio" className="btn-check" name="size" id="XXXL" autocomplete="off" />
-<label className="btn btn-outline-secondary mx-2" for="XXXL">XXXL</label>
-
-
-</div>
 
 </div>
 
 <div className='action-group my-3'>
 
-<button type='submit' className='btn btn-primary apply-btn'>Apply</button>
-<button className='btn btn-outline-primary clear-btn mx-2'>Clear</button>
+<button type='submit' className='btn btn-primary apply-btn w-75' onClick={() => applyFilters()}>Apply</button>
+<button className='btn btn-outline-primary clear-btn mx-2' onClick={() => clearFilters()}>Clear</button>
 
 </div>
 
-</form>
+</div>
 
 
 
@@ -175,46 +313,85 @@ Bags
 
 <div className='filter-menu'>
 
-<form name="form-1">
+<div name="form-1">
 
-<input className="form-control" 
+{/* <input className="form-control" 
 type="text"
 placeholder="Search product..." aria-label="Search product..."
-/>
+/> */}
 
-<select className="form-select my-2" aria-label="Default select example">
-<option selected>Sort by</option>
-<option value="1">Name</option>
-<option value="2">Price</option>
-<option value="3">Popularity</option>
+<div className='select-container'>
+{/* <label className='bold'>Sort by</label> */}
+<select
+ className="form-select my-3"
+ aria-label="Default select example"
+ onChange={(e) => setSortBy(e.target.value)}
+ >
+<option value="" selected={sortBy == ''}>Sort by</option>
+<option value="price" selected={sortBy == 'price'}>Price</option>
+<option value="name" selected={sortBy == 'name'}>Name</option>
 </select>
+
+</div>
+
 
 
 <div className='category-list'>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input className="form-check-input"
+ type="radio"
+ name="category"
+ id="flexRadioDefault1"
+ value="necklace"
+ onChange={(e) => setCategory(e.target.value)}
+ checked={category == 'necklace'}
+ />
 <label className="form-check-label" for="flexRadioDefault1">
-Rings
+Necklace
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+ className="form-check-input"
+  type="radio"
+   name="category"
+   id="flexRadioDefault1"
+   value="bracelets"
+   onChange={(e) => setCategory(e.target.value)}
+   checked={category == 'bracelets'}
+   />
 <label className="form-check-label" for="flexRadioDefault1">
 Bracelets
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+className="form-check-input"
+type="radio"
+name="category"
+id="flexRadioDefault1"
+value="earrings"
+onChange={(e) => setCategory(e.target.value)}
+checked={category == 'earrings'}
+/>
 <label className="form-check-label" for="flexRadioDefault1">
 Earrings
 </label>
 </div>
 
 <div className="form-check">
-<input className="form-check-input" type="radio" name="category" id="flexRadioDefault1" />
+<input
+ className="form-check-input"
+type="radio"
+name="category"
+id="flexRadioDefault1"
+value="bags"
+onChange={(e) => setCategory(e.target.value)}
+checked={category == 'bags'}
+    />
 <label className="form-check-label" for="flexRadioDefault1">
 Bags
 </label>
@@ -224,14 +401,44 @@ Bags
 
 <div className='variant-group '>
 
-<div className='variants my-2'>
+<div className='variants my-3'>
 
-<input type="radio" className="btn-check " name="color" id="option1" autocomplete="off" checked />
-<label className="btn btn-outline-secondary" for="option1">Gold</label>
+<input
+type="checkbox"
+className="btn-check"
+name="color"
+id="gold"
+autocomplete="off" 
+value="gold"
+onChange={(e)=> handleCheckboxChange('gold') }
 
-<input type="radio" className="btn-check" name="color" id="option2" autocomplete="off" />
-<label className="btn btn-outline-secondary  mx-2" for="option2">Silver</label>
+/>
+<label className="btn btn-outline-primary font-14" for="gold">Gold</label>
 
+<input
+type="checkbox"
+className="btn-check"
+name="color"
+id="white"
+autocomplete="off"
+value="white"
+onChange={(e)=> handleCheckboxChange('white') }
+/>
+<label className="btn btn-outline-primary  font-14 mx-2" for="white">
+  White
+  </label>
+
+<input
+ type="checkbox"
+className="btn-check"
+name="color"
+id="black"
+autocomplete="off"
+value="black"
+onChange={(e)=> handleCheckboxChange('black') }
+
+     />
+<label className="btn btn-outline-primary  font-14 " for="black">Black</label>
 
 </div>
 
@@ -240,14 +447,12 @@ Bags
 
 <div className='action-group my-3'>
 
-<button className='btn btn-primary apply-btn'>Apply</button>
-<button className='btn btn-outline-primary clear-btn mx-2'>Clear</button>
+<button className='btn btn-primary apply-btn' onClick={() => applyFilters()}>Apply</button>
+<button className='btn btn-outline-primary clear-btn mx-2' onClick={() => clearFilters()}>Clear</button>
 
 </div>
 
-</form>
-
-
+</div>
 
 
 
@@ -261,9 +466,9 @@ Bags
 </button>    
 </div>
 
-{listProduct.length !== 0 ?
+{filterListItems.length !== 0 ?
 
-listProduct.map((item) => (
+filterListItems.map((item) => (
 <ProductCard id={item.id}
 width={`200px`}
 height={`200px`}
@@ -274,10 +479,23 @@ price={item.product_price}
 ))    
 
 :
+
+
+isPageLoading ?
+
 <div className='d-flex align-items-center justify-content-center inner-loader' >
 <div className='loader'></div>  <p className='bold mx-2'>Loading</p> 
    
 </div>
+
+ 
+:
+
+<div className='d-flex align-items-center p-3 flex-column inner-loader' >
+<img src={empty_list_img} width={'150px'}   alt="No items"/>  <p className='bold mx-2'>No items</p> 
+   
+</div>
+
 
 }
 

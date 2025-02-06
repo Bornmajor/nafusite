@@ -8,6 +8,10 @@
   color: #f29632;
  
 }
+.nav-link:active{
+  font-weight: 600;
+  color: #f29632;
+}
 .navbar-brand{
   background-color: transparent;
   box-shadow: none;
@@ -69,8 +73,9 @@
   
   }
   .btn-outline-primary:hover{
-    background-color: #f29632;
-    border-color: #f29632;
+    /* background-color: #f29632 !important; */
+    border-color: #fa901e !important;
+    color:#fa901e !important;
   }
   /* .btn-outline-primary:checked{
     background-color: #f29632 !important;
@@ -649,7 +654,7 @@ p{
   .loader {
     width: 80px;
     aspect-ratio: 4;
-    --c:#ad7d53 90%,#0000;
+    --c:#ce8a41 90%,#0000;
     background: 
       radial-gradient(circle closest-side at left  6px top 50%,var(--c)),
       radial-gradient(circle closest-side                     ,var(--c)),
@@ -1058,9 +1063,14 @@ p{
      .order-card .long-text{
       max-width: 130px;
      }
+     .single-order-container-page{
+    
+      padding: 10px 20px;
+
+     }
      .single-order-container-page .section{
 
-      max-width: 280px;
+      max-width: 300px;
       width: 100%;
 
   
@@ -1097,6 +1107,11 @@ p{
   width: 100%;
 }
   
+.single-order-container-page .address-section{
+
+  padding: 10px 10px;
+
+ }
 
 }
 

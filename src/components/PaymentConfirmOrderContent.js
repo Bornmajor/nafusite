@@ -12,6 +12,7 @@ import { addDoc, collection, doc, getDoc} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import MyContext from '../context/context';
 import { Button } from 'antd';
+import emailjs from '@emailjs/browser';
 
 
 const PaymentConfirmOrderContent = () => {
@@ -35,6 +36,21 @@ const PaymentConfirmOrderContent = () => {
       
         return total;
       };
+
+      function formatDate(isoDate) { 
+        const date = new Date(isoDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const amPm = hours >= 12 ? 'PM' : 'AM';
+        
+        hours = hours % 12 || 12; // Convert to 12-hour format
+    
+        return `${day}/${month}/${year} ${hours}:${minutes}${amPm}`;
+    }
 
     const fetchUserData = async () => {
         try {
@@ -124,6 +140,38 @@ const PaymentConfirmOrderContent = () => {
 
         const docRef = await addDoc(orderCollectionRef,orderData);
         setSessionOrderId(docRef.id);
+
+        //send notification about order via user email 
+
+        const today_date = new Date().toISOString();
+        const formData = {
+          user_email: userMail,
+          subject: `Order Confirmation - ${docRef.id}`,
+          official_names: address.official_names,
+          order_id: docRef.id,
+          order_date:formatDate(today_date),
+          total_amount:calculateCartTotal(cartProductsArray),
+          address:`${orderAddress.location}, ${orderAddress.constituency}, ${orderAddress.county}`,
+          url: `https://nafusite.netlify.app/order/${docRef.id}`,
+          url_title: "View Order"
+        };
+  
+        // Use `send()` instead of `sendForm()`
+        emailjs.send('service_0rn51oq', 'template_19kepj5', formData, 'R4WeIwu9w49DIaE-_')
+        .then((result) => {
+         // console.log(result.text);
+          successFeedback("Order notification sent");
+          setIsFormLoading(false);
+        
+        })
+        .catch((error) => {
+          console.error(error);
+          errorFeedback('Failed to send recovery email. Try again.');
+          setIsFormLoading(false);
+        });  
+
+
+
         //if created order
         setIsFormLoading(false);
         successFeedback('Order created!!');

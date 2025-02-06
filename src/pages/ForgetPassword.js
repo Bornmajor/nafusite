@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../context/context';
 import logo from '../assets/images/new_logo.png';
-import { Button } from 'antd';
+import { Button,Alert } from 'antd';
 import validator from 'validator'; // Validate email
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
@@ -11,6 +11,7 @@ const ForgetPassword = () => {
   const { logOut, errorFeedback, successFeedback, contextHolder } = useContext(MyContext);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [successMsg,setSuccessMsg] = useState('');
 
   useEffect(() => {
     // Automatically log out user when on this page
@@ -70,10 +71,11 @@ const ForgetPassword = () => {
     
 
       // Use `send()` instead of `sendForm()`
-      emailjs.send('service_0cvvnj2', 'template_vbotrfo', formData, 'lHTGUL1g_v__RgbvO')
+      emailjs.send('service_0rn51oq', 'template_6w5z9hw', formData, 'R4WeIwu9w49DIaE-_')
         .then((result) => {
           console.log(result.text);
-          successFeedback("We'll send a reset link if your email matches an account.");
+          successFeedback("We'll send a reset link");
+          setSuccessMsg("We'll send a reset link if your email matches an account.")
           setIsFormLoading(false);
           setEmail(''); // Clear email field
         })
@@ -96,6 +98,11 @@ const ForgetPassword = () => {
         <div className='d-flex align-items-center justify-content-center'>
           <img src={logo} className='logo-img' alt='App logo' />
         </div>
+
+        {successMsg &&
+       <Alert message={successMsg} type="success" showIcon closable /> 
+        }
+        
 
         <p className='title bold my-3'>Enter email address to recover your account</p>
 
