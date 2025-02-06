@@ -9,6 +9,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
+    "crypto-browserify": "^3.12.1",
     "dotenv": "^16.4.7",
     "firebase": "^11.1.0",
     "motion": "^11.17.0",
