@@ -1,20 +1,24 @@
 import React, { useContext,useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom'
 import TopBar from '../components/TopBar';
 import Footer from '../components/Footer';
 import AppModal from '../components/AppModal';
 import MyContext from '../context/context';
 import AppLoader from '../components/AppLoader';
+import RegisterOnBoardingModal from '../components/RegisterOnBoardingModal';
+
 
 
 const Root = () => {
-const {isAppLoading,setIsAppLoading,setNavBarIsOpen,setShowModal} = useContext(MyContext);
+const {isAppLoading,setIsAppLoading,setNavBarIsOpen,setShowModal,setShowRegisterBoard} = useContext(MyContext);
 const location = useLocation();
 
 useEffect(()=>{
 
 // Your code to run when the route changes
 console.log('Route changed:', location.pathname);
+
+
 
 setTimeout(() => {
 setIsAppLoading(false)  
@@ -37,7 +41,26 @@ setNavBarIsOpen(false);
 //close modals when change route
 setShowModal(false);
 
-},[location])
+},[location]);
+
+
+useEffect(() => {
+   // Parse search params from the URL
+   const searchParams = new URLSearchParams(location.search);
+
+   // Check if a specific search param exists
+   if (searchParams.has('onboarding')) {
+     const query = searchParams.get('onboarding');
+     console.log('Search query:', query);
+
+     // Perform your function here
+     if(query == 'registration'){
+      setShowRegisterBoard(true);
+     }
+    
+     
+   }
+ }, [location.search]); // Re-run the effect when the search params change
 
 return (
 <>
@@ -51,6 +74,7 @@ return (
 <Outlet />
 <Footer />
 <AppModal />
+<RegisterOnBoardingModal />
 </>
 
 

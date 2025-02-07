@@ -17,6 +17,7 @@ import Description from '../components/Description';
 import SkeletonCatalogue from '../components/SkeletonCatalogue';
 import { BsCartXFill,BsCartCheckFill } from "react-icons/bs";
 import { MdRemoveShoppingCart } from "react-icons/md";
+import { RiFullscreenFill } from "react-icons/ri";
 
 const ProductPage = () => {
 const params = useParams();
@@ -341,8 +342,11 @@ Home
 
 {product.coverImage && 
 
+<div className='large-img-container'>
+<img src={largeImage} className='active-product-img' alt={product.name}  />   
+<a href={largeImage} className="full-view-btn clickable-item bold"> <RiFullscreenFill fontSize={20} /> Full screen </a> 
+</div>
 
-<img src={largeImage} className='active-product-img' alt={product.name}  />
 }
 
 {/* <img src={product.coverImage.imageLink} className='active-product-img' 

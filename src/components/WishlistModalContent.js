@@ -7,9 +7,24 @@ const WishlistModalContent = () => {
 
  
 
-    const {currentUserWishlist,contextHolder} = useContext(MyContext);
+    const {currentUserWishlist,contextHolder,filterProductsByWishlist,wishlistData,getWishlistData,
+        listAllProducts,fetchAllProducts} = useContext(MyContext);
 
 
+        useEffect(()=>{
+         fetchAllProducts();
+         getWishlistData();
+        },[])
+
+       useEffect(()=>{
+    
+        filterProductsByWishlist();
+        },[wishlistData,listAllProducts])
+
+
+
+
+    
 
     return (
         <div className=''>
@@ -20,7 +35,7 @@ const WishlistModalContent = () => {
                 currentUserWishlist.map((item) => (
                                            
                 <HorizontalCard 
-                id={item.id}
+                prod_id={item.id}
                 mode="wishlist" 
                 title={item.product_title}
                 imgUrl={item.coverImage.imageLink}

@@ -154,7 +154,7 @@ const ConfirmOrderContent = () => {
          Okay 
         </button>    
 
-        <Button className='btn btn-outline-primary submit-form-btn' loading={isFormLoading}  onClick={() => deleteOrder()} >
+        <Button className='btn btn-outline-primary submit-form-btn' disabled loading={isFormLoading}  onClick={() => deleteOrder()} >
          Cancel order
         </Button> 
         </div>

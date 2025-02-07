@@ -339,7 +339,19 @@ const UpdateAddressContent = () => {
 
       <div className="mb-3">
         <label className="form-label">Area / Apartment / House</label>
-        <input type="text" className="form-control" value={location} onChange={(e) => setLocation(e.target.value)} />
+        <textarea
+         className="form-control"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        >
+        </textarea>
+{/* 
+        <input type="text" 
+        className="form-control"
+         value={location}
+         onChange={(e) => setLocation(e.target.value)} 
+         /> */}
+
       </div>
 
       <div className='d-flex flexwrap'>

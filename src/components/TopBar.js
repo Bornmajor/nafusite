@@ -27,8 +27,15 @@ import ConfirmDialog from './ConfirmDialog';
 
 const TopBar = () => {
 const { toggleNavbar, navBarIsOpen,toggleModal,
-  setModalType,userMail,logOut,wishlistData,cartListData,modalType,setIsModalLarge } = useContext(MyContext);
+  setModalType,userMail,logOut,wishlistData,cartListData,getCartProducts,getWishlistData,modalType,setIsModalLarge } = useContext(MyContext);
 const location = useLocation();
+
+//call function to update icons
+useEffect(() =>{
+getCartProducts();   
+getWishlistData();
+},[]);
+
 
 // Update active navigation when you are on the current page
 const getNavLinkClass = (path) => {
@@ -189,9 +196,9 @@ setModalType('account')
 toggleModal();
 }}
 >
-  <div className='d-flex align-items-center gap-10'>
-   <FaUserCircle size={30} color='black' />  <p className='font-20'>Sign In</p> 
-  </div>
+<div className='d-flex align-items-center gap-10'>
+  <FaUserCircle size={30} color='black' />  <p className='font-20'>Sign In</p> 
+</div>
 
 </span>
 

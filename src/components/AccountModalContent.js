@@ -11,6 +11,8 @@ import {db} from '../firebase/firebaseConfig'
 import validator from 'validator'; //validate email
 import appLogo from '../assets/images/new_logo.png'
 import { Select } from 'antd';
+import { auth } from '../firebase/firebaseConfig';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 const AccountModalContent = () => {
    const [isFormLoading,setIsFormLoading] = useState(false);
@@ -110,7 +112,7 @@ const AccountModalContent = () => {
  
        if (userDoc.exists()) {
          // User already exists
-         errorFeedback("User with this email already exists");
+         errorFeedback("This email is unavailable for registration.Please try logging in instead.");
          //enable submit btn
          setIsFormLoading(false);  
        } else {
@@ -124,6 +126,8 @@ const AccountModalContent = () => {
          // Save user to Firestore
          await setDoc(userDocRef, { email, password: hashedPassword, token,isActive: true,last_active:new Date().toISOString() });
          
+         
+
          // Store email and token in localStorage
          localStorage.setItem("nafusiteUserEmail", email);
          localStorage.setItem("nafusiteUserToken", token);
@@ -141,13 +145,13 @@ const AccountModalContent = () => {
          toggleModal();
 
          setTimeout(() => {
-          navigate('/')
+          navigate('/?onboarding=registration')
          }, 1500);
 
-         setTimeout(() => {
-          setModalType('profile')
-          toggleModal();  
-         }, 3000);
+        //  setTimeout(() => {
+        //   setModalType('profile')
+        //   toggleModal();  
+        //  }, 3000);
          
        }
 
@@ -210,7 +214,8 @@ const AccountModalContent = () => {
     } 
 
     }catch(error){
-      errorFeedback(`Something went wrong: ${error.message}`);
+      errorFeedback(`Failed to register`);
+      console.log(`Failed to register: ${error.message}`);
           //enable submit btn
           setIsFormLoading(false); 
           console.log(email,pwd)

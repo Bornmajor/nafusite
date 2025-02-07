@@ -12,6 +12,36 @@ const AppModal = () => {
   const { showModal, toggleModal,modalType,isModalLarge,setIsModalLarge } = useContext(MyContext);
   const [title,setTitle] = useState('');
   const [errorMessage,setErrorMessage] = useState('')
+  const [isFullScreen,setIsFullScreen] = useState(false);
+
+   // Function to check viewport width
+   const checkViewportWidth = () => {
+    const isBelow575px = window.matchMedia('(max-width: 575px)').matches;
+ 
+
+    // Run your function here if the viewport is below 575px
+    if (isBelow575px) {
+    //  console.log('Below 575px');
+     setIsFullScreen(true)
+    }else{
+      // console.log('Above 575px')
+      setIsFullScreen(false)
+    }
+  };
+
+   // Add event listener for viewport changes
+   useEffect(() => {
+    // Check viewport width on initial render
+    checkViewportWidth();
+
+    // Add a resize event listener to check viewport width dynamically
+    window.addEventListener('resize', checkViewportWidth);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', checkViewportWidth);
+    };
+  }, []);
 
 
   useEffect(()=>{
@@ -45,9 +75,14 @@ useEffect(()=>{
   if(modalType == 'cart'){
     setIsModalLarge('lg');  
   }else{
-    setIsModalLarge('');  
+  
+    setIsModalLarge('');
   }
-  },[modalType])
+  },[modalType]);
+
+   //set full screen for certain
+
+  
 
 
   const renderModalContent = () => {
@@ -92,7 +127,7 @@ useEffect(()=>{
         show={showModal}
        onHide={toggleModal}
       size={isModalLarge}
-      //fullscreen={true}
+      fullscreen={isFullScreen}
        >
         <Modal.Header style={{border:'none'}} closeButton>
           <Modal.Title>{title}</Modal.Title>

@@ -40,6 +40,8 @@ export const MyContextProvider  = (props) =>{
     const [uploadProdImages,setUploadProdImages] = useState([]);
     const [uploadProdCategory,setProdCategory] = useState("");
       const [viewOrderType,setViewOrderType] = useState('confirm_address');
+
+       const [showRegisterBoard, setShowRegisterBoard] = useState(false);
     
 
     const kenyaCounties = [
@@ -880,7 +882,8 @@ export const MyContextProvider  = (props) =>{
             return {
               ...product,
               product_color: cartItem.product_color,
-              quantity: cartItem.quantity
+              quantity: cartItem.quantity,
+              cart_id:cartItem.id
             };
           }
           return null; // Handle cases where product is not found
@@ -1014,27 +1017,16 @@ const updateLastUserActive = async(userMail) =>{
 
 
       
-       useEffect(()=>{
-        fetchAllProducts();
-       },[]);
+   
 
-      useEffect(()=>{
-      filterProductsByWishlist();
-
-      },[wishlistData,listAllProducts])
-
-      useEffect(() =>{
-       filterProductsByUserCart();  
-      },[cartListData,listAllProducts])
+    
       
 
 
 
     useEffect(()=>{
      fetchUserTokenFromDevice();
-     getWishlistData();
-     getCartProducts();
-    checkIfTokenExpired();
+     checkIfTokenExpired();
     },[userMail]);
 
 
@@ -1055,15 +1047,17 @@ const updateLastUserActive = async(userMail) =>{
         setUploadProdTitle,setUploadProdPrice,setUploadProdDesc,setUploadProdColor,setUploadProdImages,
         setProdCategory,
         capitalizeFirstLetter,
-        wishlistData,getWishlistData,
-        cartListData,setCartListData,removeProductCart,getCartProducts,cartProductsArray,setCartProductsArray,
+        wishlistData,getWishlistData,filterProductsByWishlist,
+        cartListData,setCartListData,removeProductCart,getCartProducts,
+        cartProductsArray,setCartProductsArray,filterProductsByUserCart,
         listAllProducts,fetchAllProducts,
         updateWishlistByAction,
         currentUserWishlist,
         listCounties,viewOrderType,setViewOrderType,
         sessionOrderId,setSessionOrderId, fetchUsersOrders,orderList,setOrderList,
         orderAddress,setOrderAddress,generateToken,
-        updateLastUserActive
+        updateLastUserActive,
+        showRegisterBoard, setShowRegisterBoard
 
 
       }}>

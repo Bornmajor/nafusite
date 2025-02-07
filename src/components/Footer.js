@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import appLogo from '../assets/images/logo.png'
+import appLogo from '../assets/images/new_logo.png'
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { AiFillAmazonSquare } from "react-icons/ai";
 import { AiFillTikTok } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import { FaFacebookSquare } from "react-icons/fa";
 
 const Footer = () => {
 return (
@@ -35,7 +36,7 @@ return (
 
 <div className='inner-container'>
 
-<p className='header'>Important Links</p>
+<p className='header'>Categories</p>
 
 <Link className='links'>Necklace</Link>
 <Link className='links'>Rings</Link>
@@ -48,10 +49,23 @@ return (
 
 <div className='social-icons-container'>
 
+<a href='https://www.instagram.com/nafusite/'  target="_blank">
 <FaInstagramSquare className='social_icon' />
-<FaWhatsappSquare  className='social_icon'/>
-<AiFillAmazonSquare className='social_icon'/>
-<AiFillTikTok className='social_icon'/>
+</a>
+
+<a href="https://www.whatsapp.com/channel/0029Vamchlk8PgsBZqyi0h1P"  target="_blank">
+<FaWhatsappSquare  className='social_icon'/>    
+</a>
+
+<a href='https://web.facebook.com/profile.php?id=61567239771071'  target="_blank">
+<FaFacebookSquare className='social_icon'/>    
+</a>
+
+
+<a href='https://www.tiktok.com/@nafusite'  target="_blank">
+<AiFillTikTok className='social_icon'/>    
+</a>
+
 
 
 </div>

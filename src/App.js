@@ -13,6 +13,7 @@ import ProductPage from './pages/ProductPage';
 import OrderPage from './pages/OrderPage';
 import ForgetPassword from './pages/ForgetPassword';
 import ResetPassword from './pages/ResetPassword';
+import { ConfigProvider, } from 'antd';
 
 
 
@@ -61,7 +62,20 @@ function App() {
 )
   return (
    <MyContextProvider>
-    <RouterProvider router={router} />
+    <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: '#f29632',
+
+        // Alias Token
+        // colorBgContainer: '#f29632',
+      },
+    }}
+  >
+     <RouterProvider router={router} /> 
+  </ConfigProvider>
+  
    </MyContextProvider>
   );
 }

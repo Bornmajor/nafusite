@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useEffect, useState} from 'react';
 import HorizontalCard from './HorizontalCard';
 import product_1 from '../assets/images/IMG_20241116_102001.jpg'
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -6,13 +6,101 @@ import { Sheet } from 'react-modal-sheet';
 import MyContext from '../context/context';
 import { collection, getDocs,deleteDoc,query,where,doc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { Alert } from 'antd';
 
 const CartModalContent = () => {
     const [isOpen, setOpen] = useState(false);
-    const {cartProductsArray,userMail,getCartProducts,contextHolder,warningFeedback,setModalType} = useContext(MyContext);
+    const {cartProductsArray,userMail,getCartProducts,contextHolder,
+      cartListData,setModalType,fetchAllProducts,listAllProducts,filterProductsByUserCart} = useContext(MyContext);
     const toggleSheet = () =>{
         setOpen(!isOpen);
     }
+
+    const [hasOutStock,setHasOutStock] = useState(false);
+
+    //check if a user has a product out of stock
+    const checkOutstockProduct = async()=>{
+      try{
+
+        //user must login
+      if(!userMail){
+        return false;
+      }
+
+      //fetch users cart array
+      const cartCollectionRef = collection(db,"cart");
+      const q = query(cartCollectionRef,where("email","==",userMail));
+      const querySnapshot = await getDocs(q);
+
+         //check if user has a cart
+         if(!querySnapshot.empty){
+        
+       const cartItems = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+       }));
+
+        //fetch array of products out of stock
+        const prodCollectionRef = collection(db,"products");
+        const q = query(prodCollectionRef,where("isStock","==",false));
+        const prodQuerySnapShot = await getDocs(q);
+
+        if(!prodQuerySnapShot.empty){
+
+          const outStockItems = prodQuerySnapShot.docs.map( doc => (
+            {
+              id:doc.id,
+              ...doc.data()
+            }
+          ));
+          
+//check if there outstock item in cart //some and include check item in between arrays
+          const isOutStock =  cartItems.some(cartItem => {
+            const outOfStockItem = outStockItems.find(outOfStock => outOfStock.id === cartItem.product_id);
+            return outOfStockItem && !outOfStockItem.isStock;
+        });
+
+                   
+          if(isOutStock){
+            console.log('User has an item out of stock')
+          }else{
+            console.log('User does not have item out of stock')
+          }
+          setHasOutStock(isOutStock);
+
+          // console.log('Users cart')
+          // console.log(cartItems);
+
+          // console.log('Items out of stock');
+          // console.log(outStockItems);
+
+
+          }
+        
+
+         }
+    
+
+      }catch(error){
+
+        console.log(`Failed to check if product is stocked:${error.message}`)
+      }
+
+    }
+
+    useEffect(()=>{
+      fetchAllProducts()
+      getCartProducts();
+    
+    },[]);
+
+    useEffect(()=>{
+      checkOutstockProduct();
+    },[cartProductsArray])
+
+      useEffect(() =>{
+       filterProductsByUserCart();  
+      },[cartListData,listAllProducts])
  
     //calculate subtotal for cart p
     const calculateCartTotal = (cartData) => {
@@ -57,8 +145,15 @@ const CartModalContent = () => {
         }
       }
 
+ 
     return (
-        <>
+        <div>
+
+         { hasOutStock &&
+         <Alert className='my-3' message="To place order remove item out of stock" type="warning" showIcon />
+         }
+          
+
          <div className='cart-modal-container'>
          {contextHolder}
             
@@ -70,15 +165,19 @@ const CartModalContent = () => {
             
 
             <div>
-            <p>Total items <IoIosArrowRoundForward fontSize="20px" /> <span className='bold'>{cartProductsArray.length}</span></p>   
-            <p> Subtotal <IoIosArrowRoundForward fontSize="20px" /> <span>Ksh</span> <span className='bold'>{calculateCartTotal(cartProductsArray)}</span>
+            <p className='font-14'>Total items <IoIosArrowRoundForward fontSize="20px" /> <span className='bold'>{cartProductsArray.length}</span></p>   
+            <p className='font-14'> Subtotal <IoIosArrowRoundForward fontSize="20px" /> <span>Ksh</span> <span className='bold'>{calculateCartTotal(cartProductsArray)}</span>
             </p>   
 
             </div>
 
                <div className="d-flex align-items-center my-3">
-            <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button> 
-            <button className="btn btn-primary mx-2 cart-btn" onClick={() => setModalType('place_order')}>Place order</button>     
+            <button className="btn btn-outline-primary cart-btn" onClick={() => clearCart()} >Clear cart</button>
+
+           
+            <button className="btn btn-primary mx-2 cart-btn" disabled={hasOutStock} onClick={() => setModalType('place_order')}>Place order</button> 
+
+
             </div>
             
                 
@@ -101,8 +200,8 @@ const CartModalContent = () => {
                      <div className='sm-cart-info'>
 
                 <div className='d-flex align-items-center justify-content-between my-3 '>
-                    <p className='main-header bold'>No. of items <IoIosArrowRoundForward fontSize="20px" /> <span  className='bold'>{cartProductsArray.length}</span></p>
-                 <button className='btn btn-primary' onClick={() => toggleSheet()} >Order</button>
+                    <p className='main-header  bold'>No. of items <IoIosArrowRoundForward fontSize="20px" /> <span  className='bold'>{cartProductsArray.length}</span></p>
+                 <button className='btn btn-primary' onClick={() => toggleSheet()}  disabled={hasOutStock}>Order</button>
                  </div>
                 
                 
@@ -110,7 +209,10 @@ const CartModalContent = () => {
                  {
                  cartProductsArray.map((item) => 
                
-                <HorizontalCard id={item.id}
+                <HorizontalCard 
+                cart_id={item.cart_id}
+                prod_id={item.id}
+                isStock={item.isStock}
                  mode="cart"
                  title={item.product_title}
                  imgUrl={item.coverImage.imageLink}
@@ -182,7 +284,7 @@ const CartModalContent = () => {
         </Sheet.Container>
         <Sheet.Backdrop onTap={() => setOpen(false)}  />
         </Sheet>
-        </>
+        </div>
        
     );
 }

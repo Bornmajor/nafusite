@@ -105,7 +105,7 @@ const OrderPage = () => {
         const docSnapshot = await getDoc(docRef);
 
         if(!docSnapshot.exists()){
-            setErrorMessage('Order ID doesnot exist');
+            setErrorMessage('Order does not exist');
             return false;
 
         }
@@ -322,7 +322,7 @@ const OrderPage = () => {
 
 
                 <Tabs
-                className='payement-tabs'
+                className='payment-tabs'
                 
                 defaultActiveKey="1"
                 items={items}
