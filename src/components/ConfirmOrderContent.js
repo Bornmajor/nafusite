@@ -7,12 +7,14 @@ import{ Button} from 'antd';
 import { db } from '../firebase/firebaseConfig';
 import { deleteDoc,doc } from 'firebase/firestore';
 import {Tabs} from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const ConfirmOrderContent = () => {
     const {toggleModal,uiTheme,setViewOrderType,sessionOrderId,userMail,errorFeedback,successFeedback,updateLastUserActive}= useContext(MyContext);
     const [isFormLoading, setIsFormLoading] = useState(false);
     const [paymentMode,setPaymentMode] = useState('mpesa');
     const [alignValue, setAlignValue] = useState('center');
+    const navigate = useNavigate();
 
     const deleteOrder = async() =>{
         try{
@@ -150,8 +152,8 @@ const ConfirmOrderContent = () => {
 
         <div className='d-flex align-items-center my-3' style={{gap:'10px'}}>
 
-        <button className='btn btn-primary' onClick={() => toggleModal()} >
-         Okay 
+        <button className='btn btn-primary' onClick={() => navigate(`/order/${sessionOrderId}`)} >
+        View Order 
         </button>    
 
         <Button className='btn btn-outline-primary submit-form-btn' disabled loading={isFormLoading}  onClick={() => deleteOrder()} >

@@ -85,9 +85,9 @@ const ProductCard = ({title,id,price,img_url,isLiked,width,height,mode}) => {
             :
            <div className='action-content'  onClick={() => toggleLikedBtn()}>
                 {!productLiked ? 
-             <FaRegHeart size={22} color='#f29632' />
+             <FaRegHeart size={22} color='#743d07 ' />
                   :    
-             <FaHeart size={22} color='#f29632' className=''/>  
+             <FaHeart size={22} color='#743d07 ' className=''/>  
                 }
             
             </div>

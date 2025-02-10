@@ -160,6 +160,7 @@ const handleCheckboxChange = (value) => {
         onHide={toggleRegisterBoard}
         backdrop={!isDismissable && 'static'}
         keyboard={false}
+       
       >
         <Modal.Header style={{border:'none'}} closeButton={isDismissable}>
           <Modal.Title></Modal.Title>

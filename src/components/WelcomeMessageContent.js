@@ -7,7 +7,7 @@ const WelcomeMessageContent = () => {
 
             <img src={appLogo} alt='App logo' width={'150px'}/>
 
-            <p className='text-center my-2'>Welcome to <span className='bold'>Nafusite jewellery store</span></p>
+            <p className='text-center my-2'>Welcome to <span className='app-link bold'>Nafusite jewellery store</span></p>
 
             <p className='text-center'>We're thrilled to have you on board. Let's     |
             |  get started on your journey with us. </p>

@@ -65,7 +65,10 @@ const updateQuantityCart = async(prod_id) =>{
         quantity:productQuantity
       });
 
-    successFeedback('Updated product quantity')
+    console.log('Updated product quantity')
+
+    //refretch cart product
+ getCartProducts()
 
 
     }else{
@@ -83,13 +86,14 @@ const updateQuantityCart = async(prod_id) =>{
 useEffect(()=>{
 
   //only run code when there are changes in quantity
- if(isQuantityChange == productQuantity){
-   updateQuantityCart(cart_id);
- }
-//refretch cart product
- getCartProducts()
+  if(mode == 'cart'){
+    updateQuantityCart(cart_id);   
+  }
+
+
+
  
-},[isQuantityChange])
+},[productQuantity])
 
 
 return (

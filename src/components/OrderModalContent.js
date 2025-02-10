@@ -8,14 +8,19 @@ const OrderModalContent = () => {
 
     
    const {fetchUsersOrders,orderList,setOrderList} = useContext(MyContext);
-   const [statusType,setStatusType] = useState('pending_payment');  
+   const [statusType,setStatusType] = useState('all');  
    const [filteredOrderList,setFilteredOrderList] = useState([]);   
    
    
    const filterOrderListByStatus = () =>{
-   const filteredList = orderList.filter((item) => item.status == statusType);
+   if(statusType == 'all') {
+    setFilteredOrderList(orderList); 
+   }else{
+     const filteredList = orderList.filter((item) => item.status == statusType);
    setFilteredOrderList(filteredList);
-  // console.log(filteredList);
+  // console.log(filteredList); 
+   } 
+ 
    
    }
    useEffect(()=>{
@@ -37,6 +42,19 @@ const OrderModalContent = () => {
         <div className='view-order-modal'>
 
           <div className='horizontal-scrollable my-3' style={{paddingLeft:0}}>
+
+          <input type="radio" className="btn-check "
+           name="status"
+            id="all"
+           autocomplete="off"
+           value="all"
+           onChange={(e) => setStatusType(e.target.value)}
+           checked={statusType == 'all'}
+            />
+          <label className="btn btn-outline-primary status-order-tab"
+           for="all"
+           >All
+           </label>
 
           <input type="radio" className="btn-check "
            name="status"
@@ -79,19 +97,7 @@ const OrderModalContent = () => {
             Cancelled
             </label>
 
-          <input type="radio"
-           className="btn-check "
-            name="status"
-             id="completed"
-            autocomplete="off"
-            value="completed"  
-            onChange={(e) => setStatusType(e.target.value)}
-            checked={statusType == 'completed'}
-              />
-          <label className="btn btn-outline-primary status-order-tab"
-           for="completed">
-            Completed
-            </label>
+      
 
         
 

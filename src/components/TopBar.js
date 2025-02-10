@@ -34,7 +34,7 @@ const location = useLocation();
 useEffect(() =>{
 getCartProducts();   
 getWishlistData();
-},[]);
+},[userMail]);
 
 
 // Update active navigation when you are on the current page

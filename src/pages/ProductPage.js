@@ -310,7 +310,7 @@ return (
     {product !== null ?
     <>
     {contextHolder}
-    <div className='d-flex flex-column align-items-center justify-content-center' >
+    <div className='' >
 <div className='product-page-container'>
 
 {/* <p>{params.prodId}</p> */}
@@ -341,11 +341,8 @@ Home
 <div className='product-images-container'>
 
 {product.coverImage && 
+<img src={largeImage} className='active-product-img' alt={product.name}  />  
 
-<div className='large-img-container'>
-<img src={largeImage} className='active-product-img' alt={product.name}  />   
-<a href={largeImage} className="full-view-btn clickable-item bold"> <RiFullscreenFill fontSize={20} /> Full screen </a> 
-</div>
 
 }
 
@@ -363,7 +360,6 @@ className={`non-active-product-img ${largeImage == item.imageLink && 'active-lar
  alt={item.imageLink}
  onClick={() => updateLargeImage(item.imageLink)}
  />)}
-
 
 </>
 

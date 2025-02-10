@@ -102,7 +102,7 @@ const getBagsProducts = () =>{
     return (
        <>
        {contextHolder}
-       <HeroSection />
+       {/* <HeroSection /> */}
        <MainCategories />
 
        {listAllProducts.length !== 0 ?

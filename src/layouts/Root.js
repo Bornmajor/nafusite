@@ -6,11 +6,13 @@ import AppModal from '../components/AppModal';
 import MyContext from '../context/context';
 import AppLoader from '../components/AppLoader';
 import RegisterOnBoardingModal from '../components/RegisterOnBoardingModal';
+import { collection, getDoc, getDocs,doc } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 
 
 const Root = () => {
-const {isAppLoading,setIsAppLoading,setNavBarIsOpen,setShowModal,setShowRegisterBoard} = useContext(MyContext);
+const {isAppLoading,setIsAppLoading,setNavBarIsOpen,setShowModal,setShowRegisterBoard,userMail} = useContext(MyContext);
 const location = useLocation();
 
 useEffect(()=>{
@@ -45,22 +47,30 @@ setShowModal(false);
 
 
 useEffect(() => {
-   // Parse search params from the URL
-   const searchParams = new URLSearchParams(location.search);
+  const fetchData = async () => {
+    const searchParams = new URLSearchParams(location.search);
 
-   // Check if a specific search param exists
-   if (searchParams.has('onboarding')) {
-     const query = searchParams.get('onboarding');
-     console.log('Search query:', query);
+    if (searchParams.has('onboarding')) {
+      const query = searchParams.get('onboarding');
+      console.log('Search query:', query);
 
-     // Perform your function here
-     if(query == 'registration'){
-      setShowRegisterBoard(true);
-     }
-    
-     
-   }
- }, [location.search]); // Re-run the effect when the search params change
+      if (!userMail) {
+        return; // Early return if userMail is not available
+      }
+
+      const docRef = doc(db, "user_interest", userMail);
+      const docSnapshot = await getDoc(docRef);
+
+      if (!docSnapshot.exists()) {
+        if (query === 'registration') {
+          setShowRegisterBoard(true);
+        }
+      }
+    }
+  };
+
+  fetchData(); // Call the async function
+ }, [location.search,userMail]); // Re-run the effect when the search params change
 
 return (
 <>

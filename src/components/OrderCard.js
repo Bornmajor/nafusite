@@ -9,6 +9,7 @@ import { Popconfirm } from 'antd';
 import { IoCalendarClearSharp } from "react-icons/io5";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoCloseCircle } from "react-icons/io5";
+import { FaShippingFast } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 const OrderCard = ({id,status,total_amount,order_date}) => {
@@ -17,13 +18,15 @@ const OrderCard = ({id,status,total_amount,order_date}) => {
     const getStatusColor = (status) => {
         switch (status) {
           case "pending_payment":
-            return "#f29632";
+            return "#d21919";
           case "paid":
             return "green";
           case "cancelled":
             return "red";
-           case "completed":
-            return "orange";
+           case "shipping":
+            return "#36B37E";
+            case "delivered":
+            return "#ce8a41";
           default:
             return "black"; // Default color
         }
@@ -96,12 +99,20 @@ const OrderCard = ({id,status,total_amount,order_date}) => {
                
                 )}
 
-            {status == 'completed' && (
+            {status == 'shipping' && (
                 <>
-                 <FaCircleCheck /> Completed
+                 <FaShippingFast /> Shipping
                 </>
                
                 )}
+
+{status == 'delivered' && (
+                <>
+                 <FaCircleCheck />  Delivered
+                </>
+               
+                )}
+
 
              {status == 'paid' && (
                 <>

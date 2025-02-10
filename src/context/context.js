@@ -958,7 +958,7 @@ export const MyContextProvider  = (props) =>{
               
   
            const orderCollectionRef = collection(db,"orders");
-           const q = query(orderCollectionRef,where("email","==",userMail));
+           const q = query(orderCollectionRef,where("email","==",userMail),orderBy("order_date","desc"));
            const querySnapshot = await getDocs(q);
   
          
